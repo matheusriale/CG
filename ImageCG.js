@@ -37,7 +37,7 @@ class ImageCG {
         let idx = pixel_idx(x, y);
 
         loadPixels()
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) { //rgb
             pixels[idx + i] = intensity;
         }
         pixels[idx + 3] = 1; //alpha
@@ -45,6 +45,10 @@ class ImageCG {
         updatePixels()
 
         return idx
+    }
+
+    get_pixel(x, y) {
+        return this.pixels[pixel_idx(x, y)]
     }
 
 }
