@@ -14,12 +14,16 @@ class ImageCG {
     init() {
         createCanvas(this.width, this.height)
         console.log(`Canvas ${this.width} x ${this.height} created`)
+
         loadPixels()
+        pixels.fill(this.background)
         this.pixels = pixels
+        updatePixels()
     }
 
     update() {
-        background(this.background)
+        pixels = this.pixels
+        updatePixels()
     }
 
     set_pixel(x, y) {
