@@ -28,18 +28,18 @@ class ImageCG {
 
     /**
      * Muda a cor de um pixel.
-     * @param {*} x Coordenada X do pixel
-     * @param {*} y Coordenada Y do pixel
-     * @param {*} intensity Intensidade
+     * @param {Number} x Coordenada X do pixel
+     * @param {Number} y Coordenada Y do pixel
+     * @param {Number} intensity Intensidade (0 a 255)
      * @returns Índice do pixel no array de pixels do P5.js
      */
     set_pixel(x, y, intensity = 255) {
-        let idx = 4 * (y * width + x);
+        let idx = pixel_idx(x, y);
 
         loadPixels()
-        pixels[idx] = intensity; //red
-        pixels[idx + 1] = intensity; //green
-        pixels[idx + 2] = intensity; //blue
+        for (let i = 0; i < 3; i++) {
+            pixels[idx + i] = intensity;
+        }
         pixels[idx + 3] = 1; //alpha
         this.pixels = pixels
         updatePixels()
