@@ -26,8 +26,25 @@ class ImageCG {
         updatePixels()
     }
 
-    set_pixel(x, y) {
-        console.log(pixels.length / 4, x, y)
+    /**
+     * Muda a cor de um pixel.
+     * @param {*} x Coordenada X do pixel
+     * @param {*} y Coordenada Y do pixel
+     * @param {*} intensity Intensidade
+     * @returns Índice do pixel no array de pixels do P5.js
+     */
+    set_pixel(x, y, intensity = 255) {
+        let idx = 4 * (y * width + x);
+
+        loadPixels()
+        pixels[idx] = intensity; //red
+        pixels[idx + 1] = intensity; //green
+        pixels[idx + 2] = intensity; //blue
+        pixels[idx + 3] = 1; //alpha
+        this.pixels = pixels
+        updatePixels()
+
+        return idx
     }
 
 }
