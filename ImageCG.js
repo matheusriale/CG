@@ -6,12 +6,11 @@ class ImageCG {
      * @param {Number} background Intensidade do fundo da nova Imagem (padrão: 255)
      */
     constructor(width, height, background = 255) {
-        // this.pixels = screen_pixels
         this.width = width
         this.height = height
         this.background = background
-
     }
+
     init() {
         createCanvas(this.width, this.height)
         console.log(`Canvas ${this.width} x ${this.height} created`)
@@ -21,6 +20,10 @@ class ImageCG {
 
     update() {
         background(this.background)
+    }
+
+    set_pixel(x, y) {
+        console.log(pixels.length / 4, x, y)
     }
 
 }
