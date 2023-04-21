@@ -19,5 +19,8 @@ class ImageCG {
         this.pixels = pixels
     }
 
+    update() {
+        background(this.background)
+    }
 
 }
