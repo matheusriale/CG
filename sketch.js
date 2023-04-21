@@ -1,7 +1,10 @@
+var img
+
 function setup() {
-  createCanvas(400, 400);
+  img = new ImageCG(400, 400, 0)
+  img.init()
 }
 
 function draw() {
-  background(220);
+  img.update()
 }
