@@ -12,5 +12,12 @@ class ImageCG {
         this.background = background
 
     }
+    init() {
+        createCanvas(this.width, this.height)
+        console.log(`Canvas ${this.width} x ${this.height} created`)
+        loadPixels()
+        this.pixels = pixels
+    }
+
 
 }
