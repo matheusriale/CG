@@ -1,3 +1,6 @@
+/**
+ * Manipula o canvas do p5.js
+ */
 class ImageCG {
     /**
      * Cria uma nova imagem
@@ -11,6 +14,10 @@ class ImageCG {
         this.background = background
     }
 
+    /**
+     * Inicializa a tela.
+     * Deve ser chamada na função `setup` do p5.js
+     */
     init() {
         createCanvas(this.width, this.height)
         console.log(`Canvas ${this.width} x ${this.height} created`)
@@ -20,7 +27,9 @@ class ImageCG {
         this.pixels = pixels
         updatePixels()
     }
-
+    /**
+     * Atualiza a tela. Deve ser chamada na função `draw` do P5.js
+     */
     update() {
         pixels = this.pixels
         updatePixels()
@@ -47,6 +56,12 @@ class ImageCG {
         return idx
     }
 
+    /**
+     * Retorna a intensidade do pixel
+     * @param {Number} x Coordenada x do pixel
+     * @param {Number} y Coordenada y do pixel
+     * @returns {Number} Intensidade do pixel
+     */
     get_pixel(x, y) {
         return this.pixels[pixel_idx(x, y)]
     }
