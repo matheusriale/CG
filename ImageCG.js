@@ -26,6 +26,8 @@ class ImageCG {
         pixels.fill(this.background)
         this.pixels = pixels
         updatePixels()
+
+        console.log(`Background changed to ${this.background}`)
     }
     /**
      * Atualiza a tela. Deve ser chamada na função `draw` do P5.js
@@ -53,6 +55,7 @@ class ImageCG {
         this.pixels = pixels
         updatePixels()
 
+        console.log(`Pixel (${x},${y}) updated to ${intensity} [p5.js index: ${idx}]`)
         return idx
     }
 
