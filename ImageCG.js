@@ -26,6 +26,7 @@ class ImageCG {
         pixels.fill(this.background)
         this.pixels = pixels
         updatePixels()
+        
 
         console.log(`Background changed to ${this.background}`)
     }
@@ -68,5 +69,49 @@ class ImageCG {
     get_pixel(x, y) {
         return this.pixels[pixel_idx(x, y)]
     }
+  
+  
+  /*
+   * Faz uma reta entra o pixel de xi,yi e o pixel de xf,yf (i = coordenadas iniciais, f = coordenadas finais)
+   *
+   */
+    reta(xi,yi,xf,yf,intensity = 255){
+        loadPixels()
+        dx = xf - xi;
+        dy = yf - yi;
+
+        if (dx == 0 && dy == 0){
+          set_pixel(xi,yi,intensity)
+          updatePixels()
+          return
+        }
+
+        has_changed = 0
+        if (abs(dy) > abs(dx)){
+          aux = dx;
+          dx  = dy;
+          dy  = aux;
+          aux = xi;
+          xi  = yi;
+          yi  = aux;
+          has_changed = 1;
+        }
+        a = dy/dx;
+        for (vx = 0; vx < abs(dx); vx++){
+          if (dx < 0){
+            vx = (-1)*vx;
+          }
+          vy = a*vx;
+          x = Math.round(xi + vx);
+          y = Math.round(yi + vy);
+          
+          if (has_changed == 0){
+            set_pixel(x,y,intensity);
+          }
+          else{
+            set_pixel(y,x,intensity);
+          }
+        }  
+      }
 
 }
