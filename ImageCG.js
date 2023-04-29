@@ -21,15 +21,20 @@ class ImageCG {
   init() {
     createCanvas(this.width, this.height)
     console.log(`Canvas ${this.width} x ${this.height} created`)
+    this.clear(this.background)
 
-    loadPixels()
-    pixels.fill(this.background)
-    updatePixels()
-
-
-    console.log(`Background changed to ${this.background}`)
   }
 
+  /**
+   * Preenche todo o canvas
+   * @param {?Number} intensity Intensidade (0 a 255)
+   */
+  clear(intensity) {
+    loadPixels()
+    pixels.fill(intensity)
+    updatePixels()
+    console.log(`Canvas cleared ${intensity}`)
+  }
 
   /**
    * Muda a cor de um pixel.
@@ -95,7 +100,7 @@ class ImageCG {
       let y = Math.round(pi.y + vy);
 
       let p = has_changed ? new Pixel(y, x) : new Pixel(x, y)
-      this.set_pixel(p, intensity, clg);
+      this.set_pixel(p, intensity);
 
     }
     if (clg) {

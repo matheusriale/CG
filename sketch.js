@@ -1,14 +1,11 @@
 var img
 
 function setup() {
-  img = new ImageCG(100, 100, 200)
+  img = new ImageCG(400, 400, 200)
   img.init()
-
-  img.reta(51, 50, 100, 150)
-  img.set_pixel(52, 50)
-  img.set_pixel(53, 50)
+  img.reta(new Pixel(), new Pixel(399), 255, true)
 }
 
 function draw() {
-  img.update()
+
 }
