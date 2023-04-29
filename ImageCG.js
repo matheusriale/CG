@@ -27,7 +27,7 @@ class ImageCG {
 
   /**
    * Preenche todo o canvas
-   * @param {?Number} intensity Intensidade (0 a 255)
+   * @param {Number} intensity Intensidade (0 a 255)
    */
   clear(intensity) {
     loadPixels()
@@ -71,7 +71,7 @@ class ImageCG {
 
 
   /**
-   * Faz uma reta entra o pixel inicial e o final
+   * Desenha uma reta entre o pixel inicial e o final
    * @param {Pixel} pi Pixel inicial
    * @param {Pixel} pf Pixel final
    * @param {Number} intensity Intensidade (0 a 255)
@@ -108,4 +108,23 @@ class ImageCG {
     }
   }
 
+  retaDDA(pi, pf, intensity, clg = false) {
+    let [dx, dy] = Pixel.distance(pi, pf)
+
+    if (dx == 0 && dy == 0) {
+      this.set_pixel(pi, intensity)
+      return
+    }
+
+    let passos = abs(dy) > abs(dx) ? abs(dy) : abs(dx);
+    let passo_x = dx / passos;
+    let passo_y = dy / passos;
+
+    for (let i = 0; i < passos; i++) {
+      let x = Math.round(pi.x + i * passo_x);
+      let y = Math.round(pi.y + i * passo_y);
+      this.set_pixel(new Pixel(x, y), intensity, true)
+    }
+
+  }
 }
