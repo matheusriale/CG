@@ -1,15 +1,15 @@
 /**
  * Estrutura para localização de pixel
- * @param {Number} x Coordenada X do pixel
- * @param {Number} y Coordenada Y do pixel
+ * @param {?Number} x Coordenada X do pixel. Se 'null', então será 0
+ * @param {?Number} y Coordenada Y do pixel. Se 'null', então será igual ao x
  */
 
 function Pixel(x, y) {
     /**
     * @type {{x:Number y:Number}}
     */
-    this.x = x
-    this.y = y
+    this.x = x || 0
+    this.y = y || this.x
 
     /**
      * Retorna as coordenadas x,y como um array
