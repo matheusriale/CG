@@ -57,12 +57,11 @@ class ImageCG {
 
   /**
    * Retorna a intensidade do pixel
-   * @param {Number} x Coordenada x do pixel
-   * @param {Number} y Coordenada y do pixel
+   * @param {Pixel} p Pixel para ser mudado
    * @returns {Number} Intensidade do pixel
    */
-  get_pixel(x, y) {
-    return this.pixels[pixel_idx(x, y)]
+  get_pixel(p) {
+    return this.pixels[pixel_idx(p.x, p.y)]
   }
 
 
