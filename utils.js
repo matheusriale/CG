@@ -14,9 +14,21 @@ function pixel_idx(x, y) {
  * @param {Number} x Coordenada X do pixel
  * @param {Number} y Coordenada Y do pixel
  */
+
 function Pixel(x, y) {
+    /**
+    * @type {{x:Number y:Number}}
+    */
     this.x = x
     this.y = y
+
+    /**
+     * Retorna as coordenadas x,y como um array
+     * @returns {Array<Number>} [x,y]
+     */
+    this.to_array = () => {
+        return [this.x, this.y]
+    }
 }
 
 /**
@@ -26,8 +38,8 @@ function Pixel(x, y) {
  * @returns {Array<Pixel>} Novos valores para p1 e p2
  */
 Pixel.switch = (p1, p2) => {
-    let new_p1 = new Pixel(...p2)
-    let new_p2 = new Pixel(...p1)
+    let new_p1 = new Pixel(...p2.to_array())
+    let new_p2 = new Pixel(...p1.to_array())
     return [new_p1, new_p2]
 }
 
