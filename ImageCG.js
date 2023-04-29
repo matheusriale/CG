@@ -82,39 +82,40 @@ class ImageCG {
    */
   reta(xi, yi, xf, yf, intensity = 255) {
     loadPixels()
-    dx = xf - xi;
-    dy = yf - yi;
+    let dx = xf - xi;
+    let dy = yf - yi;
+    let has_changed = false
 
     if (dx == 0 && dy == 0) {
-      set_pixel(xi, yi, intensity)
+      this.set_pixel(xi, yi, intensity)
       updatePixels()
       return
     }
 
-    has_changed = 0
     if (abs(dy) > abs(dx)) {
-      aux = dx;
+      let aux = dx;
       dx = dy;
       dy = aux;
       aux = xi;
       xi = yi;
       yi = aux;
-      has_changed = 1;
+      has_changed = true;
     }
-    a = dy / dx;
-    for (vx = 0; vx < abs(dx); vx++) {
+    let a = dy / dx;
+
+    for (let vx = 0; vx < abs(dx); vx++) {
       if (dx < 0) {
         vx = (-1) * vx;
       }
-      vy = a * vx;
-      x = Math.round(xi + vx);
-      y = Math.round(yi + vy);
+      let vy = a * vx;
+      let x = Math.round(xi + vx);
+      let y = Math.round(yi + vy);
 
-      if (has_changed == 0) {
-        set_pixel(x, y, intensity);
+      if (!has_changed) {
+        this.set_pixel(x, y, intensity);
       }
       else {
-        set_pixel(y, x, intensity);
+        this.set_pixel(y, x, intensity);
       }
     }
   }
