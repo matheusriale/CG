@@ -123,7 +123,7 @@ class ImageCG {
       return
     }
 
-    let passos = abs(dy) > abs(dx) ? abs(dy) : abs(dx);
+    let passos = max(abs(dy), abs(dx))
     let passo_x = dx / passos;
     let passo_y = dy / passos;
 
@@ -131,6 +131,10 @@ class ImageCG {
       let x = Math.round(pi.x + i * passo_x);
       let y = Math.round(pi.y + i * passo_y);
       this.set_pixel(new Pixel(x, y), intensity, true)
+    }
+
+    if (clg) {
+      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
     }
 
   }
