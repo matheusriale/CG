@@ -108,6 +108,13 @@ class ImageCG {
     }
   }
 
+  /**
+   * Desenha uma reta entre o pixel inicial e o final
+   * @param {Pixel} pi Pixel inicial
+   * @param {Pixel} pf Pixel final
+   * @param {Number} intensity Intensidade (0 a 255)
+   * @param {boolean} clg Exibir no console ou não (default: False)
+   */
   retaDDA(pi, pf, intensity, clg = false) {
     let [dx, dy] = Pixel.distance(pi, pf)
 
