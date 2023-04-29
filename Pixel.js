@@ -25,7 +25,7 @@ function Pixel(x, y) {
      * @returns {Number} índice do pixel no array de pixels do P5.js
      */
     this.get_idx = (width) => {
-        return 4 * (this.y * width + this.x)
+        return 8 * (2 * this.y * width + this.x)
     }
 }
 
