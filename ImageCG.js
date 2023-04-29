@@ -71,9 +71,14 @@ class ImageCG {
   }
 
 
-  /*
-   * Faz uma reta entra o pixel de xi,yi e o pixel de xf,yf (i = coordenadas iniciais, f = coordenadas finais)
-   *
+  /**
+   * Faz uma reta entra o pixel (xi,yi) e o pixel de (xf,yf)
+   * @param {Number} xi Coordenada X do pixel inicial
+   * @param {Number} yi Coordenada Y do pixel inicial
+   * @param {Number} xf Coordenada X do pixel final
+   * @param {Number} yf Coordenada Y do pixel final
+   * @param {Number} intensity Intensidade (0 a 255)
+   * @returns 
    */
   reta(xi, yi, xf, yf, intensity = 255) {
     loadPixels()
