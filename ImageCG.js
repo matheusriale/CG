@@ -56,7 +56,6 @@ class ImageCG {
     this.pixels = pixels
     updatePixels()
 
-    console.log(`Pixel (${x},${y}) updated to ${intensity} [p5.js index: ${idx}]`)
     return idx
   }
 
@@ -81,14 +80,12 @@ class ImageCG {
    * @returns 
    */
   reta(xi, yi, xf, yf, intensity = 255) {
-    loadPixels()
     let dx = xf - xi;
     let dy = yf - yi;
     let has_changed = false
 
     if (dx == 0 && dy == 0) {
       this.set_pixel(xi, yi, intensity)
-      updatePixels()
       return
     }
 
