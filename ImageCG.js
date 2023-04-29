@@ -85,13 +85,13 @@ class ImageCG {
       return
     }
 
-    if (abs(dy) > abs(dx)) {
+    if (Math.abs(dy) > Math.abs(dx)) {
       [pi, pf] = Pixel.switch(pi, pf)
       var has_changed = true;
     }
     let a = dy / dx;
 
-    for (let vx = 0; vx <= abs(dx); vx++) {
+    for (let vx = 0; vx <= Math.abs(dx); vx++) {
       if (dx < 0) {
         vx = (-1) * vx;
       }
@@ -123,7 +123,7 @@ class ImageCG {
       return
     }
 
-    let passos = max(abs(dy), abs(dx))
+    let passos = max(Math.abs(dy), Math.abs(dx))
     let passo_x = dx / passos;
     let passo_y = dy / passos;
 
