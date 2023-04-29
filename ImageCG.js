@@ -24,20 +24,12 @@ class ImageCG {
 
     loadPixels()
     pixels.fill(this.background)
-    this.pixels = pixels
     updatePixels()
 
 
     console.log(`Background changed to ${this.background}`)
   }
-  /**
-   * Atualiza a tela. Deve ser chamada na função `draw` do P5.js
-   */
-  update() {
-    loadPixels()
-    pixels = this.pixels
-    updatePixels()
-  }
+
 
   /**
    * Muda a cor de um pixel.
@@ -47,17 +39,18 @@ class ImageCG {
    * @returns Índice do pixel no array de pixels do P5.js
    */
   set_pixel(p, intensity = 255, clg = false) {
-    let idx = p.get_idx();
+    loadPixels()
+    let idx = p.get_idx(this.width);
 
     for (let i = 0; i < 3; i++) { //rgb
-      this.pixels[idx + i] = intensity;
+      pixels[idx + i] = intensity;
     }
-    this.pixels[idx + 3] = 1; //alpha
+    pixels[idx + 3] = 1; //alpha
 
     if (clg) {
       console.log(`Pixel (${p.to_array()}) changed to ${intensity}`);
     }
-
+    updatePixels()
     return idx
   }
 
@@ -67,7 +60,8 @@ class ImageCG {
    * @returns {Number} Intensidade do pixel
    */
   get_pixel(p) {
-    return this.pixels[p.get_idx()]
+    loadPixels()
+    return pixels[p.get_idx(this.width)]
   }
 
 
