@@ -18,11 +18,13 @@ function Pixel(x, y) {
     this.to_array = () => {
         return [this.x, this.y]
     }
+
     /**
      * Retorna o índice do pixel no array do P5.js
+     * @param {Number} width
      * @returns {Number} índice do pixel no array de pixels do P5.js
      */
-    this.get_idx = () => {
+    this.get_idx = (width) => {
         return 4 * (this.y * width + this.x)
     }
 }
