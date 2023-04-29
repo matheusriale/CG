@@ -34,6 +34,7 @@ class ImageCG {
    * Atualiza a tela. Deve ser chamada na função `draw` do P5.js
    */
   update() {
+    loadPixels()
     pixels = this.pixels
     updatePixels()
   }
@@ -45,7 +46,7 @@ class ImageCG {
    * @returns Índice do pixel no array de pixels do P5.js
    */
   set_pixel(p, intensity = 255) {
-    let idx = pixel_idx(p.x, p.y);
+    let idx = p.get_idx();
 
     for (let i = 0; i < 3; i++) { //rgb
       this.pixels[idx + i] = intensity;
@@ -61,7 +62,7 @@ class ImageCG {
    * @returns {Number} Intensidade do pixel
    */
   get_pixel(p) {
-    return this.pixels[pixel_idx(p.x, p.y)]
+    return this.pixels[p.get_idx()]
   }
 
 
