@@ -48,7 +48,7 @@ class ImageCG {
     pixels[idx + 3] = 1; //alpha
 
     if (clg) {
-      console.log(`Pixel (${p.to_array()}) changed to ${intensity}`);
+      console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${intensity}`);
     }
     updatePixels()
     return idx
@@ -66,49 +66,40 @@ class ImageCG {
 
 
   /**
-   * Faz uma reta entra o pixel (xi,yi) e o pixel de (xf,yf)
-   * @param {Number} xi Coordenada X do pixel inicial
-   * @param {Number} yi Coordenada Y do pixel inicial
-   * @param {Number} xf Coordenada X do pixel final
-   * @param {Number} yf Coordenada Y do pixel final
+   * Faz uma reta entra o pixel inicial e o final
+   * @param {Pixel} pi Pixel inicial
+   * @param {Pixel} pf Pixel final
    * @param {Number} intensity Intensidade (0 a 255)
-   * @returns 
+   * @param {boolean} clg Exibir no console ou não (default: False)
    */
-  reta(xi, yi, xf, yf, intensity = 255) {
-    let dx = xf - xi;
-    let dy = yf - yi;
-    let has_changed = false
+  reta(pi, pf, intensity = 255, clg = false) {
+    let [dx, dy] = Pixel.distance(pi, pf)
 
     if (dx == 0 && dy == 0) {
-      this.set_pixel(xi, yi, intensity)
+      this.set_pixel(pi, intensity)
       return
     }
 
     if (abs(dy) > abs(dx)) {
-      let aux = dx;
-      dx = dy;
-      dy = aux;
-      aux = xi;
-      xi = yi;
-      yi = aux;
-      has_changed = true;
+      [pi, pf] = Pixel.switch(pi, pf)
+      var has_changed = true;
     }
     let a = dy / dx;
 
-    for (let vx = 0; vx < abs(dx); vx++) {
+    for (let vx = 0; vx <= abs(dx); vx++) {
       if (dx < 0) {
         vx = (-1) * vx;
       }
       let vy = a * vx;
-      let x = Math.round(xi + vx);
-      let y = Math.round(yi + vy);
+      let x = Math.round(pi.x + vx);
+      let y = Math.round(pi.y + vy);
 
-      if (!has_changed) {
-        this.set_pixel(x, y, intensity);
-      }
-      else {
-        this.set_pixel(y, x, intensity);
-      }
+      let p = has_changed ? new Pixel(y, x) : new Pixel(x, y)
+      this.set_pixel(p, intensity, clg);
+
+    }
+    if (clg) {
+      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()}) (changed: ${has_changed || false})`)
     }
   }
 
