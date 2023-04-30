@@ -21,9 +21,9 @@ class ImageCG {
    */
   init() {
     createCanvas(this.width, this.height)
-    console.log(`Canvas ${this.width} x ${this.height} created`)
+    canvas.getContext('2d', { willReadFrequently: true });
     this.clear(this.background)
-
+    console.log(`Canvas ${this.width} x ${this.height} created`)
   }
 
   /**
