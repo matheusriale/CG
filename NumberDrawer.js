@@ -49,7 +49,7 @@ class NumberDrawer {
      */
     one(pos) {
         let head = this.font_size / 4
-        return [pos, new Pixel(pos.x + head, pos.y - head), new Pixel(pos.x + head, pos.y + this.font_size)]
+        return [new Pixel(pos.x, pos.y + head), new Pixel(pos.x + head, pos.y), new Pixel(pos.x + head, pos.y + this.font_size)]
     }
 
     /**
@@ -103,7 +103,7 @@ class NumberDrawer {
      * @returns {Array<Pixel>} Vértices obtidos
      */
     seven(pos) {
-        let w = this.font_size / 2
+        let w = this.font_size / 3
         return [pos, new Pixel(pos.x + w, pos.y), new Pixel(pos.x + w / 2, pos.y + this.font_size)]
     }
 
