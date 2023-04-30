@@ -5,9 +5,10 @@ function setup() {
   img.init()
 
   var pol = new Polygon(255)
-  pol.add_vertex([new Pixel(), new Pixel(20), new Pixel(30, 0), new Pixel(10)])
+  pol.add_vertex([new Pixel(10,10), new Pixel(10,90), new Pixel(90,90), new Pixel(90,10)])
+  
   img.draw_polygon(pol, true)
-}
+  }
 
 function draw() {
 

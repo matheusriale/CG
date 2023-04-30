@@ -228,7 +228,7 @@ class ImageCG {
     }
 
     var last_pixel = polygon.vertices[0]
-    for (let i = 0; i < polygon.vertices.length; i++) {
+    for (let i = 1; i < polygon.vertices.length; i++) {
       let pixel = polygon.vertices[i];
       this.reta_continua(last_pixel, pixel, polygon.stroke_intensity, clg)
       last_pixel = pixel
