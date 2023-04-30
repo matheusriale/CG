@@ -172,4 +172,61 @@ class ImageCG {
 
   }
 
+  /**
+   * Desenha uma reta com anti-aliasing entre o pixel inicial e o final. (retaDDAAA)
+   * @param {Pixel} pi Pixel inicial
+   * @param {Pixel} pf Pixel final
+   * @param {Number} intensity Intensidade (0 a 255)
+   * @param {boolean} clg Exibir no console ou não (default: False)
+   */
+  reta_continua(pi, pf, intensity = 255, clg = false) {
+    let [dx, dy] = Pixel.distance(pi, pf)
+    let passos = max(Math.abs(dy), Math.abs(dx))
+
+    if (passos == 0) {
+      this.set_pixel(pi, intensity)
+      return
+    }
+
+    let passo_x = dx / passos;
+    let passo_y = dy / passos;
+
+    for (let i = 0; i < passos; i++) {
+      let is_one = Math.abs(Math.round(passo_x)) == 1
+
+      let x = pi.x + i * passo_x;
+      let y = pi.y + i * passo_y;
+      let d = decimal_part(is_one ? y : x)
+
+      if (is_one) {
+        var px1 = new Pixel(Math.round(x), Math.floor(y))
+        var px2 = new Pixel(Math.round(x), Math.floor(y + 1))
+      }
+      else {
+        var px1 = new Pixel(Math.floor(x), Math.round(y))
+        var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
+      }
+      console.log(d)
+      this.set_pixel(px1, Math.round((1 - d) * intensity), true);
+      this.set_pixel(px2, Math.round(d * intensity), true);
+    }
+  }
 }
+
+
+
+/**
+ * if (Math.abs(Math.round(passo_x)) == 1) {
+        var rate = y - Math.floor(y);
+        var px1 = new Pixel(Math.round(x), Math.floor(y))
+        var px2 = new Pixel(Math.round(x), Math.floor(y + 1))
+      }
+      else {
+        var rate = x - Math.floor(x);
+        var px1 = new Pixel(Math.floor(x), Math.round(y))
+        var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
+
+      }
+      this.set_pixel(px1, Math.round((1 - rate) * intensity));
+      this.set_pixel(px2, Math.round(rate * intensity));
+ */
