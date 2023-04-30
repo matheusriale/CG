@@ -1,5 +1,6 @@
 /**
  * Manipula o canvas do p5.js
+ * @type {{width: Number height: Number background: Number}}
  */
 class ImageCG {
   /**
@@ -206,27 +207,36 @@ class ImageCG {
         var px1 = new Pixel(Math.floor(x), Math.round(y))
         var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
       }
-      console.log(d)
-      this.set_pixel(px1, Math.round((1 - d) * intensity), true);
-      this.set_pixel(px2, Math.round(d * intensity), true);
+
+      this.set_pixel(px1, Math.round((1 - d) * intensity));
+      this.set_pixel(px2, Math.round(d * intensity));
+    }
+
+    if (clg) {
+      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
+    }
+  }
+
+  /**
+   * Desenha um polígono
+   * @param {Polygon} polygon Polígono a ser desenhado
+   * @param {boolean} clg Exibir no console ou não (default: False)
+   */
+  draw_polygon(polygon, clg = false) {
+    if (polygon.vertices.length < 3) {
+      throw RangeError("A polygon must have at least 3 vertices")
+    }
+
+    var last_pixel = polygon.vertices[0]
+    for (let i = 0; i < polygon.vertices.length; i++) {
+      let pixel = polygon.vertices[i];
+      this.reta_continua(last_pixel, pixel, polygon.stroke_intensity, clg)
+      last_pixel = pixel
+    }
+
+    this.reta_continua(last_pixel, polygon.vertices[0], polygon.stroke_intensity, clg)
+    if (clg) {
+      console.log(`Polygon`)
     }
   }
 }
-
-
-
-/**
- * if (Math.abs(Math.round(passo_x)) == 1) {
-        var rate = y - Math.floor(y);
-        var px1 = new Pixel(Math.round(x), Math.floor(y))
-        var px2 = new Pixel(Math.round(x), Math.floor(y + 1))
-      }
-      else {
-        var rate = x - Math.floor(x);
-        var px1 = new Pixel(Math.floor(x), Math.round(y))
-        var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
-
-      }
-      this.set_pixel(px1, Math.round((1 - rate) * intensity));
-      this.set_pixel(px2, Math.round(rate * intensity));
- */
