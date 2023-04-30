@@ -233,6 +233,7 @@ class ImageCG {
 
     return last_pixel
   }
+
   /**
    * Desenha um polígono
    * @param {Polygon} polygon Polígono a ser desenhado
@@ -250,30 +251,30 @@ class ImageCG {
     }
   }
 
-  intersection(scan,seg){
-    let xi = seg.pi.x ;
-    let yi = seg.pi.y ;
-    let xf = seg.pf.x ; 
-    let yf = seg.pf.y ;
-    y = scan // scanline -> percorrer toda a imagem 
+  intersection(scan, seg) {
+    let xi = seg.pi.x;
+    let yi = seg.pi.y;
+    let xf = seg.pf.x;
+    let yf = seg.pf.y;
+    y = scan // scan line -> percorrer toda a imagem 
 
     // if horizontal line
-    if (yi == yf){
+    if (yi == yf) {
       x = -1;
-      return; 
+      return;
     }
 
     //
-    if (yi>yf){
-      [seg.pi,seg.pf] = Pixel.switch(seg.pi, seg.pf)
+    if (yi > yf) {
+      [seg.pi, seg.pf] = Pixel.switch(seg.pi, seg.pf)
     }
-    
+
     // calculates t
-    let t = (y-yi)/(yf-yi);
+    let t = (y - yi) / (yf - yi);
 
     // calculates x
-    if (t>0 && t<=1){
-      var x = xi + t*(xf-xi);
+    if (t > 0 && t <= 1) {
+      var x = xi + t * (xf - xi);
       return
     }
 
