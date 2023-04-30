@@ -138,4 +138,38 @@ class ImageCG {
     }
 
   }
+
+  /**
+   * Desenha uma reta entre o pixel inicial e o final
+   * @param {Pixel} pi Pixel inicial
+   * @param {Pixel} pf Pixel final
+   * @param {Number} intensity Intensidade (0 a 255)
+   * @param {boolean} clg Exibir no console ou não (default: False)
+   */
+  reta_bresenham(pi, pf, intensity, clg) {
+    let [dx, dy] = Pixel.distance(pi, pf)
+    let dx2 = 2 * dx;
+    let dy2 = 2 * dy;
+
+    let p = - dx + dy2;
+    let x = pi.x
+    let y = pi.y
+
+    for (let i = 0; i < Math.abs(dx); i++) {
+      this.set_pixel(new Pixel(x, y), intensity, clg);
+      x++
+      if (p >= 0) {
+        y++
+        p += - dx2 + dy2;
+      }
+      else {
+        p += dy2;
+      }
+    }
+    if (clg) {
+      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
+    }
+
+  }
+
 }
