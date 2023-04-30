@@ -249,4 +249,36 @@ class ImageCG {
       console.log(`Polygon`)
     }
   }
+
+  intersection(scan,seg){
+    let xi = seg.pi.x ;
+    let yi = seg.pi.y ;
+    let xf = seg.pf.x ; 
+    let yf = seg.pf.y ;
+    y = scan // scanline -> percorrer toda a imagem 
+
+    // if horizontal line
+    if (yi == yf){
+      x = -1;
+      return; 
+    }
+
+    //
+    if (yi>yf){
+      [seg.pi,seg.pf] = Pixel.switch(seg.pi, seg.pf)
+    }
+    
+    // calculates t
+    let t = (y-yi)/(yf-yi);
+
+    // calculates x
+    if (t>0 && t<=1){
+      var x = xi + t*(xf-xi);
+      return
+    }
+
+    // No intersections
+    x = -1;
+    return;
+  }
 }
