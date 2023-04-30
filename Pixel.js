@@ -51,7 +51,5 @@ Pixel.distance = (p1, p2) => {
 function Reta(pi,pf){
     this.pi = pi;
     this.pf = pf;
-
-
 }
     
