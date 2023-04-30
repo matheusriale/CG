@@ -47,3 +47,11 @@ Pixel.switch = (p1, p2) => {
 Pixel.distance = (p1, p2) => {
     return [p2.x - p1.x, p2.y - p1.y]
 }
+
+function Reta(pi,pf){
+    this.pi = pi;
+    this.pf = pf;
+
+
+}
+    
