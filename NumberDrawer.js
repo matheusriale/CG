@@ -103,7 +103,8 @@ class NumberDrawer {
      * @returns {Array<Pixel>} Vértices obtidos
      */
     seven(pos) {
-        return []
+        let w = this.font_size / 2
+        return [pos, new Pixel(pos.x + w, pos.y), new Pixel(pos.x + w / 2, pos.y + this.font_size)]
     }
 
     /**
