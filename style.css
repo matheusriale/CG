@@ -1,8 +1,14 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
 
 canvas {
-  display: block;
+  display: block
+}
+
+h2,
+p {
+  text-align: center;
 }
