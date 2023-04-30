@@ -4,8 +4,8 @@ var num
 
 function preload() {
   img = new ImageCG(100, 100, 200)
-  clk = new Clock()
-  num = clk.number(1, new Pixel(20))[0]
+  let drawer = new NumberDrawer()
+  num = drawer.get_number(1, new Pixel(10))[0]
 }
 
 function setup() {
