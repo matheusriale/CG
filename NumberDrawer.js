@@ -16,24 +16,32 @@ class NumberDrawer {
      * @returns {Array<Array<Pixel>>} Figuras a serem desenhadas (uma para cada dígito)
      */
     get_number(num, pos) {
-        let digits = num.split("")
         let points = []
+        let digits = num.split("")
+        let drawing_functions = [this.zero,
+        this.one, this.two, this.three, this.four, this.five, this.six, this.seven, this.eight, this.nine]
+
         for (let i = 0; i < digits.length; i++) {
-            const d = digits[i];
+            const d = Number(digits[i]);
             let curr_pos = new Pixel(pos.x + this.spacing * i, pos.y)
-            switch (d) {
-                case '1':
-                    points.push(this.one(curr_pos))
-                    break;
-
-                default:
-                    break;
-            }
+            let vertices = drawing_functions[d].call(this, curr_pos)
+            points.push(vertices)
         }
-
-
+        console.log(points)
         return points
     }
+
+
+
+    /**
+     * Obtém os vértices para o dígito `0`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    zero(pos) {
+        return []
+    }
+
     /**
      * Obtém os vértices para o dígito `1`
      * @param {Pixel} pos Posição inicial do número
@@ -42,37 +50,77 @@ class NumberDrawer {
     one(pos) {
         let head = this.font_size / 4
         return [pos, new Pixel(pos.x + head, pos.y - head), new Pixel(pos.x + head, pos.y + this.font_size)]
-
     }
 
-    two() {
-
+    /**
+     * Obtém os vértices para o dígito `2`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    two(pos) {
+        return []
     }
 
-
-    three() {
-
+    /**
+     * Obtém os vértices para o dígito `3`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    three(pos) {
+        return []
     }
 
-
-    four() {
-
+    /**
+     * Obtém os vértices para o dígito `4`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    four(pos) {
+        return []
     }
 
-
-    five() {
-
+    /**
+     * Obtém os vértices para o dígito `5`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    five(pos) {
+        return []
     }
 
-    six() {
-
+    /**
+     * Obtém os vértices para o dígito `6`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    six(pos) {
+        return []
     }
 
-    seven() {
-
+    /**
+     * Obtém os vértices para o dígito `7`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    seven(pos) {
+        return []
     }
 
-    eight() {
+    /**
+     * Obtém os vértices para o dígito `8`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    eight(pos) {
+        return []
+    }
 
+    /**
+     * Obtém os vértices para o dígito `9`
+     * @param {Pixel} pos Posição inicial do número
+     * @returns {Array<Pixel>} Vértices obtidos
+     */
+    nine(pos) {
+        return []
     }
 }
