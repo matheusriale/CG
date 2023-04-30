@@ -1,15 +1,16 @@
 var img
-var pol
+var clk
+var num
 
 function preload() {
   img = new ImageCG(100, 100, 200)
-  pol = new Polygon(255)
-  pol.add_vertex([new Pixel(10, 10), new Pixel(10, 90), new Pixel(90, 90), new Pixel(90, 10)])
+  clk = new Clock()
+  num = clk.number(1, new Pixel(20))[0]
 }
 
 function setup() {
   img.init()
-  img.draw_polygon(pol, true)
+  img.draw_figure(num, 255)
   noLoop()
 }
 
