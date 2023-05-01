@@ -5,8 +5,8 @@
  * @type {{x:Number y:Number}}
  */
 function Pixel(x, y) {
-    this.x = x || 0
-    this.y = y || this.x
+    this.x = x === undefined ? 0 : x
+    this.y = y === undefined ? this.x : y
 
     /**
      * Retorna as coordenadas x,y como um array
