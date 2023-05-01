@@ -31,9 +31,9 @@ function Pixel(x, y) {
      */
     this.rotate = (ang) => {
         let rad_ang = ang * Math.PI / 180; // converte para radianos
-        let x = this.x
-        this.x = (Math.cos(rad_ang) * this.x - Math.sin(rad_ang) * this.y)
-        this.y = (Math.sin(rad_ang) * x + Math.cos(rad_ang) * this.y)
+        let x = (Math.cos(rad_ang) * this.x - Math.sin(rad_ang) * this.y)
+        let y = (Math.sin(rad_ang) * this.x + Math.cos(rad_ang) * this.y)
+        return new Pixel(x, y)
     }
 
     /**

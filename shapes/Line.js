@@ -13,7 +13,8 @@ function Line(pi, pf, stroke = 255) {
 
     this.rotate = (ang) => { //TODO: gambiarra
         ang += 90
-        this.pf.rotate(ang)
-        this.pf.add(pi)
+        let pf = this.pf.rotate(ang)
+        pf.add(pi)
+        return new Line(this.pi, pf, this.stroke_intensity)
     }
 }
