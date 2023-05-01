@@ -1,3 +1,6 @@
+/**
+ * @type {{stroke: Number font_size: Number spacing: Number}}
+ */
 class NumberDrawer {
     /**
      * Desenha números
