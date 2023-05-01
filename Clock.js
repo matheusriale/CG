@@ -16,36 +16,16 @@ class Clock {
 
     get_hour_numbers() { //TODO: gambiarra
         let nums = []
-        let height = this.radius * 2
-        let init_pos = new Pixel(this.center.x, this.center.y - this.radius)
+        let pos_3 = new Pixel(this.center.x + this.radius, this.center.y - this.num_drawer.font_size / 2)
+        let pos_6 = new Pixel(this.center.x, this.center.y + this.radius - this.num_drawer.font_size * 1.5)
+        let pos_9 = new Pixel(this.center.x - this.radius + this.num_drawer.font_size * 3 / 4, this.center.y - this.num_drawer.font_size / 2)
+        let pos_12 = new Pixel(this.center.x, this.center.y - this.radius)
 
+        nums.push(...this.num_drawer.get_number("12", pos_12))
+        nums.push(...this.num_drawer.get_number("3", pos_3))
+        nums.push(...this.num_drawer.get_number("6", pos_6))
+        nums.push(...this.num_drawer.get_number("9", pos_9))
 
-        for (let i = 1; i <= 3; i++) {
-            let pos = new Pixel(
-                init_pos.x + this.radius * i / 4,
-                init_pos.y + height * i / 8)
-            nums.push(...this.num_drawer.get_number(i.toString(), pos))
-        }
-        for (let i = 4; i <= 6; i++) {
-            let pos = new Pixel(
-                init_pos.x + this.radius * (7 - i) / 4,
-                init_pos.y + height * (i) / 8)
-            nums.push(...this.num_drawer.get_number(i.toString(), pos))
-        }
-
-        for (let i = 7; i <= 9; i++) {
-            let pos = new Pixel(
-                init_pos.x + this.radius * (7 - i) / 4,
-                init_pos.y + height * (13 - i) / 8)
-            nums.push(...this.num_drawer.get_number(i.toString(), pos))
-        }
-
-        for (let i = 10; i <= 12; i++) {
-            let pos = new Pixel(
-                init_pos.x + this.radius * (13 - i) / 4,
-                init_pos.y + height * (12 - i) / 8)
-            nums.push(...this.num_drawer.get_number(i.toString(), pos))
-        }
         return nums
     }
 }
