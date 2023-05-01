@@ -32,7 +32,7 @@ function Figure(stroke, vertices) {
  * @extends Figure
  */
 function Polygon(stroke, vertices) {
-    Figure.prototype.call(this, stroke, vertices)
+    Figure.prototype.constructor.call(this, stroke, vertices)
 
     /**
      * Trata e retorna os vértices
