@@ -268,6 +268,33 @@ class ImageCG {
     return new Pixel(x, y);
   }
 
+  scanline_no_texture(pol) {
+    let ys = pol.vertices.map(p => { return p.y })
+    let ymin = Math.min(...ys);//menor y
+    let ymax = Math.max(...ys);//maior y
+
+    let pi = pol.vertices[0] //ponto inicial
+    for (let y = ymin + 1; y < ymax - 1; y++) {
+      let tuple = [new Pixel(pi.x, y)]
+
+      for (let p = 1; p < pol.vertices.length; p++) {
+        var pf = pol.vertices[p];
+        var pint = this.intersection(y, new Line(pi, pf));
+
+        if (pint.x >= 0) {
+          tuple.push(pint)
+          if (tuple.length == 2) {
+            console.log(tuple)
+            this.reta_continua(tuple[0], tuple[1])
+            tuple = []
+          }
+        }
+
+        pi = pf;
+      }
+    }
+  }
+
   scanline(pol) {//TODO: add tex posteriormente
 
     let ys = pol.vertices.map(p => { return p.y })

@@ -15,13 +15,14 @@ function setup() {
   // });
   // noLoop()
   img.init()
-  let pol = new Polygon(0,[new Pixel(20),new Pixel(50),new Pixel(60,20),new Pixel(65,50),new Pixel(20,50)])//new Polygon(255,[new Pixel(20,20),new Pixel(50,20),new Pixel(50,50), new Pixel(20,50)])
+  let pol = new Polygon(0, [new Pixel(20), new Pixel(50), new Pixel(60, 20), new Pixel(65, 50), new Pixel(20, 50)])
+  // let pol = Polygon.square(new Pixel(20), 30, 255)
   //pol.square(10,10)
-  
-  img.scanline(pol)
-  img.draw_figure(pol)
 
-  
+  img.draw_figure(pol)
+  img.scanline_no_texture(pol)
+
+
 
 }
 
