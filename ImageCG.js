@@ -185,7 +185,7 @@ class ImageCG {
    * @param {Number} intensity Intensidade (0 a 255)
    * @param {boolean} clg Exibir no console ou não (default: False)
    */
-  reta_continua(pi, pf, intensity = 255, clg = false) {
+  reta_continua(pi, pf, intensity, clg = false) {
     let [dx, dy] = Pixel.distance(pi, pf)
     let passos = max(Math.abs(dy), Math.abs(dx))
 
