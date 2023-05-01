@@ -1,4 +1,5 @@
 /**
+ * Cria um polígono
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
  * @param {?Array<Pixel>} vertices 
  * @type {{vertices: Array<Pixel> stroke_intensity: Number}}
@@ -14,4 +15,33 @@ function Polygon(stroke, vertices) {
     this.add_vertex = (vertex) => {
         this.vertices.push(...vertex)
     }
+}
+
+/**
+ * Cria um retângulo
+ * @param {Pixel} top_left Vértice esquerda em cima
+ * @param {Pixel} bottom_right Vértice direita embaixo
+ * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
+ * @returns
+ */
+
+Polygon.rect = (top_left, bottom_right, stroke = 255) => {
+    let v = [top_left, new Pixel(bottom_right.x, top_left.y), bottom_right, new Pixel(top_left.x, bottom_right.y)]
+    return new Polygon(stroke, v)
+}
+
+/**
+ * Cria um quadrado
+ * @param {Pixel} top_left Vértice esquerda em cima
+ * @param {Number} size Tamanho da aresta
+ * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
+ * @returns
+ */
+Polygon.square = (top_left, size, stroke = 255) => {
+    let v = [top_left,
+        new Pixel(top_left.x + size, top_left.y),
+        new Pixel(top_left.x + size, top_left.y + size),
+        new Pixel(top_left.x, top_left.y + size)]
+
+    return new Polygon(stroke, v)
 }
