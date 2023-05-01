@@ -29,11 +29,11 @@ function Pixel(x, y) {
      * rotaciona um ponto
      * @param {Number} ang Ângulo (em graus) para rotação
      */
-    this.rotate = (ang) => { //TODO: provavelmente está errado
-        ang = ang * Math.PI / 180;
+    this.rotate = (ang) => {
+        let rad_ang = ang * Math.PI / 180; // converte para radianos
         let x = this.x
-        this.x = (Math.cos(ang) * this.x - Math.sin(ang) * this.y)
-        this.y = (Math.sin(ang) * x + Math.cos(ang) * this.y)
+        this.x = (Math.cos(rad_ang) * this.x - Math.sin(rad_ang) * this.y)
+        this.y = (Math.sin(rad_ang) * x + Math.cos(rad_ang) * this.y)
     }
 
     /**
