@@ -95,7 +95,17 @@ class NumberDrawer {
      * @returns {Array<Figure>} Vértices obtidos
      */
     four(pos) {
-        return []
+        let left = new Figure(this.stroke, [
+            pos,
+            new Pixel(pos.x, pos.y + this.font_size / 2),
+            new Pixel(pos.x + this.font_size / 3, pos.y + this.font_size / 2)])
+
+        let right = new Line(
+            new Pixel(pos.x + this.font_size / 3, pos.y),
+            new Pixel(pos.x + this.font_size / 3, pos.y + this.font_size),
+            this.stroke)
+
+        return [left, right]
     }
 
     /**
