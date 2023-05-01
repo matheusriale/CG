@@ -219,12 +219,14 @@ class ImageCG {
 
   /**
    * Desenha uma figura
-   * @param {Array<Pixel>} vertices 
+   * @param {Figure | Polygon} figure  Figura a ser desenhada
    * @param {Number} intensity Intensidade (0 a 255)
    * @returns {Pixel} último pixel desenhado
    */
-  draw_figure(vertices, intensity) {
+  draw_figure(figure, intensity) {
+    let vertices = figure.get_vertices()
     var last_pixel = vertices[0]
+
     for (let i = 1; i < vertices.length; i++) {
       let pixel = vertices[i];
       this.reta_continua(last_pixel, pixel, intensity)
@@ -234,22 +236,6 @@ class ImageCG {
     return last_pixel
   }
 
-  /**
-   * Desenha um polígono
-   * @param {Polygon} polygon Polígono a ser desenhado
-   * @param {boolean} clg Exibir no console ou não (default: False)
-   */
-  draw_polygon(polygon, clg = false) {
-    if (polygon.vertices.length < 3) {
-      throw RangeError("A polygon must have at least 3 vertices")
-    }
-
-    let last_pixel = this.draw_figure(polygon.vertices, polygon.stroke_intensity)
-    this.reta_continua(last_pixel, polygon.vertices[0], polygon.stroke_intensity, clg)
-    if (clg) {
-      console.log(`Polygon`)
-    }
-  }
 
   intersection(scan, seg) {
     let xi = seg.pi.x;
