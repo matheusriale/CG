@@ -24,6 +24,21 @@ function Pixel(x, y) {
     this.get_idx = (width) => {
         return 8 * (2 * this.y * width + this.x)
     }
+
+    /**
+     * rotaciona um ponto
+     * @param {Number} ang Ângulo para rotação
+     */
+    this.rotate = (ang) => { //TODO: provavelmente está errado
+        ang = ang * Math.PI / 180;
+        let m = math.matrix([
+            [Math.cos(ang), - Math.sin(ang), 0],
+            [Math.sin(ang), Math.cos(ang), 0],
+            [0, 0, 1]])
+        let points = math.matrix([...this.to_array(), 0])
+        this.x = points._data[0]
+        this.y = points._data[1]
+    }
 }
 
 /**
