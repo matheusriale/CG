@@ -1,10 +1,10 @@
 /**
- * Cria um polígono
+ * Cria uma figura
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
  * @param {?Array<Pixel>} vertices 
  * @type {{vertices: Array<Pixel> stroke_intensity: Number}}
  */
-function Polygon(stroke, vertices) {
+function Figure(stroke, vertices) {
     this.vertices = vertices || []
     this.stroke_intensity = stroke || 255
 
@@ -15,6 +15,34 @@ function Polygon(stroke, vertices) {
     this.add_vertex = (vertex) => {
         this.vertices.push(...vertex)
     }
+    /**
+     * Trata e retorna os vértices
+     * @returns {Array<Pixel>} vértices
+     */
+    this.get_vertices = () => {
+        return this.vertices
+    }
+}
+
+/**
+ * Cria um polígono
+ * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
+ * @param {?Array<Pixel>} vertices 
+ * @type {{vertices: Array<Pixel> stroke_intensity: Number}}
+ */
+function Polygon(stroke, vertices) {
+    Figure.prototype.call(this, stroke, vertices)
+
+    /**
+     * Trata e retorna os vértices
+     * @returns {Array<Pixel>} vértices
+     */
+    this.get_vertices = () => {
+        let v = this.vertices
+        v.push(this.vertices[0])
+        return v
+    }
+
 }
 
 /**
