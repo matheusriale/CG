@@ -22,8 +22,10 @@ class ImageCG {
   init() {
     createCanvas(this.width, this.height)
     pixelDensity(1)
+
     canvas.getContext('2d', { willReadFrequently: true });
     console.log(`Canvas ${this.width} x ${this.height} created`)
+
     this.clear(this.background)
   }
 
@@ -55,7 +57,6 @@ class ImageCG {
       pixels[idx + i] = intensity;
     }
     pixels[idx + 3] = 255; //alpha
-    console.log(pixels)
 
     if (clg) {
       console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${intensity}`);
