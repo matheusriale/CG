@@ -43,7 +43,7 @@ class NumberDrawer {
      * @returns {Array<Figure>} Vértices obtidos
      */
     zero(pos) {
-        return []
+        return [Polygon.rect(pos, new Pixel(pos.x + this.font_size / 3, pos.y + this.font_size), this.stroke)]
     }
 
     /**
