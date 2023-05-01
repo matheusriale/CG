@@ -237,16 +237,18 @@ class ImageCG {
 
 
   intersection(scan, seg) {
+    
+    
     let xi = seg.pi.x;
     let yi = seg.pi.y;
     let xf = seg.pf.x;
     let yf = seg.pf.y;
-    y = scan // scan line -> percorrer toda a imagem 
+    let y = scan // scan line -> percorrer toda a imagem 
 
     // if horizontal line
     if (yi == yf) {
       x = -1;
-      return;
+      return new Pixel(x,y);
     }
 
     //
@@ -260,11 +262,72 @@ class ImageCG {
     // calculates x
     if (t > 0 && t <= 1) {
       var x = xi + t * (xf - xi);
-      return
+      return new Pixel(x,y)
     }
 
     // No intersections
     x = -1;
-    return;
+    return new Pixel(x,y);
+  }
+
+  scanline(pol){//add tex posteriormente
+    //
+    
+    let ys = pol.vertices.map(p=>{return p.y}) 
+    let ymin = Math.min(...ys);//menor y
+    let ymax = Math.max(...ys);//maior y
+    
+    
+    for (let y = ymin+1; y<ymax; y++){
+      let i = [];
+      let pi = pol.vertices[0] //ponto inicial
+      var old_pint = pi 
+      for (let p = 1; p < pol.vertices.length; p++){
+        
+        var pf = pol.vertices[p];
+        
+        var pint = this.intersection(y,new Line(pi,pf));//x da intersec
+        
+        if (pint.x >= 0){
+          i.push(pint);
+          //this.reta_continua(old_pint,pint)
+        }
+        
+        pi = pf;
+        //this.reta_continua(pi,new Pixel(pint.x,y))
+      }
+      //this.draw_figure(new Figure(255,i))
+
+      pf = pol.vertices[0];
+      
+      pint = this.intersection(y,new Line(pi,pf));
+
+      if (pint >= 0){
+        i.push(pint);
+      }
+      for (let cont = 0 ; cont<i.length ; cont = cont + 2 ){
+        let p1 = i[cont];
+        let p2 = i[cont+1];
+
+        let x1 = p1.x;
+        let x2 = p2.y;
+
+        if (x2<x1){
+          [p1,p2] = Pixel.switch(p1,p2)
+        }
+        for (var xk=Math.round(p1.x); xk<Math.round(p2.x); xk++){
+          if (p2.x != p1.x){
+            var pc = (xk-p1.x)/(p2.x-p1.x);
+          }
+          else{
+            pc = 0;
+          }
+          var tx = p1[2] + pc*(p2[2] - p1[2]);
+          var ty = p1[3] + pc*(p2[3] - p1[3]);
+          var intensity = this.get_pixel(new Pixel(tx,ty));   
+          this.set_pixel(new Pixel(xk,y),intensity)
+        }
+      }
+    }
   }
 }

@@ -6,7 +6,7 @@
  * @extends Figure
  * @type {{pi:Pixel pf:Pixel vertices: Array<Pixel> stroke_intensity: Number}}
  */
-function Line(pi, pf, stroke) {
+function Line(pi, pf, stroke = 255) {
     Figure.prototype.constructor.call(this, stroke, [pi, pf])
     this.pi = pi;
     this.pf = pf;
