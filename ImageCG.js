@@ -98,11 +98,10 @@ class ImageCG {
     let a = dy / dx;
 
     for (let vx = 0; vx <= Math.abs(dx); vx++) {
-      if (dx < 0) {
-        vx = (-1) * vx;
-      }
-      let vy = a * vx;
-      let x = Math.round(pi.x + vx);
+      let vx2 = dx < 0 ? (-1) * vx : vx
+
+      let vy = a * vx2;
+      let x = Math.round(pi.x + vx2);
       let y = Math.round(pi.y + vy);
 
       let p = has_changed ? new Pixel(y, x) : new Pixel(x, y)
