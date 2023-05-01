@@ -143,7 +143,12 @@ class NumberDrawer {
      * @returns {Array<Figure>} Vértices obtidos
      */
     six(pos) {
-        return []
+        let size = this.font_size / 2
+
+        return [new Figure(this.stroke, [
+            pos,
+            new Pixel(pos.x, pos.y + size)]),
+        Polygon.square(new Pixel(pos.x, pos.y + size), size, this.stroke)]
     }
 
     /**
