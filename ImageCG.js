@@ -220,16 +220,15 @@ class ImageCG {
   /**
    * Desenha uma figura
    * @param {Figure | Polygon} figure  Figura a ser desenhada
-   * @param {Number} intensity Intensidade (0 a 255)
    * @returns {Pixel} último pixel desenhado
    */
-  draw_figure(figure, intensity) {
+  draw_figure(figure) {
     let vertices = figure.get_vertices()
     var last_pixel = vertices[0]
 
     for (let i = 1; i < vertices.length; i++) {
       let pixel = vertices[i];
-      this.reta_continua(last_pixel, pixel, intensity)
+      this.reta_continua(last_pixel, pixel, figure.stroke_intensity)
       last_pixel = pixel
     }
 
