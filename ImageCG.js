@@ -284,7 +284,6 @@ class ImageCG {
         if (pint.x >= 0) {
           tuple.push(pint)
           if (tuple.length == 2) {
-            console.log(tuple)
             this.reta_continua(tuple[0], tuple[1])
             tuple = []
           }
