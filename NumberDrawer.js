@@ -170,7 +170,12 @@ class NumberDrawer {
      * @returns {Array<Figure>} Vértices obtidos
      */
     eight(pos) {
-        return []
+        let w = this.font_size / 3
+        let edges = Polygon.rect(pos, new Pixel(pos.x + w, pos.y + this.font_size), this.stroke)
+        return [edges,
+            new Line(new Pixel(pos.x, pos.y + this.font_size / 2),
+                new Pixel(pos.x + w, pos.y + this.font_size / 2))
+        ]
     }
 
     /**
