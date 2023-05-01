@@ -32,9 +32,11 @@ class ImageCG {
    * @param {Number} intensity Intensidade (0 a 255)
    */
   clear(intensity) {
-    loadPixels()
-    pixels.fill(intensity)
-    updatePixels()
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        this.set_pixel(new Pixel(x, y), intensity)
+      }
+    }
     console.log(`Canvas cleared ${intensity}`)
   }
 
@@ -45,14 +47,15 @@ class ImageCG {
    * @param {boolean} clg Exibir no console ou não (default: False)
    * @returns Índice do pixel no array de pixels do P5.js
    */
-  set_pixel(p, intensity = 255, clg = false) {
+  set_pixel(p, intensity, clg = false) {
     loadPixels()
     let idx = p.get_idx(this.width);
 
     for (let i = 0; i < 3; i++) { //rgb
       pixels[idx + i] = intensity;
     }
-    pixels[idx + 3] = 1; //alpha
+    pixels[idx + 3] = 255; //alpha
+    console.log(pixels)
 
     if (clg) {
       console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${intensity}`);
