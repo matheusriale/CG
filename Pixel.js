@@ -35,6 +35,15 @@ function Pixel(x, y) {
         this.x = (Math.cos(ang) * this.x - Math.sin(ang) * this.y)
         this.y = (Math.sin(ang) * x + Math.cos(ang) * this.y)
     }
+
+    /**
+     * Adiciona coordenada ao pixel
+     * @param {Pixel} p 
+     */
+    this.add = (p) => {
+        this.x += p.x
+        this.y += p.y
+    }
 }
 
 /**
