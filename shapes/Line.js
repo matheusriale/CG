@@ -10,4 +10,10 @@ function Line(pi, pf, stroke = 255) {
     Figure.prototype.constructor.call(this, stroke, [pi, pf])
     this.pi = pi;
     this.pf = pf;
+
+    this.rotate = (ang) => { //TODO: gambiarra
+        ang += 90
+        this.pf.rotate(ang)
+        this.pf.add(pi)
+    }
 }
