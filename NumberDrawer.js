@@ -66,7 +66,17 @@ class NumberDrawer {
      * @returns {Array<Figure>} Vértices obtidos
      */
     two(pos) {
-        return []
+        let w = this.font_size / 3
+        let h_2 = this.font_size / 2
+        let v = [
+            pos,
+            new Pixel(pos.x + w, pos.y),
+            new Pixel(pos.x + w, pos.y + h_2),
+            new Pixel(pos.x, pos.y + h_2),
+            new Pixel(pos.x, pos.y + this.font_size),
+            new Pixel(pos.x + w, pos.y + this.font_size),
+        ]
+        return [new Figure(this.stroke, v)]
     }
 
     /**

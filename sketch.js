@@ -5,7 +5,7 @@ function preload() {
 
   img = new ImageCG(100, 100, 200)
   let drawer = new NumberDrawer(255)
-  num = drawer.get_number("013479", new Pixel(10))
+  num = drawer.get_number("0123479", new Pixel(10))
 }
 
 function setup() {
