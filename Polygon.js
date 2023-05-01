@@ -29,6 +29,7 @@ function Figure(stroke, vertices) {
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
  * @param {?Array<Pixel>} vertices 
  * @type {{vertices: Array<Pixel> stroke_intensity: Number}}
+ * @extends Figure
  */
 function Polygon(stroke, vertices) {
     Figure.prototype.call(this, stroke, vertices)
@@ -53,11 +54,14 @@ function Polygon(stroke, vertices) {
  * @param {Pixel} top_left Vértice esquerda em cima
  * @param {Pixel} bottom_right Vértice direita embaixo
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
- * @returns
+ * @returns {Polygon} Retângulo
  */
 
 Polygon.rect = (top_left, bottom_right, stroke = 255) => {
-    let v = [top_left, new Pixel(bottom_right.x, top_left.y), bottom_right, new Pixel(top_left.x, bottom_right.y)]
+    let v = [top_left,
+        new Pixel(bottom_right.x, top_left.y),
+        bottom_right,
+        new Pixel(top_left.x, bottom_right.y)]
     return new Polygon(stroke, v)
 }
 
@@ -66,7 +70,7 @@ Polygon.rect = (top_left, bottom_right, stroke = 255) => {
  * @param {Pixel} top_left Vértice esquerda em cima
  * @param {Number} size Tamanho da aresta
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
- * @returns
+ * @returns {Polygon} Quadrado
  */
 Polygon.square = (top_left, size, stroke = 255) => {
     let v = [top_left,
