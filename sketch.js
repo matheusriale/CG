@@ -1,17 +1,18 @@
 var img
 var clk
 var num
-
 function preload() {
+
   img = new ImageCG(100, 100, 200)
   let drawer = new NumberDrawer(255)
-  num = drawer.get_number("71", new Pixel(10))
+  num = drawer.get_number("179", new Pixel(10))
 }
 
 function setup() {
   img.init()
-  img.draw_figure(num[0], 255)
-  img.draw_figure(num[1], 255)
+  num.forEach(n => {
+    img.draw_figure(n)
+  });
   noLoop()
 }
 
