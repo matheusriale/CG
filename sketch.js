@@ -11,7 +11,7 @@ var imgteste;
 function preload() {
   img = new ImageCG(100, 100, 200)
 
-  imgteste = loadImage('images/imgteste.jpg')
+  //imgteste = loadImage('images/imgteste.jpg')
 }
 
 function setup() {
@@ -21,8 +21,9 @@ function setup() {
   // l = new Line(c, p, 100)
 
   //Teste tex de img
-  image(imgteste,0,0)
-  console.log(img.get_pixel_tex(new Pixel(4,4),imgteste))
+  
+  // image(imgteste,0,0)
+  // console.log(img.get_pixel_tex(new Pixel(4,4),imgteste))
 }
 
 function draw() {

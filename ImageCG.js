@@ -79,35 +79,34 @@ class ImageCG {
     //tex->textura(colunas(width) e linhas(height))
     //p pixel (x,y)
 
-    // // cod yuri
-    // if (p.x > 1){       
-    //   p.x = 1;
-    // }
-    // if (p.x < 0){
-    //   p.x = 0;
-    // }
-    // if (p.y > 1){
-    //   p.y = 1;
-    // }
-    // if (p.y < 0){
-    //   p.y = 0;
-    // }
-    // p.x = Math.round(p.x*(tex.width - 1)+1);
-    // p.y = Math.round(p.y*(tex.height - 1)+1); 
-
-    if (p.x > tex.width){       
-      p.x = tex.width - 1;
+    // cod yuri
+    if (p.x > 1){       
+      p.x = 1;
     }
     if (p.x < 0){
       p.x = 0;
     }
-    if (p.y > tex.height){
-      p.y = tex.height - 1;
+    if (p.y > 1){
+      p.y = 1;
     }
     if (p.y < 0){
       p.y = 0;
     }
-    
+    p.x = Math.round(p.x*(tex.width - 1)+1);
+    p.y = Math.round(p.y*(tex.height - 1)+1); 
+
+    // if (p.x > tex.width){       
+    //   p.x = tex.width - 1;
+    // }
+    // if (p.x < 0){
+    //   p.x = 0;
+    // }
+    // if (p.y > tex.height){
+    //   p.y = tex.height - 1;
+    // }
+    // if (p.y < 0){
+    //   p.y = 0;
+    // }
     let intensity = tex.get(p.x,p.y);
     return intensity;
   }
