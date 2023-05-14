@@ -308,6 +308,38 @@ class ImageCG {
     return new Pixel(x, y);
   }
 
+  intersection_tex(scan, seg) {
+    let pi = seg.pi; //pi = x,y,tx,ty
+   
+    let pf = seg.pf;
+    let y = scan; // scan line -> percorrer toda a imagem 
+
+    // Segmento horizontal -> sem intersecao
+    if (pi.y == pf.y) {
+      let p = new Pixel_tex(-1,0,0,0); //ptex = [x,y,xtex,ytex]
+      return p;
+    }
+    // Troca para garantir ponto inicial em cima
+    if (pi.y > pf.y) {
+      [seg.pi, seg.pf] = Pixel.switch(seg.pi, seg.pf);
+    }
+
+    // Calcula t
+    let t = (y - pi.y) / (pf.y - pi.y);
+
+    // Calcula x
+    if (t > 0 && t <= 1) {
+      var x = pi.x + t * (pf.x - pi.x);
+      let tx  = pi.tx + t*(pf.tx - pi.tx);
+      let ty  = pi.ty + t*(pf.ty - pf.ty);
+      return new Pixel_tex(x, y, tx, ty)
+    }
+    
+    // No intersections
+    let p = new Pixel_tex(-1,0,0,0);
+    return p;
+  }
+
   scanline_no_texture(pol) {
     let ys = pol.vertices.map(p => { return p.y })
     let ymin = Math.min(...ys);//menor y
