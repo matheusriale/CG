@@ -44,7 +44,17 @@ class Clock {
         nums.push(...this.num_drawer.get_number("3", pos_3))
         nums.push(...this.num_drawer.get_number("6", pos_6))
         nums.push(...this.num_drawer.get_number("9", pos_9))
-
         return nums
+    }
+
+    get_hands() {
+        return [this.second_hand] //, this.minute_hand, this.hour_hand]
+    }
+
+
+    _update_second_hand() {
+        let secs = this.date.getSeconds()
+        let ang = 360 / 60 * secs
+        this.second_hand = this.second_hand.rotate(ang)
     }
 }
