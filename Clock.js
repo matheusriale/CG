@@ -22,8 +22,8 @@ class Clock {
     reset_hands() {
         let size1 = this.center.y - this.radius
         let size2 = this.center.y - this.radius * 0.9
-        this.second_hand = new Line(this.center, new Pixel(this.center.x, size2), 100)
-        this.minute_hand = new Line(this.center, new Pixel(this.center.x, size2), 100)
+        this.second_hand = new Line(this.center, new Pixel(this.center.x, size2), 255)
+        this.minute_hand = new Line(this.center, new Pixel(this.center.x, size2), 50)
         this.hour_hand = new Line(this.center, new Pixel(this.center.x, size1), 100)
     }
 
@@ -31,6 +31,7 @@ class Clock {
         this.date = new Date()
         this.reset_hands()
         this._update_second_hand()
+        this._update_minute_hand()
     }
 
     get_hour_numbers() { //TODO: gambiarra
@@ -48,7 +49,7 @@ class Clock {
     }
 
     get_hands() {
-        return [this.second_hand] //, this.minute_hand, this.hour_hand]
+        return [this.second_hand, this.minute_hand] //, this.minute_hand, this.hour_hand]
     }
 
 
@@ -56,5 +57,11 @@ class Clock {
         let secs = this.date.getSeconds()
         let ang = 360 / 60 * secs
         this.second_hand = this.second_hand.rotate(ang)
+    }
+
+    _update_minute_hand() {
+        let mins = this.date.getMinutes()
+        let ang = 360 / 60 * mins
+        this.minute_hand = this.minute_hand.rotate(ang)
     }
 }
