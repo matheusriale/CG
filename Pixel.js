@@ -53,6 +53,14 @@ function Pixel(x, y) {
         this.x += p.x
         this.y += p.y
     }
+
+    /**
+     * Gera uma nova instância idêntica à atual
+     * @returns {Pixel} Novo pixel
+     */
+    this.copy = () => {
+        return new Pixel(this.x, this.y)
+    }
 }
 
 /**
