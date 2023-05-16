@@ -39,7 +39,7 @@ class ImageCG {
         this.set_pixel(new Pixel(x, y), intensity)
       }
     }
-    console.log(`Canvas cleared ${intensity}`)
+    // console.log(`Canvas cleared ${intensity}`)
   }
 
   /**
@@ -75,25 +75,25 @@ class ImageCG {
     return pixels[p.get_idx(this.width)]
   }
 
-  get_pixel_tex(p,tex){
+  get_pixel_tex(p, tex) {
     //tex->textura(colunas(width) e linhas(height))
     //p pixel (x,y)
 
     // cod yuri
-    if (p.x > 1){       
+    if (p.x > 1) {
       p.x = 1;
     }
-    if (p.x < 0){
+    if (p.x < 0) {
       p.x = 0;
     }
-    if (p.y > 1){
+    if (p.y > 1) {
       p.y = 1;
     }
-    if (p.y < 0){
+    if (p.y < 0) {
       p.y = 0;
     }
-    p.x = Math.round(p.x*(tex.width - 1)+1);
-    p.y = Math.round(p.y*(tex.height - 1)+1); 
+    p.x = Math.round(p.x * (tex.width - 1) + 1);
+    p.y = Math.round(p.y * (tex.height - 1) + 1);
 
     // if (p.x > tex.width){       
     //   p.x = tex.width - 1;
@@ -107,7 +107,7 @@ class ImageCG {
     // if (p.y < 0){
     //   p.y = 0;
     // }
-    let intensity = tex.get(p.x,p.y);
+    let intensity = tex.get(p.x, p.y);
     return intensity;
   }
 
@@ -312,13 +312,13 @@ class ImageCG {
 
   intersection_tex(scan, seg) {
     let pi = seg.pi; //pi = x,y,tx,ty
-   
+
     let pf = seg.pf;
     let y = scan; // scan line -> percorrer toda a imagem 
 
     // Segmento horizontal -> sem intersecao
     if (pi.y == pf.y) {
-      let p = new Pixel_tex(-1,0,0,0); //ptex = [x,y,xtex,ytex]
+      let p = new Pixel_tex(-1, 0, 0, 0); //ptex = [x,y,xtex,ytex]
       return p;
     }
     // Troca para garantir ponto inicial em cima
@@ -332,13 +332,13 @@ class ImageCG {
     // Calcula x
     if (t > 0 && t <= 1) {
       var x = pi.x + t * (pf.x - pi.x);
-      let tx  = pi.tx + t*(pf.tx - pi.tx);
-      let ty  = pi.ty + t*(pf.ty - pf.ty);
+      let tx = pi.tx + t * (pf.tx - pi.tx);
+      let ty = pi.ty + t * (pf.ty - pf.ty);
       return new Pixel_tex(x, y, tx, ty)
     }
-    
+
     // No intersections
-    let p = new Pixel_tex(-1,0,0,0);
+    let p = new Pixel_tex(-1, 0, 0, 0);
     return p;
   }
 
@@ -425,7 +425,7 @@ class ImageCG {
       }
     }
   }
-  scanline_tex(pol,tex) {//TODO: add tex posteriormente
+  scanline_tex(pol, tex) {//TODO: add tex posteriormente
 
     let ys = pol.vertices.map(p => { return p.y })
     let ymin = Math.min(...ys);//menor y
@@ -467,10 +467,10 @@ class ImageCG {
         }
         for (var xk = Math.round(p1.x); xk < Math.round(p2.x); xk++) {
           var pc = (xk - p1.x) / (p2.x - p1.x);
-        
+
           var tx = p1.xtex + pc * (p2.xtex - p1.xtex);
           var ty = p1.ytex + pc * (p2.ytex - p1.ytex);
-          var intensity = this.get_pixel_tex(new Pixel(tx, ty),tex);
+          var intensity = this.get_pixel_tex(new Pixel(tx, ty), tex);
           this.set_pixel(new Pixel(xk, y), intensity)
         }
       }
