@@ -37,6 +37,15 @@ function Pixel(x, y) {
     }
 
     /**
+     * Subtrai coordenada do pixel
+     * @param {Pixel} p 
+     */
+    this.sub = (p) => {
+        this.x -= p.x
+        this.y -= p.y
+    }
+
+    /**
      * Adiciona coordenada ao pixel
      * @param {Pixel} p 
      */
