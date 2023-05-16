@@ -12,7 +12,7 @@ function Line(pi, pf, stroke = 255) {
     this.pf = pf;
 
     this.rotate = (ang) => { //TODO: gambiarra
-        ang += 90
+        // ang += 90
 
         let new_pf = this.pf.copy()
         new_pf.sub(this.pi)
