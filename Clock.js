@@ -1,5 +1,7 @@
 /**
- * @type {{num_drawer: NumberDrawer center: Pixel radius: Number}}
+ * @type {{
+ * num_drawer: NumberDrawer center: Pixel radius: Number date:Date 
+ * second_hand:Line minute_hand:Line hour_hand:Line}}
  */
 class Clock {
     /**
@@ -12,6 +14,23 @@ class Clock {
         this.num_drawer = num_drawer
         this.center = center
         this.radius = radius
+        this.date = new Date(2023, 5, 15, 10, 30, 30)
+
+        this.reset_hands()
+    }
+
+    reset_hands() {
+        let size1 = this.center.y - this.radius
+        let size2 = this.center.y - this.radius * 0.9
+        this.second_hand = new Line(this.center, new Pixel(this.center.x, size2), 100)
+        this.minute_hand = new Line(this.center, new Pixel(this.center.x, size2), 100)
+        this.hour_hand = new Line(this.center, new Pixel(this.center.x, size1), 100)
+    }
+
+    update() {
+        this.date = new Date()
+        this.reset_hands()
+        this._update_second_hand()
     }
 
     get_hour_numbers() { //TODO: gambiarra
