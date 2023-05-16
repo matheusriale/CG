@@ -19,6 +19,9 @@ class Clock {
         this.reset_hands()
     }
 
+    /**
+     * Volta os ponteiros para o início
+     */
     reset_hands() {
         let size1 = this.center.y - this.radius
         let size2 = this.center.y - this.radius * 0.9
@@ -27,6 +30,9 @@ class Clock {
         this.hour_hand = new Line(this.center, new Pixel(this.center.x, size1), 100)
     }
 
+    /**
+     * Atualiza a hora e, consequentemente, todos os ponteiros.
+     */
     update() {
         this.date = new Date()
         this.reset_hands()
@@ -49,23 +55,35 @@ class Clock {
         return nums
     }
 
+    /**
+     * Lista com todos os ponteiros
+     * @returns {Array<Line>} ponteiros
+     */
     get_hands() {
         return [this.second_hand, this.minute_hand, this.hour_hand]
     }
 
-
+    /**
+     * Atualiza o ponteiro dos segundos
+     */
     _update_second_hand() {
         let secs = this.date.getSeconds()
         let ang = 360 / 60 * secs
         this.second_hand = this.second_hand.rotate(ang)
     }
 
+    /**
+     * Atualiza o ponteiro dos minutos
+     */
     _update_minute_hand() {
         let mins = this.date.getMinutes()
         let ang = 360 / 60 * mins
         this.minute_hand = this.minute_hand.rotate(ang)
     }
 
+    /**
+     * Atualiza o ponteiro das horas
+     */
     _update_hour_hand() {
         let hour = this.date.getHours()
         let mins = this.date.getMinutes()
