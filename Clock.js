@@ -32,6 +32,7 @@ class Clock {
         this.reset_hands()
         this._update_second_hand()
         this._update_minute_hand()
+        this._update_hour_hand()
     }
 
     get_hour_numbers() { //TODO: gambiarra
@@ -49,7 +50,7 @@ class Clock {
     }
 
     get_hands() {
-        return [this.second_hand, this.minute_hand] //, this.minute_hand, this.hour_hand]
+        return [this.second_hand, this.minute_hand, this.hour_hand]
     }
 
 
@@ -63,5 +64,15 @@ class Clock {
         let mins = this.date.getMinutes()
         let ang = 360 / 60 * mins
         this.minute_hand = this.minute_hand.rotate(ang)
+    }
+
+    _update_hour_hand() {
+        let hour = this.date.getHours()
+        let mins = this.date.getMinutes()
+        hour = (hour > 12) ? hour - 12 : hour
+
+        let hour_ang = (360 / 12)
+        let min_ang = (hour_ang / 60)
+        this.hour_hand = this.hour_hand.rotate(hour_ang * hour + min_ang * mins)
     }
 }
