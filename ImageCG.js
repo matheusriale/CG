@@ -368,111 +368,30 @@ class ImageCG {
     }
   }
 
-  scanline(pol) {//TODO: add tex posteriormente
-
-    let ys = pol.vertices.map(p => { return p.y })
-    let ymin = Math.min(...ys);//menor y
-    let ymax = Math.max(...ys);//maior y
-
-
-    for (let y = ymin + 1; y < ymax; y++) {
-      let i = [];
-      let pi = pol.vertices[0] //ponto inicial
-      var old_pint = pi
-      for (let p = 1; p < pol.vertices.length; p++) {
-
-        var pf = pol.vertices[p];
-
-        var pint = this.intersection(y, new Line(pi, pf));//x da intersec
-
-        if (pint.x >= 0) {
-          i.push(pint);
-
-        }
-        pi = pf;
-
-      }
-
-      pf = pol.vertices[0];
-
-      pint = this.intersection(y, new Line(pi, pf));
-
-      if (pint >= 0) {
-        i.push(pint);
-      }
-      for (let cont = 0; cont < i.length; cont = cont + 2) {
-        let p1 = i[cont];
-        let p2 = i[cont + 1];
-
-        let x1 = p1.x;
-        let x2 = p2.y;
-
-        if (x2 < x1) {
-          [p1, p2] = Pixel.switch(p1, p2)
-        }
-        for (var xk = Math.round(p1.x); xk < Math.round(p2.x); xk++) {
-          if (p2.x != p1.x) {
-            var pc = (xk - p1.x) / (p2.x - p1.x);
-          }
-          else {
-            pc = 0;
-          }
-          var tx = p1[2] + pc * (p2[2] - p1[2]);
-          var ty = p1[3] + pc * (p2[3] - p1[3]);
-          var intensity = this.get_pixel(new Pixel(tx, ty));
-          this.set_pixel(new Pixel(xk, y), intensity)
-        }
-      }
-    }
-  }
   scanline_tex(pol, tex) {//TODO: add tex posteriormente
 
     let ys = pol.vertices.map(p => { return p.y })
     let ymin = Math.min(...ys);//menor y
     let ymax = Math.max(...ys);//maior y
 
-
-    for (let y = ymin + 1; y < ymax; y++) {
-      let i = [];
-      let pi = pol.vertices[0] //ponto inicial
-      var old_pint = pi
+    let pi = pol.vertices[0] //ponto inicial
+    for (let y = ymin; y < ymax; y++) {
+      let tuple = [new Pixel(pi.x, y,pi.xtex,pi.ytex)]
 
       for (let p = 1; p < pol.vertices.length; p++) {
         var pf = pol.vertices[p];
-        var pint = this.intersection(y, new Line(pi, pf));//x da intersec
+        var pint = this.intersection(y, new Line(pi, pf));
 
         if (pint.x >= 0) {
-          i.push(pint);
+          tuple.push(pint)
+          if (tuple.length == 2) {
+            
+            this.reta_continua(tuple[0], tuple[1])
+            tuple = []
+          }
         }
 
         pi = pf;
-      }
-
-      pf = pol.vertices[0];
-
-      pint = this.intersection(y, new Line(pi, pf));
-
-      if (pint >= 0) {
-        i.push(pint);
-      }
-      for (let cont = 0; cont < i.length; cont = cont + 2) {
-        let p1 = i[cont];
-        let p2 = i[cont + 1];
-
-        let x1 = p1.x;
-        let x2 = p2.y;
-
-        if (x2 < x1) {
-          [p1, p2] = Pixel.switch(p1, p2)
-        }
-        for (var xk = Math.round(p1.x); xk < Math.round(p2.x); xk++) {
-          var pc = (xk - p1.x) / (p2.x - p1.x);
-
-          var tx = p1.xtex + pc * (p2.xtex - p1.xtex);
-          var ty = p1.ytex + pc * (p2.ytex - p1.ytex);
-          var intensity = this.get_pixel_tex(new Pixel(tx, ty), tex);
-          this.set_pixel(new Pixel(xk, y), intensity)
-        }
       }
     }
   }

@@ -2,11 +2,15 @@
  * Estrutura para localização de pixel
  * @param {?Number} x Coordenada X do pixel. Se 'null', então será 0
  * @param {?Number} y Coordenada Y do pixel. Se 'null', então será igual ao x
- * @type {{x:Number y:Number}}
+ * @param {?Number} xtex Coordenada X da textura variam de 0 a 1. 
+ * @param {?Number} ytex Coordenada Y da textura variam de 0 a 1. 
+ * @type {{x:Number y:Number xtex:Number ytex:Number}}
  */
-function Pixel(x, y) {
+function Pixel(x, y, xtex, ytex) {
     this.x = x === undefined ? 0 : x
     this.y = y === undefined ? this.x : y
+    this.xtex = xtex === undefined ? 0 : xtex
+    this.ytex = ytex === undefined ? this.xtex : ytex
 
     /**
      * Retorna as coordenadas x,y como um array
