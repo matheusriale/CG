@@ -4,7 +4,7 @@ var clk
 function preload() {
   img = new ImageCG(100, 100, 200)
   imgteste = loadImage('images/imgteste.jpg')
-  //clk = new Clock(new NumberDrawer(), new Pixel(50), 40)
+  //clk = new Clock(new NumberDrawer(), new Pixel(60), 40)
 }
 
 function setup() {
@@ -12,9 +12,12 @@ function setup() {
 }
 
 function draw() {
-  //image(imgteste,0,0);
-  p = new Polygon(0,[new Pixel(50,50,0,0),new Pixel(10,50,1,0),new Pixel(10,10,1,1),new Pixel(50,10,0,1)])
-  img.scanline_tex(p,imgteste)
+  
+  
+  //funcionando para esse caso
+  //p = new Polygon(0,[new Pixel(10,10,0,0),new Pixel(10,50,1,0),new Pixel(50,50,1,1),new Pixel(50,10,0,1)])
+  p = new Polygon(0,[new Pixel(60,60,0,0),new Pixel(60,10,1,0),new Pixel(10,10,0,0),new Pixel(10,60,0,1)])
+  img.scanline_no_texture(p)
   img.draw_figure(p)
 
 

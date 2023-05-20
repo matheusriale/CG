@@ -347,12 +347,15 @@ class ImageCG {
     let ymin = Math.min(...ys);//menor y
     let ymax = Math.max(...ys);//maior y
 
-    let pi = pol.vertices[0] //ponto inicial
+    let pi = pol.vertices[0]; //ponto inicial
+    
     for (let y = ymin + 1; y < ymax - 1; y++) {
-      let tuple = [new Pixel(pi.x, y)]
-
-      for (let p = 1; p < pol.vertices.length; p++) {
+      let tuple = [new Pixel(pi.x, y)];
+      
+      
+      for (let p = 0; p < pol.vertices.length; p++) {//4vezes
         var pf = pol.vertices[p];
+        
         var pint = this.intersection(y, new Line(pi, pf));
 
         if (pint.x >= 0) {
@@ -362,8 +365,9 @@ class ImageCG {
             tuple = []
           }
         }
-
         pi = pf;
+
+        
       }
     }
   }
