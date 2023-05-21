@@ -351,7 +351,7 @@ class ImageCG {
 
     let pi = pol.vertices[0]; //ponto inicial
 
-    for (let y = ymin + 1; y < ymax - 1; y++) {
+    for (let y = ymin + 1; y < ymax - 1; y++) { //scanline
       //console.log(tuple[0])
 
       for (let p = 0; p < pol.vertices.length; p++) {
