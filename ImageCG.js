@@ -55,6 +55,7 @@ class ImageCG {
 
   set_pixel_color(p, intensityR,intensityG,intensityB, clg = false) {
     loadPixels()
+    
     let idx = p.get_idx(this.width);
 
     //rgb
