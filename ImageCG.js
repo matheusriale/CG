@@ -343,31 +343,30 @@ class ImageCG {
   }
 
   scanline_no_texture(pol) {
-    let ys = pol.vertices.map(p => { return p.y })
-    let ymin = Math.min(...ys);//menor y
-    let ymax = Math.max(...ys);//maior y
+    let ys = pol.vertices.map((p) => {
+      return p.y;
+    });
+    let ymin = Math.min(...ys); //menor y
+    let ymax = Math.max(...ys); //maior y
 
     let pi = pol.vertices[0]; //ponto inicial
-    
-    for (let y = ymin + 1; y < ymax - 1; y++) {
-      let tuple = [new Pixel(pi.x, y)];
-      
-      
-      for (let p = 0; p < pol.vertices.length; p++) {//4vezes
-        var pf = pol.vertices[p];
-        
-        var pint = this.intersection(y, new Line(pi, pf));
 
+    for (let y = ymin + 1; y < ymax - 1; y++) {
+      //console.log(tuple[0])
+
+      for (let p = 0; p < pol.vertices.length; p++) {
+        //4vezes
+        var pf = pol.vertices[p];
+        var pint = this.intersection(y, new Line(pi, pf)); // segmento válido
         if (pint.x >= 0) {
-          tuple.push(pint)
-          if (tuple.length == 2) {
-            this.reta_continua(tuple[0], tuple[1])
-            tuple = []
+          for (let k = 0; k < pol.vertices.length; k++) {
+            var pint2 = this.intersection(y, new Line(pf, pol.vertices[k]));
+            if (pint2.x >= 0) {
+              this.reta_continua(pint2, pint); 
+            }
           }
         }
         pi = pf;
-
-        
       }
     }
   }
