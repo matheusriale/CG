@@ -26,22 +26,25 @@ function Circumference(stroke, center, radius, draw_step = 1) {
         this._negy_negx = []
         this._negy_x = []
         this._negx_y = []
-        let radius_line = new Line(center, new Pixel(center.x + radius, center.y))
 
-        for (let i = draw_step; i < 45; i += draw_step) {
-            let p = radius_line.rotate(i).pf
-            let neg_x = center.x - (p.x - center.x)
-            let neg_y = center.y - (p.y - center.y)
-            let neg_p = new Pixel(neg_x, neg_y)
+        let square_radius = Math.pow(this.radius, 2)
 
-            this._x_y.push(p)
+        for (let x = 1; x <= this.radius; x += draw_step) {
+            let y = Math.sqrt(square_radius - Math.pow(x, 2))
+            let neg_x = -x + this.center.x
+            let neg_y = -y + this.center.y
+
+            let p = new Pixel(x + center.x, y + center.y)
+            let p_neg = new Pixel(neg_x, neg_y)
+
             this._y_x.push(p.invert())
+            this._x_y.push(p)
 
-            this._negy_x.push(new Pixel(neg_y, p.x))
             this._negx_y.push(new Pixel(neg_x, p.y))
+            this._negy_x.push(new Pixel(neg_y, p.x))
 
-            this._negx_negy.push(neg_p)
-            this._negy_negx.push(neg_p.invert())
+            this._negx_negy.push(p_neg)
+            this._negy_negx.push(p_neg.invert())
 
             this._y_negx.push(new Pixel(p.y, neg_x))
             this._x_negy.push(new Pixel(p.x, neg_y))
@@ -58,10 +61,11 @@ function Circumference(stroke, center, radius, draw_step = 1) {
             this._load_vertices(this.draw_step)
         }
 
-        return [...this._x_y, ...this._y_x,
-        ...this._negy_x, ...this._negx_y,
-        ...this._negx_negy, ...this._negy_negx,
-        ...this._y_negx, ...this._x_negy, this._x_y[0]]
+        return [...this._y_x, ...this._x_y,
+        ...this._negx_y, ...this._negy_x,
+        ...this._negy_negx, ...this._negx_negy,
+        ...this._x_negy, ...this._y_negx,
+        this._y_x[0]]
 
     }
 

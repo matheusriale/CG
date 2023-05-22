@@ -412,7 +412,7 @@ class ImageCG {
   circumference(center, radius, step = 1) {
     let square_radius = Math.pow(radius, 2)
 
-    for (let x = step; x < radius; x += step) {
+    for (let x = 1; x <= radius; x += step) {
       let y = Math.sqrt(square_radius - Math.pow(x, 2))
       let neg_x = -x + center.x
       let neg_y = -y + center.y
