@@ -414,25 +414,19 @@ class ImageCG {
 
     for (let x = 1; x <= radius; x += step) {
       let y = Math.sqrt(square_radius - Math.pow(x, 2))
-      let neg_x = -x + center.x
-      let neg_y = -y + center.y
 
-      let p = new Pixel(x + center.x, y + center.y)
-      let p_neg = new Pixel(neg_x, neg_y)
+      this.set_pixel(new Pixel(x, y).add(center))
+      this.set_pixel(new Pixel(y, x).add(center))
 
-      this.set_pixel(p)
-      this.set_pixel(p.invert())
+      this.set_pixel(new Pixel(-y, x).add(center))
+      this.set_pixel(new Pixel(-x, y).add(center))
 
-      this.set_pixel(new Pixel(neg_y, p.x))
-      this.set_pixel(new Pixel(neg_x, p.y))
+      this.set_pixel(new Pixel(-x, -y).add(center))
+      this.set_pixel(new Pixel(-y, -x).add(center))
 
-      this.set_pixel(p_neg)
-      this.set_pixel(p_neg.invert())
-
-      this.set_pixel(new Pixel(p.y, neg_x))
-      this.set_pixel(new Pixel(p.x, neg_y))
+      this.set_pixel(new Pixel(y, -x).add(center))
+      this.set_pixel(new Pixel(x, -y).add(center))
     }
 
   }
-
 }
