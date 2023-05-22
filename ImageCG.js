@@ -393,4 +393,25 @@ class ImageCG {
       }
     }
   }
+
+
+  circumference(center, radius, step = 1) {
+    this.set_pixel(center, 255)
+    let radius_line = new Line(center, new Pixel(center.x + radius, center.y))
+
+    for (let i = step; i < 45; i += step) {
+      let p1 = radius_line.rotate(i).pf
+      let neg_x = center.x - (p1.x - center.x)
+      let neg_y = center.y - (p1.y - center.y)
+      this.set_pixel(p1)
+      this.set_pixel(new Pixel(p1.y, p1.x))
+      this.set_pixel(new Pixel(p1.y, neg_x))
+      this.set_pixel(new Pixel(neg_x, p1.y))
+      this.set_pixel(new Pixel(neg_y, p1.x))
+      this.set_pixel(new Pixel(p1.x, neg_y))
+      this.set_pixel(new Pixel(neg_x, neg_y))
+      this.set_pixel(new Pixel(neg_y, neg_x))
+    }
+
+  }
 }
