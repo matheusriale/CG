@@ -43,16 +43,25 @@ class ImageCG {
   }
 
   /**
-   * Muda a cor de um pixel.
+   * Muda a intensidade de um pixel
    * @param {Pixel} p Pixel para ser mudado
    * @param {Number} intensity Intensidade (0 a 255)
    * @param {boolean} clg Exibir no console ou não (default: False)
-   * @returns Índice do pixel no array de pixels do P5.js
+   * @returns {Number} Índice do pixel no array de pixels do P5.js
    */
   set_pixel(p, intensity, clg = false) {
     return this.set_pixel_color(p, intensity, intensity, intensity, clg);
   }
 
+  /**
+   * Muda a cor de um pixel
+   * @param {Pixel} p Pixel para ser mudado
+   * @param {Number} intensityR Intensidade do vermelho (0 a 255)
+   * @param {Number} intensityG Intensidade do verde (0 a 255)
+   * @param {Number} intensityB Intensidade do azul (0 a 255)
+   * @param {boolean} clg Exibir no console ou não (default: False)
+   * @returns {Number} Índice do pixel no array de pixels do P5.js
+   */
   set_pixel_color(p, intensityR, intensityG, intensityB, clg = false) {
     loadPixels()
 
