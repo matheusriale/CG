@@ -1,8 +1,8 @@
 /**
  * Cria um polígono
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
- * @param {Pixel} center
- * @param {Number} radius 
+ * @param {Pixel} center Centro da circunferência
+ * @param {Number} radius Tamanho do raio
  * @type {{vertices: Array<Pixel> stroke_intensity: Number center:Pixel radius:Number}}
  * @extends Figure
  */
@@ -13,6 +13,10 @@ function Circumference(stroke, center, radius, draw_step = 1) {
     Polygon.prototype.constructor.call(this, stroke, [])
 
 
+    /**
+     * Carrega os vértices da circunferência
+     * @param {Number} draw_step Passo de desenho do algoritmo
+     */
     this._load_vertices = (draw_step) => {
         this._x_y = []
         this._y_x = []
@@ -45,7 +49,10 @@ function Circumference(stroke, center, radius, draw_step = 1) {
     }
 
 
-
+    /**
+     * Trata e retorna os vértices
+     * @returns {Array<Pixel>} vértices
+     */
     this.get_vertices = () => {
         if (!this._x_y) {
             this._load_vertices(this.draw_step)
