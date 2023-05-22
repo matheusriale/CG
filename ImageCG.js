@@ -403,6 +403,12 @@ class ImageCG {
   }
 
 
+  /**
+   * Desenha uma circunferência (pixel a pixel)
+   * @param {Pixel} center Centro da circunferência
+   * @param {Number} radius raio da circunferência
+   * @param {Number} step Passo do desenho (default: 1)
+   */
   circumference(center, radius, step = 1) {
     this.set_pixel(center, 255)
     let radius_line = new Line(center, new Pixel(center.x + radius, center.y))
