@@ -410,13 +410,14 @@ class ImageCG {
    * @param {Number} step Passo do desenho (default: 1)
    */
   circumference(center, radius, step = 1) {
-    this.set_pixel(center, 255)
-    let radius_line = new Line(center, new Pixel(center.x + radius, center.y))
+    let square_radius = Math.pow(radius, 2)
 
-    for (let i = step; i < 45; i += step) {
-      let p = radius_line.rotate(i).pf
-      let neg_x = center.x - (p.x - center.x)
-      let neg_y = center.y - (p.y - center.y)
+    for (let x = step; x < radius; x += step) {
+      let y = Math.sqrt(square_radius - Math.pow(x, 2))
+      let neg_x = -x + center.x
+      let neg_y = -y + center.y
+
+      let p = new Pixel(x + center.x, y + center.y)
       let p_neg = new Pixel(neg_x, neg_y)
 
       this.set_pixel(p)
@@ -431,5 +432,7 @@ class ImageCG {
       this.set_pixel(new Pixel(p.y, neg_x))
       this.set_pixel(new Pixel(p.x, neg_y))
     }
+
   }
+
 }
