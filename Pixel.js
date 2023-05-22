@@ -65,6 +65,13 @@ function Pixel(x, y, xtex, ytex) {
     this.copy = () => {
         return new Pixel(this.x, this.y)
     }
+    /**
+     * Gera um novo pixel com valores trocados de X e Y
+     * @returns {Pixel} Novo Pixel
+     */
+    this.invert = () => {
+        return new Pixel(this.y, this.x)
+    }
 }
 
 /**
