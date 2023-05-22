@@ -50,12 +50,12 @@ class ImageCG {
    * @returns Índice do pixel no array de pixels do P5.js
    */
   set_pixel(p, intensity, clg = false) {
-    return this.set_pixel_color(p,intensity,intensity,intensity,clg);
+    return this.set_pixel_color(p, intensity, intensity, intensity, clg);
   }
 
-  set_pixel_color(p, intensityR,intensityG,intensityB, clg = false) {
+  set_pixel_color(p, intensityR, intensityG, intensityB, clg = false) {
     loadPixels()
-    
+
     let idx = p.get_idx(this.width);
 
     //rgb
@@ -66,8 +66,8 @@ class ImageCG {
 
     if (clg) {
       console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${intensityR}`);
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx+1}] changed to ${intensityG}`);
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx+2}] changed to ${intensityB}`);
+      console.log(`Pixel (${p.to_array()}) [idx = ${idx + 1}] changed to ${intensityG}`);
+      console.log(`Pixel (${p.to_array()}) [idx = ${idx + 2}] changed to ${intensityB}`);
     }
     updatePixels()
     return idx
@@ -357,7 +357,7 @@ class ImageCG {
           for (let k = 0; k < pol.vertices.length; k++) {
             var pint2 = this.intersection(y, new Line(pf, pol.vertices[k]));
             if (pint2.x >= 0) {
-              this.reta_continua(pint2, pint); 
+              this.reta_continua(pint2, pint);
             }
           }
         }
@@ -374,7 +374,7 @@ class ImageCG {
 
     let pi = pol.vertices[0] //ponto inicial
     for (let y = ymin; y < ymax; y++) {
-      let tuple = [new Pixel(pi.x, y,pi.xtex,pi.ytex)]
+      let tuple = [new Pixel(pi.x, y, pi.xtex, pi.ytex)]
 
       for (let p = 1; p < pol.vertices.length; p++) {
         var pf = pol.vertices[p];
@@ -383,7 +383,6 @@ class ImageCG {
         if (pint.x >= 0) {
           tuple.push(pint)
           if (tuple.length == 2) {
-            
             this.reta_continua(tuple[0], tuple[1])
             tuple = []
           }
@@ -400,18 +399,22 @@ class ImageCG {
     let radius_line = new Line(center, new Pixel(center.x + radius, center.y))
 
     for (let i = step; i < 45; i += step) {
-      let p1 = radius_line.rotate(i).pf
-      let neg_x = center.x - (p1.x - center.x)
-      let neg_y = center.y - (p1.y - center.y)
-      this.set_pixel(p1)
-      this.set_pixel(new Pixel(p1.y, p1.x))
-      this.set_pixel(new Pixel(p1.y, neg_x))
-      this.set_pixel(new Pixel(neg_x, p1.y))
-      this.set_pixel(new Pixel(neg_y, p1.x))
-      this.set_pixel(new Pixel(p1.x, neg_y))
-      this.set_pixel(new Pixel(neg_x, neg_y))
-      this.set_pixel(new Pixel(neg_y, neg_x))
-    }
+      let p = radius_line.rotate(i).pf
+      let neg_x = center.x - (p.x - center.x)
+      let neg_y = center.y - (p.y - center.y)
+      let p_neg = new Pixel(neg_x, neg_y)
 
+      this.set_pixel(p)
+      this.set_pixel(p.invert())
+
+      this.set_pixel(new Pixel(neg_y, p.x))
+      this.set_pixel(new Pixel(neg_x, p.y))
+
+      this.set_pixel(p_neg)
+      this.set_pixel(p_neg.invert())
+
+      this.set_pixel(new Pixel(p.y, neg_x))
+      this.set_pixel(new Pixel(p.x, neg_y))
+    }
   }
 }
