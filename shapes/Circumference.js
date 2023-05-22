@@ -31,23 +31,18 @@ function Circumference(stroke, center, radius, draw_step = 1) {
 
         for (let x = 1; x <= this.radius; x += draw_step) {
             let y = Math.sqrt(square_radius - Math.pow(x, 2))
-            let neg_x = -x + this.center.x
-            let neg_y = -y + this.center.y
 
-            let p = new Pixel(x + center.x, y + center.y)
-            let p_neg = new Pixel(neg_x, neg_y)
+            this._x_y.push(new Pixel(y, x).add(center))
+            this._y_x.push(new Pixel(x, y).add(center))
 
-            this._y_x.push(p.invert())
-            this._x_y.push(p)
+            this._negx_y.push(new Pixel(-y, x).add(center))
+            this._negy_x.push(new Pixel(-x, y).add(center))
 
-            this._negx_y.push(new Pixel(neg_x, p.y))
-            this._negy_x.push(new Pixel(neg_y, p.x))
+            this._negx_negy.push(new Pixel(-x, -y).add(center))
+            this._negy_negx.push(new Pixel(-y, -x).add(center))
 
-            this._negx_negy.push(p_neg)
-            this._negy_negx.push(p_neg.invert())
-
-            this._y_negx.push(new Pixel(p.y, neg_x))
-            this._x_negy.push(new Pixel(p.x, neg_y))
+            this._y_negx.push(new Pixel(y, -x).add(center))
+            this._x_negy.push(new Pixel(x, -y).add(center))
         }
     }
 
@@ -61,11 +56,11 @@ function Circumference(stroke, center, radius, draw_step = 1) {
             this._load_vertices(this.draw_step)
         }
 
-        return [...this._y_x, ...this._x_y,
-        ...this._negx_y, ...this._negy_x,
+        return [...this._x_y, ...this._y_x,
+        ...this._negy_x, ...this._negx_y,
         ...this._negy_negx, ...this._negx_negy,
         ...this._x_negy, ...this._y_negx,
-        this._y_x[0]]
+        this._x_y[0]]
 
     }
 
