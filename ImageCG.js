@@ -429,4 +429,36 @@ class ImageCG {
     }
 
   }
+
+
+  /**
+   * Desenha uma elipse (pixel a pixel)
+   * @param {Pixel} center Centro da elipse
+   * @param {Number} r1 raio vertical da elipse
+   * @param {Number} r1 raio horizontal da elipse
+   * @param {Number} step Passo do desenho (default: 1)
+   */
+  elipse(center, r1, r2, step = 1) { //TODO: não funciona
+    let square_radius1 = Math.pow(r1, 2)
+    let square_radius2 = Math.pow(r2, 2)
+
+    for (let x1 = 0; x1 <= 2 * r2 / 3; x1 += step) {
+      let y1 = Math.sqrt(square_radius2 - Math.pow(x1, 2))
+
+      this.set_pixel(new Pixel(x1, y1).add(center))
+      this.set_pixel(new Pixel(-x1, y1).add(center))
+      this.set_pixel(new Pixel(-x1, -y1).add(center))
+      this.set_pixel(new Pixel(x1, -y1).add(center))
+
+    }
+
+    for (let y2 = 1; y2 <= r1 / 2; y2 += step) {
+      let x2 = Math.sqrt(square_radius1 - Math.pow(y2, 2))
+
+      this.set_pixel(new Pixel(x2, y2).add(center))
+      this.set_pixel(new Pixel(-x2, y2).add(center))
+      this.set_pixel(new Pixel(-x2, -y2).add(center))
+      this.set_pixel(new Pixel(x2, -y2).add(center))
+    }
+  }
 }
