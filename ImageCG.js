@@ -1,3 +1,7 @@
+function getArcCoordinate(radius1, radius2, coord) {
+  return Math.sqrt((radius1 - (radius1 / radius2) * Math.pow(coord, 2)))
+}
+
 /**
  * Manipula o canvas do p5.js
  * @type {{width: Number height: Number background: Number}}
@@ -413,7 +417,7 @@ class ImageCG {
     let square_radius = Math.pow(radius, 2)
 
     for (let x = 1; x <= radius; x += step) {
-      let y = Math.sqrt(square_radius - Math.pow(x, 2))
+      let y = getArcCoordinate(square_radius, square_radius, x)
 
       this.set_pixel(new Pixel(x, y).add(center))
       this.set_pixel(new Pixel(y, x).add(center))
