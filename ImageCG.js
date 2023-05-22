@@ -271,18 +271,29 @@ class ImageCG {
    * @param {?Number} intensity Intensidade (0 a 255) - Caso não especificada, será utilizada a da figura
    * @returns {Pixel} último pixel desenhado
    */
-  draw_figure(figure, intensity) {
+  draw_figure(figure, intensity, edge_color = false) {
     let vertices = figure.get_vertices()
     var last_pixel = vertices[0]
     let iten = intensity || figure.stroke_intensity
 
-    for (let i = 1; i < vertices.length; i++) {
-      let pixel = vertices[i];
-      this.reta_continua(last_pixel, pixel, iten)
-      last_pixel = pixel
-    }
+    if (!edge_color) {// construir poligono com arestas monocromaticas
 
-    return last_pixel
+      for (let i = 1; i < vertices.length; i++) {
+        let pixel = vertices[i];
+        this.reta_continua(last_pixel, pixel, iten)
+
+        last_pixel = pixel
+      }
+      return last_pixel;
+    } else {
+      for (let i = 1; i < vertices.length; i++) {// construir polígono com gradiente de cores
+
+        let pixel = vertices[i];
+        this.reta_continua_gradient(last_pixel, pixel, 0, 1)
+        last_pixel = pixel
+      }
+    }
+    return last_pixel;
   }
 
 
@@ -296,7 +307,7 @@ class ImageCG {
     // if horizontal line
     if (yi == yf) {
       x = -1;
-      return new Pixel(x, y);
+      return [new Pixel(x, y)];
     }
 
     //
@@ -310,12 +321,12 @@ class ImageCG {
     // calculates x
     if (t > 0 && t <= 1) {
       var x = xi + t * (xf - xi);
-      return new Pixel(x, y)
+      return [new Pixel(x, y), t]
     }
 
     // No intersections
     x = -1;
-    return new Pixel(x, y);
+    return [new Pixel(x, y), t];
   }
 
   intersection_tex(scan, seg) {
@@ -365,10 +376,10 @@ class ImageCG {
       for (let p = 0; p < pol.vertices.length; p++) {
         //4vezes
         var pf = pol.vertices[p];
-        var pint = this.intersection(y, new Line(pi, pf)); // segmento válido
+        var pint = this.intersection(y, new Line(pi, pf))[0]; // segmento válido
         if (pint.x >= 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
-            var pint2 = this.intersection(y, new Line(pf, pol.vertices[k]));
+            var pint2 = this.intersection(y, new Line(pf, pol.vertices[k]))[0];//[0]-> pixel [1]-> t
             if (pint2.x >= 0) {
               this.reta_continua(pint2, pint);
             }
@@ -378,6 +389,106 @@ class ImageCG {
       }
     }
   }
+
+  scanline_gradient(pol) {
+    let ys = pol.vertices.map((p) => {
+      return p.y;
+    });
+    let ymin = Math.min(...ys); //menor y
+    let ymax = Math.max(...ys); //maior y
+
+    let pi = pol.vertices[0]; //ponto inicial
+
+    for (let y = ymin; y < ymax - 1; y++) { //scanline
+      //console.log(tuple[0])
+
+      for (let p = 0; p < pol.vertices.length; p++) {
+        //4vezes
+        var pf = pol.vertices[p];
+        var pint = this.intersection(y, new Line(pi, pf))[0]; // segmento válido
+        let t1 = this.intersection(y, new Line(pi, pf))[1]
+        if (pint.x >= 0) {
+          for (let k = 0; k < pol.vertices.length; k++) {
+            var pint2 = this.intersection(y, new Line(pf, pol.vertices[k]))[0];//[0]-> pixel [1]-> t
+            let t2 = this.intersection(y, new Line(pf, pol.vertices[k]))[1];
+            if (pint2.x >= 0) {
+              this.reta_continua_gradient(pint2, pint, t2, t1);
+            }
+          }
+        }
+        pi = pf;
+      }
+    }
+
+  }
+
+  reta_continua_gradient(pi, pf, t1, t2, clg = false) {
+    let [dx, dy] = Pixel.distance(pi, pf)
+    let passos = max(Math.abs(dy), Math.abs(dx))
+
+    let idxi = pi.get_idx(this.width);
+
+    //cores do pi
+    let intensityRi = pixels[idxi]
+    let intensityGi = pixels[idxi + 1]
+    let intensityBi = pixels[idxi + 2]
+    let intensityAi = pixels[idxi + 3]
+
+    let idxf = pf.get_idx(this.width);
+
+    //cores do pf
+    let intensityRf = pixels[idxf]
+    let intensityGf = pixels[idxf + 1]
+    let intensityBf = pixels[idxf + 2]
+    let intensityAf = pixels[idxf + 3]
+
+    if (passos == 0) {// caso não tenha distância entre Pi e Pf
+      this.set_pixel_color(pi, intensityRi, intensityGi, intensityBi);
+      return
+    }
+
+    let passo_x = dx / passos;
+    let passo_y = dy / passos;
+
+    for (let i = 0; i < passos; i++) {
+      let is_one = Math.abs(Math.round(passo_x)) == 1
+
+      let x = pi.x + i * passo_x;
+      let y = pi.y + i * passo_y;
+      let d = decimal_part(is_one ? y : x)
+
+      if (is_one) {
+        var px1 = new Pixel(Math.round(x), Math.floor(y))
+        var px2 = new Pixel(Math.round(x), Math.floor(y + 1))
+      }
+      else {
+        var px1 = new Pixel(Math.floor(x), Math.round(y))
+        var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
+      }
+      //setar as cores dos pixeis novos
+      var porc1 = (pf.x - pi.x) ? (px1.x - pi.x) / (pf.x - pi.x) : (px1.y - pi.y) / (pf.y - pi.y);
+      var porc2 = (pf.x - pi.x) ? (px2.x - pi.x) / (pf.x - pi.x) : (px2.y - pi.y) / (pf.y - pi.y);
+
+      console.log(pf.x - pi.x)
+
+      // Calculo das cores de px1 e px2 (Gradiente)
+      var color_r1 = Math.round((intensityRf - intensityRi) * porc1 + intensityRi);
+      var color_g1 = Math.round((intensityGf - intensityGi) * porc1 + intensityGi);
+      var color_b1 = Math.round((intensityBf - intensityBi) * porc1 + intensityBi);
+
+      var color_r2 = Math.round((intensityRf - intensityRi) * porc2 + intensityRi);
+      var color_g2 = Math.round((intensityGf - intensityGi) * porc2 + intensityGi);
+      var color_b2 = Math.round((intensityBf - intensityBi) * porc2 + intensityBi);
+
+      this.set_pixel_color(px1, color_r1, color_g1, color_b1);
+      this.set_pixel_color(px2, color_r2, color_g2, color_b2);
+    }
+
+    if (clg) {
+      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
+    }
+  }
+
 
   scanline_tex(pol, tex) {//TODO: add tex posteriormente
 
@@ -414,55 +525,23 @@ class ImageCG {
    * @param {Number} step Passo do desenho (default: 1)
    */
   circumference(center, radius, step = 1) {
-    let square_radius = Math.pow(radius, 2)
+    this.set_pixel(center, 255)
+    let radius_line = new Line(center, new Pixel(center.x + radius, center.y))
 
     for (let x = 1; x <= radius; x += step) {
       let y = getArcCoordinate(square_radius, square_radius, x)
 
-      this.set_pixel(new Pixel(x, y).add(center))
-      this.set_pixel(new Pixel(y, x).add(center))
+      this.set_pixel(p)
+      this.set_pixel(p.invert())
 
-      this.set_pixel(new Pixel(-y, x).add(center))
-      this.set_pixel(new Pixel(-x, y).add(center))
+      this.set_pixel(new Pixel(neg_y, p.x))
+      this.set_pixel(new Pixel(neg_x, p.y))
 
-      this.set_pixel(new Pixel(-x, -y).add(center))
-      this.set_pixel(new Pixel(-y, -x).add(center))
+      this.set_pixel(p_neg)
+      this.set_pixel(p_neg.invert())
 
-      this.set_pixel(new Pixel(y, -x).add(center))
-      this.set_pixel(new Pixel(x, -y).add(center))
-    }
-
-  }
-
-
-  /**
-   * Desenha uma elipse (pixel a pixel)
-   * @param {Pixel} center Centro da elipse
-   * @param {Number} r1 raio vertical da elipse
-   * @param {Number} r1 raio horizontal da elipse
-   * @param {Number} step Passo do desenho (default: 1)
-   */
-  elipse(center, r1, r2, step = 1) { //TODO: não funciona
-    let square_radius1 = Math.pow(r1, 2)
-    let square_radius2 = Math.pow(r2, 2)
-
-    for (let x1 = 0; x1 <= 2 * r2 / 3; x1 += step) {
-      let y1 = Math.sqrt(square_radius2 - Math.pow(x1, 2))
-
-      this.set_pixel(new Pixel(x1, y1).add(center))
-      this.set_pixel(new Pixel(-x1, y1).add(center))
-      this.set_pixel(new Pixel(-x1, -y1).add(center))
-      this.set_pixel(new Pixel(x1, -y1).add(center))
-
-    }
-
-    for (let y2 = 1; y2 <= r1 / 2; y2 += step) {
-      let x2 = Math.sqrt(square_radius1 - Math.pow(y2, 2))
-
-      this.set_pixel(new Pixel(x2, y2).add(center))
-      this.set_pixel(new Pixel(-x2, y2).add(center))
-      this.set_pixel(new Pixel(-x2, -y2).add(center))
-      this.set_pixel(new Pixel(x2, -y2).add(center))
+      this.set_pixel(new Pixel(p.y, neg_x))
+      this.set_pixel(new Pixel(p.x, neg_y))
     }
   }
 }
