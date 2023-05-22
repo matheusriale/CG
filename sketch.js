@@ -9,6 +9,10 @@ function preload() {
 
 function setup() {
   img.init()
+  p = new Polygon(0,[pix = new Pixel(10,60,0,0),new Pixel(10,10,1,0),new Pixel(60,10,0,0),new Pixel(80,80,0,0)])
+  img.scanline_no_texture(p);
+  img.draw_figure(p);
+  img.set_pixel_color(pix,255,0,255,clg=true);
 }
 
 function draw() {
@@ -16,9 +20,7 @@ function draw() {
   
   //funcionando para esse caso
   //p = new Polygon(0,[new Pixel(10,10,0,0),new Pixel(10,50,1,0),new Pixel(50,50,1,1),new Pixel(50,10,0,1)])
-  p = new Polygon(0,[new Pixel(10,60,0,0),new Pixel(10,10,1,0),new Pixel(60,10,0,0),new Pixel(80,80,0,0)])
-  img.scanline_no_texture(p)
-  img.draw_figure(p)
+
 
 
   // // Relogio

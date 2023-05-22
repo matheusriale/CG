@@ -50,16 +50,24 @@ class ImageCG {
    * @returns Índice do pixel no array de pixels do P5.js
    */
   set_pixel(p, intensity, clg = false) {
+    return this.set_pixel_color(p,intensity,intensity,intensity,clg);
+  }
+
+  set_pixel_color(p, intensityR,intensityG,intensityB, clg = false) {
     loadPixels()
+    
     let idx = p.get_idx(this.width);
 
-    for (let i = 0; i < 3; i++) { //rgb
-      pixels[idx + i] = intensity;
-    }
+    //rgb
+    pixels[idx] = intensityR;
+    pixels[idx + 1] = intensityG;
+    pixels[idx + 2] = intensityB;
     pixels[idx + 3] = 255; //alpha
 
     if (clg) {
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${intensity}`);
+      console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${intensityR}`);
+      console.log(`Pixel (${p.to_array()}) [idx = ${idx+1}] changed to ${intensityG}`);
+      console.log(`Pixel (${p.to_array()}) [idx = ${idx+2}] changed to ${intensityB}`);
     }
     updatePixels()
     return idx
@@ -94,19 +102,6 @@ class ImageCG {
     }
     p.x = Math.round(p.x * (tex.width - 1) + 1);
     p.y = Math.round(p.y * (tex.height - 1) + 1);
-
-    // if (p.x > tex.width){       
-    //   p.x = tex.width - 1;
-    // }
-    // if (p.x < 0){
-    //   p.x = 0;
-    // }
-    // if (p.y > tex.height){
-    //   p.y = tex.height - 1;
-    // }
-    // if (p.y < 0){
-    //   p.y = 0;
-    // }
     let intensity = tex.get(p.x, p.y);
     return intensity;
   }
