@@ -7,10 +7,10 @@
  * @type {{x:Number y:Number xtex:Number ytex:Number}}
  */
 function Pixel(x, y, xtex, ytex) {
-    this.x = x === undefined ? 0 : x
-    this.y = y === undefined ? this.x : y
-    this.xtex = xtex === undefined ? 0 : xtex
-    this.ytex = ytex === undefined ? this.xtex : ytex
+    this.x = round(x === undefined ? 0 : x)
+    this.y = round(y === undefined ? this.x : y)
+    this.xtex = round(xtex === undefined ? 0 : xtex)
+    this.ytex = round(ytex === undefined ? this.xtex : ytex)
 
     /**
      * Retorna as coordenadas x,y como um array
