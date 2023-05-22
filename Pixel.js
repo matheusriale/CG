@@ -47,6 +47,7 @@ function Pixel(x, y, xtex, ytex) {
     this.sub = (p) => {
         this.x -= p.x
         this.y -= p.y
+        return this
     }
 
     /**
@@ -56,6 +57,7 @@ function Pixel(x, y, xtex, ytex) {
     this.add = (p) => {
         this.x += p.x
         this.y += p.y
+        return this
     }
 
     /**
