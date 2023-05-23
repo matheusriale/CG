@@ -581,47 +581,38 @@ class ImageCG {
   }
 
   /**
-   * 
-   * @param {Pixel} p 
-   * @param {Number} color 
-   * @param {Number} init_color 
-   */
-/**
    * Preenche uma área
    * @param {Pixel} p - Pixel que será pintado de início
    * @param {Number} color - Cor para pintar o pixel
    * @param {Number} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
    */
-floodFill(p, color, init_color) {
-  init_color = init_color || this.background;
-  let stack_not_verified = [p];
-  
-  loadPixels()
-  if (pixels[p.get_idx(width)] != init_color) {
-    return;
-  }
-  //this.set_pixel(p, color)
-  while(stack_not_verified.length > 0){
+  floodFill(p, color, init_color = null) {
+    console.log(init_color)
+    init_color = init_color === null ? this.background : init_color
+    let stack_not_verified = [p];
 
-    let pix = stack_not_verified.pop();
-    this.set_pixel(pix, color)
-    if (pixels[new Pixel(pix.x, pix.y + 1).get_idx(width)] == init_color){
-      stack_not_verified.push(new Pixel(pix.x, pix.y + 1))}
-    if (pixels[new Pixel(pix.x, pix.y - 1).get_idx(width)] == init_color){
-      stack_not_verified.push(new Pixel(pix.x, pix.y - 1))}
-    if (pixels[new Pixel(pix.x + 1, pix.y).get_idx(width)] == init_color){
-      stack_not_verified.push(new Pixel(pix.x + 1, pix.y))}
-    if (pixels[new Pixel(pix.x - 1, pix.y).get_idx(width)] == init_color){
-      stack_not_verified.push(new Pixel(pix.x - 1, pix.y))}
+    loadPixels()
+    if (pixels[p.get_idx(width)] != init_color) {
+      return;
     }
-  } 
+
+    while (stack_not_verified.length > 0) {
+      let pix = stack_not_verified.pop();
+      this.set_pixel(pix, color)
+      if (pixels[new Pixel(pix.x, pix.y + 1).get_idx(width)] == init_color) {
+        stack_not_verified.push(new Pixel(pix.x, pix.y + 1))
+      }
+      if (pixels[new Pixel(pix.x, pix.y - 1).get_idx(width)] == init_color) {
+        stack_not_verified.push(new Pixel(pix.x, pix.y - 1))
+      }
+      if (pixels[new Pixel(pix.x + 1, pix.y).get_idx(width)] == init_color) {
+        stack_not_verified.push(new Pixel(pix.x + 1, pix.y))
+      }
+      if (pixels[new Pixel(pix.x - 1, pix.y).get_idx(width)] == init_color) {
+        stack_not_verified.push(new Pixel(pix.x - 1, pix.y))
+      }
+    }
+  }
 }
-
-/*
-floodfill(pixel,bgcolor,bound_color,intensity)
-bgcolor
-centro
-
-*/
 
 
