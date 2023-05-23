@@ -247,7 +247,6 @@ class ImageCG {
 
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
-      let d = decimal_part(is_one ? y : x)
 
       if (is_one) {
         var px1 = new Pixel(Math.round(x), Math.floor(y))
@@ -258,8 +257,8 @@ class ImageCG {
         var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
       }
 
-      this.set_pixel(px1, Math.round((1 - d) * intensity));
-      this.set_pixel(px2, Math.round(d * intensity));
+      this.set_pixel(px1, intensity);
+      this.set_pixel(px2, intensity);
     }
 
     if (clg) {
