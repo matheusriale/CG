@@ -468,8 +468,8 @@ class ImageCG {
 
       console.log(px1.color, px2.color)
 
-      let color1 = Color.gradient(px1.color, px2.color, porc1)
-      let color2 = Color.gradient(px1.color, px2.color, porc2)
+      let color1 = Color.gradient(pi.color, pf.color, porc1)
+      let color2 = Color.gradient(pi.color, pf.color, porc2)
 
       this.set_pixel_color(px1, color1);
       this.set_pixel_color(px2, color2);
