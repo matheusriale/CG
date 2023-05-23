@@ -12,7 +12,7 @@ class Opening {
         this.is_runing = false
         this._char_drawer = char_drawer
         this.init_pixel = new Pixel(20, 20)
-        this._elipse_color = 0
+        this._elipse_color = 1
         this.font_size = this._char_drawer.font_size
         this.padding = 10
     }
@@ -22,6 +22,7 @@ class Opening {
         this._draw_elipse()
         this._draw_C()
         this._draw_G()
+        this._draw_start_button()
     }
 
     _draw_C() {
@@ -44,5 +45,15 @@ class Opening {
     stop() {
         this.is_runing = false
         this.screen.clear()
+    }
+
+    _draw_start_button() {
+        let center = new Pixel(45, 70)
+        this.screen.circumference(center, 10, this._elipse_color)
+        this.screen.floodFill(center, this._elipse_color)
+
+        let triangle = Polygon.triangle(center, 5, 255)
+        this.screen.draw_figure(triangle)
+        this.screen.floodFill(center.copy().sub(new Pixel(3)), 255, this._elipse_color)
     }
 }
