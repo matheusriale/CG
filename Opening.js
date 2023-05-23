@@ -12,7 +12,9 @@ class Opening {
         this.is_runing = false
         this._char_drawer = char_drawer
         this.init_pixel = new Pixel(20)
-        this._elipse_color = 1
+        this._elipse_color = new Color(100, 100, 255)
+        this._button_color = new Color(100, 100, 255)
+        this._border_color = new Color(255, 255, 0)
         this.font_size = this._char_drawer.font_size
         this.padding = 10
     }
@@ -38,7 +40,7 @@ class Opening {
 
     _draw_elipse() {
         let center = this.init_pixel.copy().add(new Pixel(this.font_size + this.padding / 2, this.font_size / 2))
-        this.screen.ellipse(center, this.font_size * 2, 20, this._elipse_color)
+        this.screen.ellipse(center, this.font_size * 2, 20, this._border_color)
         this.screen.floodFill(center, this._elipse_color)
     }
 
@@ -49,8 +51,8 @@ class Opening {
 
     _draw_start_button() {
         let center = new Pixel(45, 70)
-        this.screen.circumference(center, 10, this._elipse_color)
-        this.screen.floodFill(center, this._elipse_color)
+        this.screen.circumference(center, 10, this._border_color)
+        this.screen.floodFill(center, this._button_color)
 
         let triangle = Polygon.triangle(center, 5, 255)
         this.screen.draw_figure(triangle)
