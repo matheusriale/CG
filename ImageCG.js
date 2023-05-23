@@ -40,15 +40,22 @@ class ImageCG {
    * @param {Number} intensity Intensidade (0 a 255)
    */
   clear(intensity = null) {
-    intensity = intensity == null ? this.background : intensity
+    this.clear_area(new Pixel(0), new Pixel(this.width, this.height), intensity)
+  }
 
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
+  /**
+   * Preenche uma área do canvas
+   * @param {Pixel} start
+   * @param {Pixel} end
+   * @param {Number} intensity Intensidade (0 a 255)
+   */
+  clear_area(start, end, intensity = null) {
+    for (let x = start.x; x < end.x; x++) {
+      for (let y = start.y; y < end.y; y++) {
         this.set_pixel(new Pixel(x, y), intensity)
       }
     }
   }
-
   /**
    * Muda a intensidade de um pixel
    * @param {Pixel} p Pixel para ser mudado
@@ -622,8 +629,7 @@ class ImageCG {
     var pixel_color = (pixel) => {
       return JSON.stringify(pixel.load_color(this.width).to_array())
     }
-    console.log(pixel_color(p), init_color, p)
-    // loadPixels()
+
     if (pixel_color(p) != init_color) return
 
     while (stack_not_verified.length > 0) {
