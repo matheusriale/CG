@@ -582,21 +582,24 @@ class ImageCG {
   }
 
   /**
-   * 
-   * @param {Pixel} p 
-   * @param {Number} color 
-   * @param {Number} init_color 
+   * Preenche uma área
+   * @param {Pixel} p - Pixel que será pintado de início
+   * @param {Number} color - Cor para pintar o pixel
+   * @param {Number} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
    */
   floodFill(p, color, init_color) { //TODO: não funciona
     init_color = init_color || this.background
-    console.log(init_color)
+
     loadPixels()
-    if (pixels[p.get_idx()] != init_color) {
+    if (pixels[p.get_idx(width)] != init_color) {
       return
     }
     this.set_pixel(p, color)
+
     this.floodFill(new Pixel(p.x, p.y - 1), color, init_color)
     this.floodFill(new Pixel(p.x, p.y + 1), color, init_color)
+    this.floodFill(new Pixel(p.x - 1, p.y), color, init_color)
+    this.floodFill(new Pixel(p.x + 1, p.y), color, init_color)
   }
 }
 
