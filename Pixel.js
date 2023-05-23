@@ -105,11 +105,16 @@ function Pixel(x, y, xtex, ytex) {
 
     /**
      * Retorna uma lista com os valores de cada cor em RGB (todos de 0 a 255)
+     * @param {boolen} force Se deve buscar na matriz de pixel mesmo que já tenha buscado antes
      * @returns {Array<Number>} [Vermelho, Verde, Azul, Alpha]
      */
-    this.get_color = () => {
-        let idx = this.get_idx()
-        return pixels.slice(idx, idx + 4)
+    this.get_color = (force) => {
+        if (!this._color || force) {
+            let idx = this.get_idx()
+            this._color = new Color(...pixels.slice(idx, idx + 4))
+        }
+
+        return this._color
     }
 }
 
