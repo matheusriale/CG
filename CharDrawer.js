@@ -197,15 +197,30 @@ class CharDrawer {
     /**
      * Obtém os vértices para o dígito `C`
      * @param {Pixel} pos Posição inicial da letra
-     * @returns {Array<Figure>} Vértices obtidos
+     * @param {Number} weight Se a letra deve ser em negrito ou não
+     * @returns {Figure | Polygon} Vértices obtidos
      */
-    letter_C(pos) {
-        let c = new Figure(this.font_color, [
-            new Pixel(pos.x + this.font_size, pos.y),
-            pos,
-            new Pixel(pos.x, pos.y + this.font_size),
-            pos.copy().add(new Pixel(this.font_size))])
+    letter_C(pos, weight) {
+        let p1 = new Pixel(pos.x + this.font_size, pos.y)
+        let p2 = pos
+        let p3 = new Pixel(pos.x, pos.y + this.font_size)
+        let p4 = pos.copy().add(new Pixel(this.font_size))
+        let vertices = [
+            p1, p2, p3, p4
+        ]
 
-        return c
+        if (weight) {
+            let c = new Polygon(this.font_color, vertices)
+            c.add_vertex([p4.copy().sub(new Pixel(0, weight)),
+            p3.copy().add(new Pixel(weight, -weight)),
+            p2.copy().add(new Pixel(weight)),
+            p1.copy().add(new Pixel(0, weight))
+            ]
+            )
+            return c
+        }
+        else {
+            return new Figure(this.font_color, vertices)
+        }
     }
 }
