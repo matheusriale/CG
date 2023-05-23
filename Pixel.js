@@ -129,7 +129,7 @@ function Pixel(x, y, xtex, ytex) {
     this.get_color = (force) => {
         if (!this._color || force) {
             let idx = this.get_idx()
-            this._color = new Color(...pixels.slice(idx, idx + 4))
+            this._color = Color.from_array(pixels.slice(idx, idx + 4))
         }
 
         return this._color
