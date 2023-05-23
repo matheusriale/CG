@@ -587,7 +587,7 @@ class ImageCG {
    * @param {Number} color - Cor para pintar o pixel
    * @param {Number} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
    */
-  floodFill(p, color, init_color) { //TODO: não funciona
+  floodFill(p, color, init_color) {
     init_color = init_color || this.background
 
     loadPixels()
