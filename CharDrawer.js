@@ -1,7 +1,7 @@
 /**
  * @type {{stroke: Number font_size: Number spacing: Number}}
  */
-class NumberDrawer {
+class CharDrawer {
     /**
      * Desenha números
      * @param {Number} stroke Intensidade (0 a 255) - padrão: 255
@@ -193,5 +193,19 @@ class NumberDrawer {
         new Figure(this.stroke, [
             new Pixel(pos.x + size, pos.y + size),
             new Pixel(pos.x + size, pos.y + this.font_size)])]
+    }
+    /**
+     * Obtém os vértices para o dígito `C`
+     * @param {Pixel} pos Posição inicial da letra
+     * @returns {Array<Figure>} Vértices obtidos
+     */
+    letter_C(pos) {
+        let c = new Figure(this.font_color, [
+            new Pixel(pos.x + this.font_size, pos.y),
+            pos,
+            new Pixel(pos.x, pos.y + this.font_size),
+            pos.copy().add(new Pixel(this.font_size))])
+
+        return c
     }
 }

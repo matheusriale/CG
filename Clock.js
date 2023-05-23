@@ -1,12 +1,12 @@
 /**
  * @type {{
- * num_drawer: NumberDrawer center: Pixel radius: Number date:Date 
+ * num_drawer: CharDrawer center: Pixel radius: Number date:Date 
  * second_hand:Line minute_hand:Line hour_hand:Line}}
  */
 class Clock {
     /**
      * Constrói um relógio
-     * @param {NumberDrawer} num_drawer 
+     * @param {CharDrawer} num_drawer 
      * @param {Pixel} center Coordenadas do centro do relógio
      * @param {Number} radius Tamanho do raio
      */
