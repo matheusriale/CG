@@ -13,21 +13,53 @@ class Opening {
         this._char_drawer = char_drawer
         this.init_pixel = new Pixel(20)
         this._elipse_color = new Color(100, 100, 255)
-        this._button_color = new Color(100, 100, 255)
         this._border_color = new Color(255, 255, 0)
         this.font_size = this._char_drawer.font_size
         this.padding = 10
         this.font_weight = 3.5
         this.font_color = new Color(255)
+
+        this.button = {
+            center: new Pixel(45, 70),
+            radius: 10,
+            color: new Color(100, 100, 255)
+        }
+
+        this._last_hover = false
     }
 
     start() {
         console.log("Iniciando tela de abertura...")
         this.is_running = true
+        this.draw_all()
+    }
+
+    draw_all() {
         this._draw_elipse()
         this._draw_C()
         this._draw_G()
         this._draw_start_button()
+    }
+    is_hover_button() {
+        return mouseX <= (this.button.center.x + this.button.radius) &&
+            mouseX >= (this.button.center.x - this.button.radius) &&
+            mouseY <= this.button.center.y + this.button.radius &&
+            mouseY >= this.button.center.y - this.button.radius
+    }
+
+    update() {
+        let is_hover = this.is_hover_button()
+
+        if (is_hover && !this._last_hover) {
+            this.screen.floodFill(this.button.center.copy(), this.font_color, this._elipse_color)
+            this._last_hover = true
+        }
+
+        if (!is_hover && this._last_hover) {
+            this.screen.clear()
+            this.draw_all()
+            this._last_hover = false
+        }
     }
 
     _draw_C() {
@@ -60,12 +92,11 @@ class Opening {
 
     _draw_start_button() {
         console.log("Botão")
-        let center = new Pixel(45, 70)
-        this.screen.circumference(center, 10, this._border_color)
-        this.screen.floodFill(center, this._button_color)
+        this.screen.circumference(this.button.center, this.button.radius, this._border_color)
+        this.screen.floodFill(this.button.center, this.button.color)
 
-        let triangle = Polygon.triangle(center, 5, 255)
+        let triangle = Polygon.triangle(this.button.center, 5, 255)
         this.screen.draw_figure(triangle)
-        this.screen.floodFill(center.copy(), new Color(255), this._elipse_color)
+
     }
 }

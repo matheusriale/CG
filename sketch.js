@@ -21,8 +21,10 @@ function mousePressed() {
 }
 
 function draw() {
-  if (opening.is_running) return
-
+  if (opening.is_running) {
+    opening.update()
+    return
+  }
   // Relogio
   clk.update()
   clk.get_hour_numbers().forEach(n => {
