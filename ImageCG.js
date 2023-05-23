@@ -553,17 +553,17 @@ class ImageCG {
      * @param {Number} radiusY raio horizontal da elipse
      * @param {Number} step Passo do desenho (default: 1)
      */
-  ellipse(center, radiusX, radiusY, step = 1) {
+  ellipse(center, radiusX, radiusY, intensity, step = 1) {
     for (let x1 = 0; x1 < radiusX; x1 += step) {
 
       let y1 = getArcCoordinate(radiusY, radiusX, x1)
 
       let px = x1
       let py = y1
-      this.set_pixel(new Pixel(px, py).add(center))
-      this.set_pixel(new Pixel(-px, py).add(center))
-      this.set_pixel(new Pixel(-px, -py).add(center))
-      this.set_pixel(new Pixel(px, -py).add(center))
+      this.set_pixel(new Pixel(px, py).add(center), intensity)
+      this.set_pixel(new Pixel(-px, py).add(center), intensity)
+      this.set_pixel(new Pixel(-px, -py).add(center), intensity)
+      this.set_pixel(new Pixel(px, -py).add(center), intensity)
 
     }
 
@@ -572,10 +572,10 @@ class ImageCG {
 
       let px = x2
       let py = y2
-      this.set_pixel(new Pixel(px, py).add(center))
-      this.set_pixel(new Pixel(-px, py).add(center))
-      this.set_pixel(new Pixel(-px, -py).add(center))
-      this.set_pixel(new Pixel(px, -py).add(center))
+      this.set_pixel(new Pixel(px, py).add(center), intensity)
+      this.set_pixel(new Pixel(-px, py).add(center), intensity)
+      this.set_pixel(new Pixel(-px, -py).add(center), intensity)
+      this.set_pixel(new Pixel(px, -py).add(center), intensity)
 
     }
   }
