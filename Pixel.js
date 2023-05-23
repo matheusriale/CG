@@ -1,10 +1,10 @@
 
 /**
  * Estrutura para cores
- * @param {Number} r Valor vermelho (0 a 255)
- * @param {Number} g Valor verde (0 a 255)
- * @param {Number} b Valor azul (0 a 255)
- * @param {Number} a Valor alpha (0 a 255)
+ * @param {?Number} r Valor vermelho (0 a 255)
+ * @param {?Number} g Valor verde (0 a 255)
+ * @param {?Number} b Valor azul (0 a 255)
+ * @param {?Number} a Valor alpha (0 a 255)
  */
 function Color(r, g, b, a) {
     this.red = r === undefined ? 0 : r
@@ -19,9 +19,21 @@ function Color(r, g, b, a) {
         this.alpha]
     }
 
-    this.gradient = () => {
 
-    }
+}
+
+/**
+ * Gera uma nova cor a partir das duas especificadas, obedecendo à porcentagem dada
+ * @param {Color} color1 Primeira cor
+ * @param {Color} color2 Segunda cor
+ * @param {Number} porc Porcentagem
+ */
+Color.gradient = (color1, color2, porc) => {
+    var r = Math.round((color2.red - color1.red) * porc + color1.red);
+    var g = Math.round((color2.green - color1.green) * porc + color1.green);
+    var b = Math.round((color2.blue - color1.blue) * porc + color1.blue);
+
+    return new Color(r, g, b)
 }
 
 
