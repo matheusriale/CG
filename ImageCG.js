@@ -304,15 +304,9 @@ class ImageCG {
     let y = scan // scan line -> percorrer toda a imagem 
 
     // if horizontal line
-    if (yi == yf) {
-      x = -1;
-      return [new Pixel(x, y)];
-    }
+    if (yi == yf) return [new Pixel(-1, y)];
 
-    //
-    if (yi > yf) {
-      [seg.pi, seg.pf] = Pixel.switch(seg.pi, seg.pf)
-    }
+    if (yi > yf) [seg.pi, seg.pf] = Pixel.switch(seg.pi, seg.pf)
 
     // calculates t
     let t = (y - yi) / (yf - yi);
@@ -324,8 +318,7 @@ class ImageCG {
     }
 
     // No intersections
-    x = -1;
-    return [new Pixel(x, y), t];
+    return [new Pixel(-1, y), t];
   }
 
   /**
