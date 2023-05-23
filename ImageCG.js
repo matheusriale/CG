@@ -609,7 +609,7 @@ class ImageCG {
   /**
    * Preenche uma área
    * @param {Pixel} p - Pixel que será pintado de início
-   * @param {Number} color - Cor para pintar o pixel
+   * @param {Color} color - Cor para pintar o pixel
    * @param {Number} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
    */
   floodFill(p, color, init_color = null) {
@@ -617,13 +617,12 @@ class ImageCG {
     let stack_not_verified = [p];
 
     loadPixels()
-    if (pixels[p.get_idx(width)] != init_color) {
-      return;
-    }
+    if (pixels[p.get_idx(width)] != init_color) return
 
     while (stack_not_verified.length > 0) {
       let pix = stack_not_verified.pop();
-      this.set_pixel(pix, color)
+      this.set_pixel_color(pix, color)
+
       if (pixels[new Pixel(pix.x, pix.y + 1).get_idx(width)] == init_color) {
         stack_not_verified.push(new Pixel(pix.x, pix.y + 1))
       }
