@@ -1,3 +1,31 @@
+
+/**
+ * Estrutura para cores
+ * @param {Number} r Valor vermelho (0 a 255)
+ * @param {Number} g Valor verde (0 a 255)
+ * @param {Number} b Valor azul (0 a 255)
+ * @param {Number} a Valor alpha (0 a 255)
+ */
+function Color(r, g, b, a) {
+    this.red = r === undefined ? 0 : r
+    this.green = g === undefined ? 0 : g
+    this.blue = b === undefined ? 0 : b
+    this.alpha = a === undefined ? 0 : a
+
+    this.to_array = () => {
+        return [this.red,
+        this.green,
+        this.blue,
+        this.alpha]
+    }
+
+    this.gradient = () => {
+
+    }
+}
+
+
+
 /**
  * Estrutura para localização de pixel
  * @param {?Number} x Coordenada X do pixel. Se 'null', então será 0
