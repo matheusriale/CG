@@ -580,6 +580,24 @@ class ImageCG {
 
     }
   }
+
+  /**
+   * 
+   * @param {Pixel} p 
+   * @param {Number} color 
+   * @param {Number} init_color 
+   */
+  floodFill(p, color, init_color) { //TODO: não funciona
+    init_color = init_color || this.background
+    console.log(init_color)
+    loadPixels()
+    if (pixels[p.get_idx()] != init_color) {
+      return
+    }
+    this.set_pixel(p, color)
+    this.floodFill(new Pixel(p.x, p.y - 1), color, init_color)
+    this.floodFill(new Pixel(p.x, p.y + 1), color, init_color)
+  }
 }
 
 
