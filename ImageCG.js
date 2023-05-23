@@ -277,24 +277,17 @@ class ImageCG {
     var last_pixel = vertices[0]
     let iten = intensity || figure.stroke_intensity
 
-    if (!edge_color) {// construir poligono com arestas monocromaticas
-
-      for (let i = 1; i < vertices.length; i++) {
-        let pixel = vertices[i];
-        this.reta_continua(last_pixel, pixel, iten)
-
-        last_pixel = pixel
+    for (let i = 1; i < vertices.length; i++) {
+      let pixel = vertices[i];
+      if (!edge_color) {
+        this.reta_continua(last_pixel, pixel, iten) //monocromatico
+      } else {
+        this.reta_continua_gradient(last_pixel, pixel, 0, 1) //gradiente
       }
-      return last_pixel;
-    } else {
-      for (let i = 1; i < vertices.length; i++) {// construir polígono com gradiente de cores
-
-        let pixel = vertices[i];
-        this.reta_continua_gradient(last_pixel, pixel, 0, 1)
-        last_pixel = pixel
-      }
+      last_pixel = pixel
     }
     return last_pixel;
+
   }
 
   /**
@@ -460,12 +453,12 @@ class ImageCG {
       let px1, px2
 
       if (is_one) {
-        var px1 = new Pixel(Math.round(x), Math.floor(y))
-        var px2 = new Pixel(Math.round(x), Math.floor(y + 1))
+        px1 = new Pixel(x, Math.floor(y))
+        px2 = new Pixel(x, Math.floor(y + 1))
       }
       else {
-        var px1 = new Pixel(Math.floor(x), Math.round(y))
-        var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
+        px1 = new Pixel(Math.floor(x), y)
+        px2 = new Pixel(Math.floor(x + 1), y)
       }
 
       //setar as cores dos pixeis novos
@@ -478,13 +471,10 @@ class ImageCG {
       let color1 = Color.gradient(px1.color, px2.color, porc1)
       let color2 = Color.gradient(px1.color, px2.color, porc2)
 
-      this.set_pixel_color(px1, color_r1, color_g1, color_b1);
-      this.set_pixel_color(px2, color_r2, color_g2, color_b2);
+      this.set_pixel_color(px1, color1);
+      this.set_pixel_color(px2, color2);
     }
 
-    if (clg) {
-      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
-    }
   }
 
 
