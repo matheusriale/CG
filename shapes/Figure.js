@@ -22,4 +22,12 @@ function Figure(stroke, vertices) {
     this.get_vertices = () => {
         return this.vertices
     }
+
+    /**
+     * Move a figura
+     * @param {Pixel} coord 
+     */
+    this.translate = (coord) => {
+        this.vertices.map(v => v.add(coord))
+    }
 }
