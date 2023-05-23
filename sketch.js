@@ -3,9 +3,9 @@ var clk
 
 function preload() {
   img = new ImageCG(100, 100, 200)
-  // opening = new Opening()
+  opening = new Opening(img, new CharDrawer())
   imgteste = loadImage('images/imgteste.jpg')
-  //clk = new Clock(new NumberDrawer(), new Pixel(60), 40)
+  //clk = new Clock(new CharDrawer(), new Pixel(60), 40)
 }
 
 function setup() {
@@ -18,6 +18,7 @@ function setup() {
   img.draw_figure(p);
   img.floodFill(new Pixel(50, 40), 100, 200)
   // img.circumference(new Pixel(40, 50), 20)
+  opening.start()
 }
 
 function draw() {

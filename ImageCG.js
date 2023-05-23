@@ -247,7 +247,6 @@ class ImageCG {
 
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
-      let d = decimal_part(is_one ? y : x)
 
       if (is_one) {
         var px1 = new Pixel(Math.round(x), Math.floor(y))
@@ -258,8 +257,8 @@ class ImageCG {
         var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
       }
 
-      this.set_pixel(px1, Math.round((1 - d) * intensity));
-      this.set_pixel(px2, Math.round(d * intensity));
+      this.set_pixel(px1, intensity);
+      this.set_pixel(px2, intensity);
     }
 
     if (clg) {
@@ -554,17 +553,17 @@ class ImageCG {
      * @param {Number} radiusY raio horizontal da elipse
      * @param {Number} step Passo do desenho (default: 1)
      */
-  ellipse(center, radiusX, radiusY, step = 1) {
+  ellipse(center, radiusX, radiusY, intensity, step = 1) {
     for (let x1 = 0; x1 < radiusX; x1 += step) {
 
       let y1 = getArcCoordinate(radiusY, radiusX, x1)
 
       let px = x1
       let py = y1
-      this.set_pixel(new Pixel(px, py).add(center))
-      this.set_pixel(new Pixel(-px, py).add(center))
-      this.set_pixel(new Pixel(-px, -py).add(center))
-      this.set_pixel(new Pixel(px, -py).add(center))
+      this.set_pixel(new Pixel(px, py).add(center), intensity)
+      this.set_pixel(new Pixel(-px, py).add(center), intensity)
+      this.set_pixel(new Pixel(-px, -py).add(center), intensity)
+      this.set_pixel(new Pixel(px, -py).add(center), intensity)
 
     }
 
@@ -573,10 +572,10 @@ class ImageCG {
 
       let px = x2
       let py = y2
-      this.set_pixel(new Pixel(px, py).add(center))
-      this.set_pixel(new Pixel(-px, py).add(center))
-      this.set_pixel(new Pixel(-px, -py).add(center))
-      this.set_pixel(new Pixel(px, -py).add(center))
+      this.set_pixel(new Pixel(px, py).add(center), intensity)
+      this.set_pixel(new Pixel(-px, py).add(center), intensity)
+      this.set_pixel(new Pixel(-px, -py).add(center), intensity)
+      this.set_pixel(new Pixel(px, -py).add(center), intensity)
 
     }
   }

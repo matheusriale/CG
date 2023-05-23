@@ -1,7 +1,7 @@
 /**
  * @type {{stroke: Number font_size: Number spacing: Number}}
  */
-class NumberDrawer {
+class CharDrawer {
     /**
      * Desenha números
      * @param {Number} stroke Intensidade (0 a 255) - padrão: 255
@@ -193,5 +193,64 @@ class NumberDrawer {
         new Figure(this.stroke, [
             new Pixel(pos.x + size, pos.y + size),
             new Pixel(pos.x + size, pos.y + this.font_size)])]
+    }
+    /**
+     * Obtém os vértices para o dígito `C`
+     * @param {Pixel} pos Posição inicial da letra
+     * @param {Number} weight Se a letra deve ser em negrito ou não
+     * @returns {Figure | Polygon} Vértices obtidos
+     */
+    letter_C(pos, weight) {
+        let p1 = new Pixel(pos.x + this.font_size, pos.y)
+        let p2 = pos
+        let p3 = new Pixel(pos.x, pos.y + this.font_size)
+        let p4 = pos.copy().add(new Pixel(this.font_size))
+        let vertices = [
+            p1, p2, p3, p4
+        ]
+
+        if (weight) {
+            let c = new Polygon(this.font_color, vertices)
+            c.add_vertex([p4.copy().sub(new Pixel(0, weight)),
+            p3.copy().add(new Pixel(weight, -weight)),
+            p2.copy().add(new Pixel(weight)),
+            p1.copy().add(new Pixel(0, weight))
+            ]
+            )
+            return c
+        }
+        else {
+            return new Figure(this.font_color, vertices)
+        }
+    }
+
+    letter_G(pos, weight) {
+        let p1 = new Pixel(pos.x + this.font_size, pos.y)
+        let p2 = pos
+        let p3 = new Pixel(pos.x, pos.y + this.font_size)
+        let p4 = pos.copy().add(new Pixel(this.font_size))
+        let p5 = p4.copy().sub(new Pixel(0, this.font_size / 2))
+        let p6 = p5.copy().sub(new Pixel(this.font_size / 2, 0))
+        let vertices = [
+            p1, p2, p3, p4, p5, p6
+        ]
+
+        if (weight) {
+            let c = new Polygon(this.font_color, vertices)
+            let p6_bold = p6.copy().add(new Pixel(0, weight))
+            let p5_bold = p5.copy().add(new Pixel(-weight, weight))
+            let p4_bold = new Pixel(p5_bold.x, p4.y - weight)
+            let p3_bold = p3.copy().add(new Pixel(weight, -weight))
+            let p2_bold = p2.copy().add(new Pixel(weight))
+            let p1_bold = p1.copy().add(new Pixel(0, weight))
+
+            c.add_vertex([
+                p6_bold, p5_bold, p4_bold, p3_bold, p2_bold, p1_bold
+            ])
+            return c
+        }
+        else {
+            return new Figure(this.font_color, vertices)
+        }
     }
 }
