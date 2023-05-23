@@ -3,9 +3,9 @@ var clk
 
 function preload() {
   img = new ImageCG(100, 100, 200)
-  opening = new Opening(img)
+  opening = new Opening(img, new CharDrawer())
   imgteste = loadImage('images/imgteste.jpg')
-  //clk = new Clock(new NumberDrawer(), new Pixel(60), 40)
+  //clk = new Clock(new CharDrawer(), new Pixel(60), 40)
 }
 
 function setup() {
