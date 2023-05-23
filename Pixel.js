@@ -74,6 +74,15 @@ function Pixel(x, y, xtex, ytex) {
     this.invert = () => {
         return new Pixel(this.y, this.x)
     }
+
+    /**
+     * Retorna uma lista com os valores de cada cor em RGB (todos de 0 a 255)
+     * @returns {Array<Number>} [Vermelho, Verde, Azul, Alpha]
+     */
+    this.get_color = () => {
+        let idx = this.get_idx()
+        return pixels.slice(idx, idx + 4)
+    }
 }
 
 /**
