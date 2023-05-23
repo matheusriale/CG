@@ -54,3 +54,13 @@ Polygon.square = (top_left, size, stroke = 255) => {
 
     return new Polygon(stroke, v)
 }
+
+Polygon.triangle = (center, radius, stroke = 255) => {
+    let v = [
+        center.copy().sub(new Pixel(radius)),
+        center.copy().add(new Pixel(-radius, radius)),
+        center.copy().add(new Pixel(radius, 0))
+    ]
+
+    return new Polygon(stroke, v)
+}
