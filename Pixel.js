@@ -24,7 +24,6 @@ function Color(r, g, b, a) {
 }
 
 Color.from_array = (array) => {
-    console.log(array)
     return new Color(array[0], array[1], array[2], array[3])
 }
 
@@ -50,9 +49,10 @@ Color.gradient = (color1, color2, porc) => {
  * @param {?Number} y Coordenada Y do pixel. Se 'null', então será igual ao x
  * @param {?Number} xtex Coordenada X da textura variam de 0 a 1. 
  * @param {?Number} ytex Coordenada Y da textura variam de 0 a 1. 
- * @type {{x:Number y:Number xtex:Number ytex:Number}}
+ * @param {?Color} color Cor do pixel
+ * @type {{x:Number y:Number xtex:Number ytex:Number color:Color}}
  */
-function Pixel(x, y, xtex, ytex) {
+function Pixel(x, y, xtex, ytex, color) {
     this.x = round(x === undefined ? 0 : x)
     this.y = round(y === undefined ? this.x : y)
     this.xtex = round(xtex === undefined ? 0 : xtex)
@@ -121,27 +121,12 @@ function Pixel(x, y, xtex, ytex) {
         return new Pixel(this.y, this.x)
     }
 
-    /**
-     * Retorna uma lista com os valores de cada cor em RGB (todos de 0 a 255)
-     * @param {boolen} force Se deve buscar na matriz de pixel mesmo que já tenha buscado antes
-     * @returns {Color} Cor do pixel no ponto
-     */
-    this.get_color = (force) => {
-        if (!this._color || force) {
-            let idx = this.get_idx()
-            this._color = Color.from_array(pixels.slice(idx, idx + 4))
-        }
-
-        return this._color
+    this.load_color = () => {
+        let idx = this.get_idx()
+        return new Color(pixels[idx], pixels[idx + 1], pixels[idx + 2], pixels[idx + 3])
     }
 
-    /**
-     * Define uma nova cor para o pixel
-     * @param {Color} new_color 
-     */
-    this.set_color = (new_color) => {
-        this._color = new_color
-    }
+    this.color = color === undefined ? this.load_color() : color
 }
 
 /**
