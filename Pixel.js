@@ -12,6 +12,7 @@ function Color(r, g, b, a) {
     this.blue = b === undefined ? this.red : b
     this.alpha = a === undefined ? 255 : a
 
+
     this.to_array = () => {
         return [this.red,
         this.green,
@@ -20,6 +21,11 @@ function Color(r, g, b, a) {
     }
 
 
+}
+
+Color.from_array = (array) => {
+    console.log(array)
+    return new Color(array[0], array[1], array[2], array[3])
 }
 
 /**
