@@ -11,7 +11,7 @@ class Opening {
         this.screen = screen
         this.is_runing = false
         this._char_drawer = char_drawer
-        this.init_pixel = new Pixel(20, 20)
+        this.init_pixel = new Pixel(20)
         this._elipse_color = 1
         this.font_size = this._char_drawer.font_size
         this.padding = 10

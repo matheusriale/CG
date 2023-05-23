@@ -5,6 +5,7 @@ function preload() {
   img = new ImageCG(100, 100, 200)
   opening = new Opening(img, new CharDrawer())
   // imgteste = loadImage('images/imgteste.jpg')
+  clk = new Clock(new CharDrawer(155, 10, 10), new Pixel(50), 50)
 }
 
 function setup() {
@@ -15,7 +16,6 @@ function setup() {
 function mousePressed() {
   if (opening.is_runing) {
     opening.stop()
-    clk = new Clock(new CharDrawer(), new Pixel(50), 40)
   }
 }
 
@@ -24,6 +24,9 @@ function draw() {
 
   // Relogio
   clk.update()
+  clk.get_hour_numbers().forEach(n => {
+    img.draw_figure(n)
+  })
   clk.get_hands().forEach(h => {
     img.draw_figure(h)
   })

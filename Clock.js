@@ -14,7 +14,7 @@ class Clock {
         this.num_drawer = num_drawer
         this.center = center
         this.radius = radius
-        this.date = new Date(2023, 5, 15, 10, 30, 30)
+        this.date = new Date()
 
         this.reset_hands()
     }
@@ -23,8 +23,8 @@ class Clock {
      * Volta os ponteiros para o início
      */
     reset_hands() {
-        let size1 = this.center.y - this.radius
-        let size2 = this.center.y - this.radius * 0.9
+        let size1 = this.center.y - this.radius * 0.9
+        let size2 = this.center.y - this.radius * 0.7
         this.second_hand = new Line(this.center, new Pixel(this.center.x, size2), 255)
         this.minute_hand = new Line(this.center, new Pixel(this.center.x, size2), 50)
         this.hour_hand = new Line(this.center, new Pixel(this.center.x, size1), 100)
@@ -39,14 +39,16 @@ class Clock {
         this._update_second_hand()
         this._update_minute_hand()
         this._update_hour_hand()
+
     }
 
     get_hour_numbers() { //TODO: gambiarra
         let nums = []
-        let pos_3 = new Pixel(this.center.x + this.radius, this.center.y - this.num_drawer.font_size / 2)
-        let pos_6 = new Pixel(this.center.x, this.center.y + this.radius - this.num_drawer.font_size * 1.5)
-        let pos_9 = new Pixel(this.center.x - this.radius + this.num_drawer.font_size * 3 / 4, this.center.y - this.num_drawer.font_size / 2)
-        let pos_12 = new Pixel(this.center.x, this.center.y - this.radius)
+        let mid_height = this.center.y - this.num_drawer.font_size / 2
+        let pos_3 = new Pixel(this.center.x + this.radius - this.num_drawer.font_size, mid_height)
+        let pos_6 = new Pixel(this.center.x, this.center.y + this.radius - this.num_drawer.font_size * 1.1)
+        let pos_9 = new Pixel(this.center.x - this.radius + this.num_drawer.font_size * 2 / 4, mid_height)
+        let pos_12 = new Pixel(this.center.x - this.num_drawer.font_size * 2 / 4, this.center.y - this.radius)
 
         nums.push(...this.num_drawer.get_number("12", pos_12))
         nums.push(...this.num_drawer.get_number("3", pos_3))
