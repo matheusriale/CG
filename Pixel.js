@@ -121,8 +121,8 @@ function Pixel(x, y, xtex, ytex, color) {
         return new Pixel(this.y, this.x)
     }
 
-    this.load_color = () => {
-        let idx = this.get_idx()
+    this.load_color = (width) => {
+        let idx = this.get_idx(width)
         return new Color(pixels[idx], pixels[idx + 1], pixels[idx + 2], pixels[idx + 3])
     }
 
