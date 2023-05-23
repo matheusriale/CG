@@ -525,23 +525,25 @@ class ImageCG {
    * @param {Number} step Passo do desenho (default: 1)
    */
   circumference(center, radius, step = 1) {
-    this.set_pixel(center, 255)
-    let radius_line = new Line(center, new Pixel(center.x + radius, center.y))
+    let square_radius = Math.pow(radius, 2)
 
     for (let x = 1; x <= radius; x += step) {
-      let y = getArcCoordinate(square_radius, square_radius, x)
+      let y = Math.sqrt(square_radius - Math.pow(x, 2))
 
-      this.set_pixel(p)
-      this.set_pixel(p.invert())
+      this.set_pixel(new Pixel(x, y).add(center))
+      this.set_pixel(new Pixel(y, x).add(center))
 
-      this.set_pixel(new Pixel(neg_y, p.x))
-      this.set_pixel(new Pixel(neg_x, p.y))
+      this.set_pixel(new Pixel(-y, x).add(center))
+      this.set_pixel(new Pixel(-x, y).add(center))
 
-      this.set_pixel(p_neg)
-      this.set_pixel(p_neg.invert())
+      this.set_pixel(new Pixel(-x, -y).add(center))
+      this.set_pixel(new Pixel(-y, -x).add(center))
 
-      this.set_pixel(new Pixel(p.y, neg_x))
-      this.set_pixel(new Pixel(p.x, neg_y))
+      this.set_pixel(new Pixel(y, -x).add(center))
+      this.set_pixel(new Pixel(x, -y).add(center))
     }
+
   }
+
 }
+
