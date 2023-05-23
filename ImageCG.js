@@ -612,33 +612,38 @@ class ImageCG {
    * Preenche uma área
    * @param {Pixel} p - Pixel que será pintado de início
    * @param {Color} color - Cor para pintar o pixel
-   * @param {Number} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
+   * @param {Color} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
    */
   floodFill(p, color, init_color = null) {
-    init_color = init_color === null ? this.background : init_color
+    init_color = init_color === null ? new Color(this.background) : init_color
+    init_color = JSON.stringify(init_color.to_array())
     let stack_not_verified = [p];
 
-    loadPixels()
-    if (pixels[p.get_idx(width)] != init_color) return
+    var pixel_color = (pixel) => {
+      return JSON.stringify(pixel.load_color(this.width).to_array())
+    }
+    console.log(pixel_color(p), init_color, p)
+    // loadPixels()
+    if (pixel_color(p) != init_color) return
 
     while (stack_not_verified.length > 0) {
       let pix = stack_not_verified.pop();
       this.set_pixel_color(pix, color)
 
-      if (pixels[new Pixel(pix.x, pix.y + 1).get_idx(width)] == init_color) {
-        stack_not_verified.push(new Pixel(pix.x, pix.y + 1))
+      let pixels = [
+        new Pixel(pix.x, pix.y + 1),
+        new Pixel(pix.x, pix.y - 1),
+        new Pixel(pix.x + 1, pix.y),
+        new Pixel(pix.x - 1, pix.y)]
+
+      for (const px of pixels) {
+        if (pixel_color(px) == init_color) stack_not_verified.push(px)
       }
-      if (pixels[new Pixel(pix.x, pix.y - 1).get_idx(width)] == init_color) {
-        stack_not_verified.push(new Pixel(pix.x, pix.y - 1))
-      }
-      if (pixels[new Pixel(pix.x + 1, pix.y).get_idx(width)] == init_color) {
-        stack_not_verified.push(new Pixel(pix.x + 1, pix.y))
-      }
-      if (pixels[new Pixel(pix.x - 1, pix.y).get_idx(width)] == init_color) {
-        stack_not_verified.push(new Pixel(pix.x - 1, pix.y))
-      }
+
     }
   }
+
+
 }
 
 
