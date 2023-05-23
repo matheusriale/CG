@@ -57,33 +57,31 @@ class ImageCG {
    * @returns {Number} Índice do pixel no array de pixels do P5.js
    */
   set_pixel(p, intensity, clg = false) {
-    return this.set_pixel_color(p, intensity, intensity, intensity, clg);
+    return this.set_pixel_color(p, new Color(intensity), clg);
   }
 
   /**
    * Muda a cor de um pixel
    * @param {Pixel} p Pixel para ser mudado
-   * @param {Number} intensityR Intensidade do vermelho (0 a 255)
-   * @param {Number} intensityG Intensidade do verde (0 a 255)
-   * @param {Number} intensityB Intensidade do azul (0 a 255)
+   * @param {?Color} color Cor do pixel
    * @param {boolean} clg Exibir no console ou não (default: False)
    * @returns {Number} Índice do pixel no array de pixels do P5.js
    */
-  set_pixel_color(p, intensityR, intensityG, intensityB, clg = false) {
+  set_pixel_color(p, color, clg = false) {
     loadPixels()
-
     let idx = p.get_idx(this.width);
 
-    //rgb
-    pixels[idx] = intensityR;
-    pixels[idx + 1] = intensityG;
-    pixels[idx + 2] = intensityB;
-    pixels[idx + 3] = 255; //alpha
+    //rgba
+    if (color) p.color = color
+
+    pixels[idx] = p.color.red
+    pixels[idx + 1] = p.color.green
+    pixels[idx + 2] = p.color.blue
+    pixels[idx + 3] = p.color.alpha
+
 
     if (clg) {
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${intensityR}`);
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx + 1}] changed to ${intensityG}`);
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx + 2}] changed to ${intensityB}`);
+      console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${pixels.slice(idx, idx + 4)}`);
     }
     updatePixels()
     return idx
@@ -273,6 +271,7 @@ class ImageCG {
    * Desenha uma figura
    * @param {Figure | Polygon} figure  Figura a ser desenhada
    * @param {?Number} intensity Intensidade (0 a 255) - Caso não especificada, será utilizada a da figura
+   * @param {boolean} edge_color Desenhar ou não uma figura com gradiente de cores.
    * @returns {Pixel} último pixel desenhado
    */
   draw_figure(figure, intensity, edge_color = false) {
@@ -280,32 +279,28 @@ class ImageCG {
     var last_pixel = vertices[0]
     let iten = intensity || figure.stroke_intensity
 
-    if (!edge_color) {// construir poligono com arestas monocromaticas
-
-      for (let i = 1; i < vertices.length; i++) {
-        let pixel = vertices[i];
-        this.reta_continua(last_pixel, pixel, iten)
-
-        last_pixel = pixel
+    for (let i = 1; i < vertices.length; i++) {
+      let pixel = vertices[i];
+      if (!edge_color) {
+        this.reta_continua(last_pixel, pixel, iten) //monocromatico
+      } else {
+        this.reta_continua_gradient(last_pixel, pixel, 0, 1) //gradiente
       }
-      return last_pixel;
-    } else {
-      for (let i = 1; i < vertices.length; i++) {// construir polígono com gradiente de cores
-
-        let pixel = vertices[i];
-        this.reta_continua_gradient(last_pixel, pixel, 0, 1)
-        last_pixel = pixel
-      }
+      last_pixel = pixel
     }
     return last_pixel;
+
   }
 
-
+  /**
+   * 
+   * @param {Number} scan 
+   * @param {Line} seg 
+   * @returns {Array<Pixel|number>}
+   */
   intersection(scan, seg) {
-    let xi = seg.pi.x;
-    let yi = seg.pi.y;
-    let xf = seg.pf.x;
-    let yf = seg.pf.y;
+    let [xi, yi] = seg.pi.to_array();
+    let [xf, yf] = seg.pf.to_array();
     let y = scan // scan line -> percorrer toda a imagem 
 
     // if horizontal line
@@ -333,6 +328,12 @@ class ImageCG {
     return [new Pixel(x, y), t];
   }
 
+  /**
+   * 
+   * @param {Number} scan 
+   * @param {Line} seg 
+   * @returns {Array<Pixel|number>}
+   */
   intersection_tex(scan, seg) {
     var pi = seg.pi; //pi = x,y,tx,ty
 
@@ -467,28 +468,20 @@ class ImageCG {
 
   }
 
-  reta_continua_gradient(pi, pf, t1, t2, clg = false) {
+  /**
+   * Desenha uma reta com gradiente
+   * @param {Pixel} pi Ponto inicial
+   * @param {Pixel} pf Ponto final
+   * @param {*} t1 
+   * @param {*} t2 
+   * @returns 
+   */
+  reta_continua_gradient(pi, pf, t1, t2) {
     let [dx, dy] = Pixel.distance(pi, pf)
     let passos = max(Math.abs(dy), Math.abs(dx))
 
-    let idxi = pi.get_idx(this.width);
-
-    //cores do pi
-    let intensityRi = pixels[idxi]
-    let intensityGi = pixels[idxi + 1]
-    let intensityBi = pixels[idxi + 2]
-    let intensityAi = pixels[idxi + 3]
-
-    let idxf = pf.get_idx(this.width);
-
-    //cores do pf
-    let intensityRf = pixels[idxf]
-    let intensityGf = pixels[idxf + 1]
-    let intensityBf = pixels[idxf + 2]
-    let intensityAf = pixels[idxf + 3]
-
     if (passos == 0) {// caso não tenha distância entre Pi e Pf
-      this.set_pixel_color(pi, intensityRi, intensityGi, intensityBi);
+      this.set_pixel_color(pi, pi.color);
       return
     }
 
@@ -500,38 +493,31 @@ class ImageCG {
 
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
-      let d = decimal_part(is_one ? y : x)
+      let px1, px2
 
       if (is_one) {
-        var px1 = new Pixel(Math.round(x), Math.floor(y))
-        var px2 = new Pixel(Math.round(x), Math.floor(y + 1))
+        px1 = new Pixel(x, Math.floor(y))
+        px2 = new Pixel(x, Math.floor(y + 1))
       }
       else {
-        var px1 = new Pixel(Math.floor(x), Math.round(y))
-        var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
+        px1 = new Pixel(Math.floor(x), y)
+        px2 = new Pixel(Math.floor(x + 1), y)
       }
+
       //setar as cores dos pixeis novos
-      var porc1 = (pf.x - pi.x) ? (px1.x - pi.x) / (pf.x - pi.x) : (px1.y - pi.y) / (pf.y - pi.y);
-      var porc2 = (pf.x - pi.x) ? (px2.x - pi.x) / (pf.x - pi.x) : (px2.y - pi.y) / (pf.y - pi.y);
+      let [dx, dy] = Pixel.distance(pi, pf)
+      let porc1 = dx ? (px1.x - pi.x) / dx : (px1.y - pi.y) / dy;
+      let porc2 = dx ? (px2.x - pi.x) / dx : (px2.y - pi.y) / dy;
 
-      console.log(pf.x - pi.x)
+      console.log(px1.color, px2.color)
 
-      // Calculo das cores de px1 e px2 (Gradiente)
-      var color_r1 = Math.round((intensityRf - intensityRi) * porc1 + intensityRi);
-      var color_g1 = Math.round((intensityGf - intensityGi) * porc1 + intensityGi);
-      var color_b1 = Math.round((intensityBf - intensityBi) * porc1 + intensityBi);
+      let color1 = Color.gradient(px1.color, px2.color, porc1)
+      let color2 = Color.gradient(px1.color, px2.color, porc2)
 
-      var color_r2 = Math.round((intensityRf - intensityRi) * porc2 + intensityRi);
-      var color_g2 = Math.round((intensityGf - intensityGi) * porc2 + intensityGi);
-      var color_b2 = Math.round((intensityBf - intensityBi) * porc2 + intensityBi);
-
-      this.set_pixel_color(px1, color_r1, color_g1, color_b1);
-      this.set_pixel_color(px2, color_r2, color_g2, color_b2);
+      this.set_pixel_color(px1, color1);
+      this.set_pixel_color(px2, color2);
     }
 
-    if (clg) {
-      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
-    }
   }
 
 

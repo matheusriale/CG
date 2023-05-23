@@ -1,12 +1,58 @@
+
+/**
+ * Estrutura para cores
+ * @param {?Number} r Valor vermelho (0 a 255)
+ * @param {?Number} g Valor verde (0 a 255)
+ * @param {?Number} b Valor azul (0 a 255)
+ * @param {?Number} a Valor alpha (0 a 255)
+ */
+function Color(r, g, b, a) {
+    this.red = r === undefined ? 0 : r
+    this.green = g === undefined ? this.red : g
+    this.blue = b === undefined ? this.red : b
+    this.alpha = a === undefined ? 255 : a
+
+
+    this.to_array = () => {
+        return [this.red,
+        this.green,
+        this.blue,
+        this.alpha]
+    }
+
+
+}
+
+Color.from_array = (array) => {
+    return new Color(array[0], array[1], array[2], array[3])
+}
+
+/**
+ * Gera uma nova cor a partir das duas especificadas, obedecendo à porcentagem dada
+ * @param {Color} color1 Primeira cor
+ * @param {Color} color2 Segunda cor
+ * @param {Number} porc Porcentagem
+ */
+Color.gradient = (color1, color2, porc) => {
+    var r = Math.round((color2.red - color1.red) * porc + color1.red);
+    var g = Math.round((color2.green - color1.green) * porc + color1.green);
+    var b = Math.round((color2.blue - color1.blue) * porc + color1.blue);
+
+    return new Color(r, g, b)
+}
+
+
+
 /**
  * Estrutura para localização de pixel
  * @param {?Number} x Coordenada X do pixel. Se 'null', então será 0
  * @param {?Number} y Coordenada Y do pixel. Se 'null', então será igual ao x
  * @param {?Number} xtex Coordenada X da textura variam de 0 a 1. 
  * @param {?Number} ytex Coordenada Y da textura variam de 0 a 1. 
- * @type {{x:Number y:Number xtex:Number ytex:Number}}
+ * @param {?Color} color Cor do pixel
+ * @type {{x:Number y:Number xtex:Number ytex:Number color:Color}}
  */
-function Pixel(x, y, xtex, ytex) {
+function Pixel(x, y, xtex, ytex, color) {
     this.x = round(x === undefined ? 0 : x)
     this.y = round(y === undefined ? this.x : y)
     this.xtex = round(xtex === undefined ? 0 : xtex)
@@ -75,14 +121,12 @@ function Pixel(x, y, xtex, ytex) {
         return new Pixel(this.y, this.x)
     }
 
-    /**
-     * Retorna uma lista com os valores de cada cor em RGB (todos de 0 a 255)
-     * @returns {Array<Number>} [Vermelho, Verde, Azul, Alpha]
-     */
-    this.get_color = () => {
+    this.load_color = () => {
         let idx = this.get_idx()
-        return pixels.slice(idx, idx + 4)
+        return new Color(pixels[idx], pixels[idx + 1], pixels[idx + 2], pixels[idx + 3])
     }
+
+    this.color = color === undefined ? this.load_color() : color
 }
 
 /**
