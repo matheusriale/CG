@@ -1,5 +1,7 @@
 function getArcCoordinate(radius1, radius2, coord) {
-  return Math.sqrt((radius1 - (radius1 / radius2) * Math.pow(coord, 2)))
+  let r1_2 = Math.pow(radius1, 2)
+  let r2_2 = Math.pow(radius2, 2)
+  return Math.sqrt((r1_2 - (r1_2 / r2_2) * Math.pow(coord, 2)))
 }
 
 /**
@@ -545,5 +547,39 @@ class ImageCG {
 
   }
 
+  /**
+     * Desenha uma elipse (pixel a pixel)
+     * @param {Pixel} center Centro da elipse
+     * @param {Number} radiusX raio vertical da elipse
+     * @param {Number} radiusY raio horizontal da elipse
+     * @param {Number} step Passo do desenho (default: 1)
+     */
+  ellipse(center, radiusX, radiusY, step = 1) {
+    for (let x1 = 0; x1 < radiusX; x1 += step) {
+
+      let y1 = getArcCoordinate(radiusY, radiusX, x1)
+
+      let px = x1
+      let py = y1
+      this.set_pixel(new Pixel(px, py).add(center))
+      this.set_pixel(new Pixel(-px, py).add(center))
+      this.set_pixel(new Pixel(-px, -py).add(center))
+      this.set_pixel(new Pixel(px, -py).add(center))
+
+    }
+
+    for (let y2 = 0; y2 < radiusY; y2 += step) {
+      let x2 = getArcCoordinate(radiusX, radiusY, y2)
+
+      let px = x2
+      let py = y2
+      this.set_pixel(new Pixel(px, py).add(center))
+      this.set_pixel(new Pixel(-px, py).add(center))
+      this.set_pixel(new Pixel(-px, -py).add(center))
+      this.set_pixel(new Pixel(px, -py).add(center))
+
+    }
+  }
 }
+
 
