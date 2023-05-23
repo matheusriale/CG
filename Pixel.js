@@ -106,7 +106,7 @@ function Pixel(x, y, xtex, ytex) {
     /**
      * Retorna uma lista com os valores de cada cor em RGB (todos de 0 a 255)
      * @param {boolen} force Se deve buscar na matriz de pixel mesmo que já tenha buscado antes
-     * @returns {Array<Number>} [Vermelho, Verde, Azul, Alpha]
+     * @returns {Color} Cor do pixel no ponto
      */
     this.get_color = (force) => {
         if (!this._color || force) {
@@ -115,6 +115,14 @@ function Pixel(x, y, xtex, ytex) {
         }
 
         return this._color
+    }
+
+    /**
+     * Define uma nova cor para o pixel
+     * @param {Color} new_color 
+     */
+    this.set_color = (new_color) => {
+        this._color = new_color
     }
 }
 
