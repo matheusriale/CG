@@ -549,25 +549,26 @@ class ImageCG {
    * Desenha uma circunferência (pixel a pixel)
    * @param {Pixel} center Centro da circunferência
    * @param {Number} radius raio da circunferência
+   * @param {Color} color Cor da borda da circunferência
    * @param {Number} step Passo do desenho (default: 1)
    */
-  circumference(center, radius, intensity, step = 1) {
+  circumference(center, radius, color, step = 1) {
     let square_radius = Math.pow(radius, 2)
 
     for (let x = 1; x <= radius; x += step) {
       let y = Math.sqrt(square_radius - Math.pow(x, 2))
 
-      this.set_pixel(new Pixel(x, y).add(center), intensity)
-      this.set_pixel(new Pixel(y, x).add(center), intensity)
+      this.set_pixel_color(new Pixel(x, y, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(y, x, null, null, color).add(center))
 
-      this.set_pixel(new Pixel(-y, x).add(center), intensity)
-      this.set_pixel(new Pixel(-x, y).add(center), intensity)
+      this.set_pixel_color(new Pixel(-y, x, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(-x, y, null, null, color).add(center))
 
-      this.set_pixel(new Pixel(-x, -y).add(center), intensity)
-      this.set_pixel(new Pixel(-y, -x).add(center), intensity)
+      this.set_pixel_color(new Pixel(-x, -y, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(-y, -x, null, null, color).add(center))
 
-      this.set_pixel(new Pixel(y, -x).add(center), intensity)
-      this.set_pixel(new Pixel(x, -y).add(center), intensity)
+      this.set_pixel_color(new Pixel(y, -x, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(x, -y, null, null, color).add(center))
     }
 
   }
