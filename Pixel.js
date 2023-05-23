@@ -8,9 +8,9 @@
  */
 function Color(r, g, b, a) {
     this.red = r === undefined ? 0 : r
-    this.green = g === undefined ? 0 : g
-    this.blue = b === undefined ? 0 : b
-    this.alpha = a === undefined ? 0 : a
+    this.green = g === undefined ? this.red : g
+    this.blue = b === undefined ? this.red : b
+    this.alpha = a === undefined ? 255 : a
 
     this.to_array = () => {
         return [this.red,
