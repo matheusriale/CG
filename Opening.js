@@ -25,7 +25,13 @@ class Opening {
             color: new Color(100, 100, 255)
         }
 
+        this.load = {
+            start: new Pixel(10, 85),
+            end: new Pixel(width - 10, 85)
+        }
+
         this._last_hover = false
+        this.count = 0
     }
 
     start() {
@@ -39,6 +45,7 @@ class Opening {
         this._draw_C()
         this._draw_G()
         this._draw_start_button()
+        this.create_loading()
     }
     is_hover_button() {
         return mouseX <= (this.button.center.x + this.button.radius) &&
@@ -48,6 +55,12 @@ class Opening {
     }
 
     update() {
+        if (this.count < 5) {
+            this.update_loading()
+            this.count++
+        }
+
+
         let is_hover = this.is_hover_button()
 
         if (is_hover && !this._last_hover) {
@@ -104,4 +117,20 @@ class Opening {
 
     }
 
+    update_loading() {
+        let clean_margin = new Pixel(7, 4)
+
+        this.screen.clear_area(
+            this.loading_border.vertices[0].copy().sub(clean_margin),
+            this.loading_border.vertices[3].copy().add(clean_margin))
+
+        var pace = new Pixel(10, 0)
+        this.loading_border.translate(pace)
+        this.screen.draw_figure(this.loading_border)
+    }
+    create_loading() {
+        this.loading_border = Polygon.rect(this.load.start, this.load.start.copy().add(new Pixel(5, 10)))
+        this.loading_bar = Polygon.rect(this.load.start, new Pixel())
+        this.screen.draw_figure(this.loading_border)
+    }
 }
