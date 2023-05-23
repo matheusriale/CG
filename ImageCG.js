@@ -57,33 +57,31 @@ class ImageCG {
    * @returns {Number} Índice do pixel no array de pixels do P5.js
    */
   set_pixel(p, intensity, clg = false) {
-    return this.set_pixel_color(p, intensity, intensity, intensity, clg);
+    return this.set_pixel_color(p, new Color(intensity), clg);
   }
 
   /**
    * Muda a cor de um pixel
    * @param {Pixel} p Pixel para ser mudado
-   * @param {Number} intensityR Intensidade do vermelho (0 a 255)
-   * @param {Number} intensityG Intensidade do verde (0 a 255)
-   * @param {Number} intensityB Intensidade do azul (0 a 255)
+   * @param {?Color} color Cor do pixel
    * @param {boolean} clg Exibir no console ou não (default: False)
    * @returns {Number} Índice do pixel no array de pixels do P5.js
    */
-  set_pixel_color(p, intensityR, intensityG, intensityB, clg = false) {
+  set_pixel_color(p, color, clg = false) {
     loadPixels()
-
     let idx = p.get_idx(this.width);
 
-    //rgb
-    pixels[idx] = intensityR;
-    pixels[idx + 1] = intensityG;
-    pixels[idx + 2] = intensityB;
-    pixels[idx + 3] = 255; //alpha
+    //rgba
+    if (color) p.color = color
+
+    pixels[idx] = p.color.red
+    pixels[idx + 1] = p.color.green
+    pixels[idx + 2] = p.color.blue
+    pixels[idx + 3] = p.color.alpha
+
 
     if (clg) {
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${intensityR}`);
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx + 1}] changed to ${intensityG}`);
-      console.log(`Pixel (${p.to_array()}) [idx = ${idx + 2}] changed to ${intensityB}`);
+      console.log(`Pixel (${p.to_array()}) [idx = ${idx}] changed to ${pixels.slice(idx, idx + 4)}`);
     }
     updatePixels()
     return idx
