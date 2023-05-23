@@ -39,13 +39,14 @@ class ImageCG {
    * Preenche todo o canvas
    * @param {Number} intensity Intensidade (0 a 255)
    */
-  clear(intensity) {
+  clear(intensity = null) {
+    intensity = intensity == null ? this.background : intensity
+
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         this.set_pixel(new Pixel(x, y), intensity)
       }
     }
-    // console.log(`Canvas cleared ${intensity}`)
   }
 
   /**
@@ -587,7 +588,6 @@ class ImageCG {
    * @param {Number} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
    */
   floodFill(p, color, init_color = null) {
-    console.log(init_color)
     init_color = init_color === null ? this.background : init_color
     let stack_not_verified = [p];
 
