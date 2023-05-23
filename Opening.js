@@ -9,7 +9,7 @@ class Opening {
      */
     constructor(screen, char_drawer) {
         this.screen = screen
-        this.is_runing = false
+        this.is_running = false
         this._char_drawer = char_drawer
         this.init_pixel = new Pixel(20)
         this._elipse_color = new Color(100, 100, 255)
@@ -20,7 +20,7 @@ class Opening {
     }
 
     start() {
-        this.is_runing = true
+        this.is_running = true
         this._draw_elipse()
         this._draw_C()
         this._draw_G()
@@ -45,7 +45,7 @@ class Opening {
     }
 
     stop() {
-        this.is_runing = false
+        this.is_running = false
         this.screen.clear()
     }
 
