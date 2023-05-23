@@ -298,12 +298,15 @@ class ImageCG {
     return last_pixel;
   }
 
-
+  /**
+   * 
+   * @param {Number} scan 
+   * @param {Line} seg 
+   * @returns {Array<Pixel|number>}
+   */
   intersection(scan, seg) {
-    let xi = seg.pi.x;
-    let yi = seg.pi.y;
-    let xf = seg.pf.x;
-    let yf = seg.pf.y;
+    let [xi, yi] = seg.pi.to_array();
+    let [xf, yf] = seg.pf.to_array();
     let y = scan // scan line -> percorrer toda a imagem 
 
     // if horizontal line
@@ -331,6 +334,12 @@ class ImageCG {
     return [new Pixel(x, y), t];
   }
 
+  /**
+   * 
+   * @param {Number} scan 
+   * @param {Line} seg 
+   * @returns {Array<Pixel|number>}
+   */
   intersection_tex(scan, seg) {
     let pi = seg.pi; //pi = x,y,tx,ty
 
