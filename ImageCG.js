@@ -50,6 +50,8 @@ class ImageCG {
    * @param {Number} intensity Intensidade (0 a 255)
    */
   clear_area(start, end, intensity = null) {
+    intensity = intensity == null ? this.background : intensity
+
     for (let x = start.x; x < end.x; x++) {
       for (let y = start.y; y < end.y; y++) {
         this.set_pixel(new Pixel(x, y), intensity)

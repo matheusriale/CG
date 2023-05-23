@@ -56,8 +56,10 @@ class Opening {
         }
 
         if (!is_hover && this._last_hover) {
-            this.screen.clear()
-            this.draw_all()
+            this.screen.clear_area(
+                this.button.center.copy().sub(new Pixel(this.button.radius + 1)),
+                this.button.center.copy().add(new Pixel(this.button.radius + 1)))
+            this._draw_start_button()
             this._last_hover = false
         }
     }
@@ -99,4 +101,5 @@ class Opening {
         this.screen.draw_figure(triangle)
 
     }
+
 }
