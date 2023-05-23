@@ -51,11 +51,13 @@ class Opening {
         let is_hover = this.is_hover_button()
 
         if (is_hover && !this._last_hover) {
+            cursor(HAND)
             this.screen.floodFill(this.button.center.copy(), this.font_color, this._elipse_color)
             this._last_hover = true
         }
 
         if (!is_hover && this._last_hover) {
+            cursor(ARROW)
             this.screen.clear_area(
                 this.button.center.copy().sub(new Pixel(this.button.radius + 1)),
                 this.button.center.copy().add(new Pixel(this.button.radius + 1)))
