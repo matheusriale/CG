@@ -103,6 +103,7 @@ class Opening {
 
     stop() {
         console.log("Encerrando tela inicial...")
+        cursor(ARROW)
         this.is_running = false
         this.screen.clear()
     }
