@@ -47,6 +47,6 @@ function Figure(stroke, vertices) {
      * @returns {Figure}
      */
     this.copy = () => {
-        return new Figure(this.stroke, this.vertices)
+        return { ...this }
     }
 }
