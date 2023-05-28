@@ -51,6 +51,11 @@ function Circumference(stroke, center, radius, draw_step = 1) {
         return this.scale(scale, this.center)
     }
 
+    this.move_center = (new_pos) => {
+        let [dx, dy] = Pixel.distance(this.center, new_pos)
+        this.translate(new Pixel(dx, dy))
+        return this
+    }
 
 
     /**
