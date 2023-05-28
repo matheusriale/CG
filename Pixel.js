@@ -107,6 +107,16 @@ function Pixel(x, y, xtex, ytex, color) {
     }
 
     /**
+     * Multiplica o pixel por uma coordenada
+     * @param {Pixel} p 
+     * @returns 
+     */
+    this.mult = (p) => {
+        this.x *= p.x
+        this.y *= p.y
+        return this
+    }
+    /**
      * Gera uma nova instância idêntica à atual
      * @returns {Pixel} Novo pixel
      */
