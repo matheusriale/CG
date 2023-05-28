@@ -97,7 +97,10 @@ class ImageCG {
    * @param {boolean} clg Exibir no console ou não (default: False)
    */
   set_pixels(pixels, color = null, clg = false) {
-    let all_pixels = typeof pixels == typeof new Figure() ? pixels.get_vertices() : pixels
+    let is_figure = typeof pixels == typeof new Figure()
+    let all_pixels = is_figure ? pixels.get_vertices() : pixels
+    if (is_figure) color = pixels.stroke || color
+
     all_pixels.forEach(p => {
       this.set_pixel_color(p, color, clg)
     })
@@ -293,7 +296,7 @@ class ImageCG {
   draw_figure(figure, intensity, edge_color = false) {
     let vertices = figure.get_vertices()
     var last_pixel = vertices[0]
-    let iten = intensity || figure.stroke_intensity
+    let iten = intensity || figure.stroke
 
     for (let i = 1; i < vertices.length; i++) {
       let pixel = vertices[i];

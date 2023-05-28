@@ -4,7 +4,7 @@
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
  * @param {Pixel} center Centro da circunferência
  * @param {Number} radius Tamanho do raio
- * @type {{vertices: Array<Pixel> stroke_intensity: Number center:Pixel radius:Number}}
+ * @type {{vertices: Array<Pixel> stroke: Number center:Pixel radius:Number}}
  * @extends Figure
  */
 function Circumference(stroke, center, radius, draw_step = 1) {
@@ -24,17 +24,17 @@ function Circumference(stroke, center, radius, draw_step = 1) {
         for (let x = 1; x <= this.radius; x += draw_step) {
             let y = Math.sqrt(square_radius - Math.pow(x, 2))
             let pixels = [
-                new Pixel(x, y, null, null, this.stroke_intensity).add(this.center),
-                new Pixel(y, x, null, null, this.stroke_intensity).add(this.center),
+                new Pixel(x, y, null, null, this.stroke).add(this.center),
+                new Pixel(y, x, null, null, this.stroke).add(this.center),
 
-                new Pixel(-y, x, null, null, this.stroke_intensity).add(this.center),
-                new Pixel(-x, y, null, null, this.stroke_intensity).add(this.center),
+                new Pixel(-y, x, null, null, this.stroke).add(this.center),
+                new Pixel(-x, y, null, null, this.stroke).add(this.center),
 
-                new Pixel(-x, -y, null, null, this.stroke_intensity).add(this.center),
-                new Pixel(-y, -x, null, null, this.stroke_intensity).add(this.center),
+                new Pixel(-x, -y, null, null, this.stroke).add(this.center),
+                new Pixel(-y, -x, null, null, this.stroke).add(this.center),
 
-                new Pixel(y, -x, null, null, this.stroke_intensity).add(this.center),
-                new Pixel(x, -y, null, null, this.stroke_intensity).add(this.center),
+                new Pixel(y, -x, null, null, this.stroke).add(this.center),
+                new Pixel(x, -y, null, null, this.stroke).add(this.center),
 
             ]
 
@@ -103,10 +103,10 @@ function Ellipse(center, radiusX, radiusY, stroke, draw_step = 1) {
             let px = x1
             let py = y1
 
-            let pixels = [new Pixel(px, py, null, null, this.stroke_intensity).add(this.center),
-            new Pixel(-px, py, null, null, this.stroke_intensity).add(this.center),
-            new Pixel(-px, -py, null, null, this.stroke_intensity).add(this.center),
-            new Pixel(px, -py, null, null, this.stroke_intensity).add(this.center)
+            let pixels = [new Pixel(px, py, null, null, this.stroke).add(this.center),
+            new Pixel(-px, py, null, null, this.stroke).add(this.center),
+            new Pixel(-px, -py, null, null, this.stroke).add(this.center),
+            new Pixel(px, -py, null, null, this.stroke).add(this.center)
             ]
 
             this.vertices.push(...pixels)
@@ -118,10 +118,10 @@ function Ellipse(center, radiusX, radiusY, stroke, draw_step = 1) {
 
             let px = x2
             let py = y2
-            let pixels = [new Pixel(px, py, null, null, this.stroke_intensity).add(this.center),
-            new Pixel(-px, py, null, null, this.stroke_intensity).add(this.center),
-            new Pixel(-px, -py, null, null, this.stroke_intensity).add(this.center),
-            new Pixel(px, -py, null, null, this.stroke_intensity).add(this.center),]
+            let pixels = [new Pixel(px, py, null, null, this.stroke).add(this.center),
+            new Pixel(-px, py, null, null, this.stroke).add(this.center),
+            new Pixel(-px, -py, null, null, this.stroke).add(this.center),
+            new Pixel(px, -py, null, null, this.stroke).add(this.center),]
 
             this.vertices.push(...pixels)
         }

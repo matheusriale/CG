@@ -4,7 +4,7 @@
  * @param {Pixel} pf Ponto final
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
  * @extends Figure
- * @type {{pi:Pixel pf:Pixel vertices: Array<Pixel> stroke_intensity: Number}}
+ * @type {{pi:Pixel pf:Pixel vertices: Array<Pixel> stroke: Number}}
  */
 function Line(pi, pf, stroke = 255) {
     Figure.prototype.constructor.call(this, stroke, [pi, pf])
@@ -19,6 +19,6 @@ function Line(pi, pf, stroke = 255) {
         new_pf = new_pf.rotate(ang)
         new_pf.add(this.pi)
 
-        return new Line(this.pi, new_pf, this.stroke_intensity)
+        return new Line(this.pi, new_pf, this.stroke)
     }
 }

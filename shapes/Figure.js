@@ -2,11 +2,11 @@
  * Cria uma figura
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
  * @param {?Array<Pixel>} vertices 
- * @type {{vertices: Array<Pixel> stroke_intensity: Number}}
+ * @type {{vertices: Array<Pixel> stroke: Number}}
  */
 function Figure(stroke, vertices) {
     this.vertices = vertices || []
-    this.stroke_intensity = stroke || 255
+    this.stroke = stroke || 255
     this.scale = new Pixel(1)
 
     /**
