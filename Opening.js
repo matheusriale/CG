@@ -22,7 +22,9 @@ class Opening {
         this.button = {
             center: new Pixel(45, 70),
             radius: 10,
-            color: new Color(100, 100, 255)
+            color: new Color(100, 100, 255),
+            arrow: new Polygon(),
+            background: new Figure()
         }
 
         this.init_animation = {
@@ -116,11 +118,11 @@ class Opening {
 
     _draw_start_button() {
         console.log("Botão")
-        this.screen.circumference(this.button.center, this.button.radius, this._border_color)
+        this.button.background = this.screen.circumference(this.button.center, this.button.radius, this._border_color)
         this.screen.floodFill(this.button.center, this.button.color)
 
-        let triangle = Polygon.triangle(this.button.center, 5, 255)
-        this.screen.draw_figure(triangle)
+        this.button.arrow = Polygon.triangle(this.button.center, 5, 255)
+        this.screen.draw_figure(this.button.arrow)
 
     }
 
