@@ -92,9 +92,11 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      */
     this.rotate = (ang) => {
         let rad_ang = ang * Math.PI / 180; // converte para radianos
-        let x = (Math.cos(rad_ang) * this.x - Math.sin(rad_ang) * this.y)
-        let y = (Math.sin(rad_ang) * this.x + Math.cos(rad_ang) * this.y)
-        return new Pixel(x, y)
+        let n = this.copy()
+        n.x = (Math.cos(rad_ang) * this.x - Math.sin(rad_ang) * this.y)
+        n.y = (Math.sin(rad_ang) * this.x + Math.cos(rad_ang) * this.y)
+
+        return n
     }
 
     /**
@@ -102,9 +104,10 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @param {Pixel} p 
      */
     this.sub = (p) => {
-        this.x -= p.x
-        this.y -= p.y
-        return this
+        let n = this.copy()
+        n.x -= p.x
+        n.y -= p.y
+        return n
     }
 
     /**
@@ -112,9 +115,10 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @param {Pixel} p 
      */
     this.add = (p) => {
-        this.x += p.x
-        this.y += p.y
-        return this
+        let n = this.copy()
+        n.x += p.x
+        n.y += p.y
+        return n
     }
 
     /**
@@ -123,9 +127,10 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @returns 
      */
     this.mult = (p) => {
-        this.x *= p.x
-        this.y *= p.y
-        return this
+        let n = this.copy()
+        n.x *= p.x
+        n.y *= p.y
+        return n
     }
     /**
      * Gera uma nova instância idêntica à atual

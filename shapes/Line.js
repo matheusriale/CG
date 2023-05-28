@@ -15,9 +15,7 @@ function Line(pi, pf, stroke = 255) {
         // ang += 90
 
         let new_pf = this.pf.copy()
-        new_pf.sub(this.pi)
-        new_pf = new_pf.rotate(ang)
-        new_pf.add(this.pi)
+        new_pf = new_pf.sub(this.pi).rotate(ang).add(this.pi)
 
         return new Line(this.pi, new_pf, this.stroke)
     }
