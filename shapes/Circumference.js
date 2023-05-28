@@ -12,56 +12,34 @@ function Circumference(stroke, center, radius, draw_step = 1) {
     this.draw_step = draw_step
     Polygon.prototype.constructor.call(this, stroke, [])
 
-
     /**
      * Carrega os vértices da circunferência
      * @param {Number} draw_step Passo de desenho do algoritmo
      */
     this._load_vertices = (draw_step) => {
-        this._x_y = []
-        this._y_x = []
-        this._y_negx = []
-        this._x_negy = []
-        this._negx_negy = []
-        this._negy_negx = []
-        this._negy_x = []
-        this._negx_y = []
 
         let square_radius = Math.pow(this.radius, 2)
 
         for (let x = 1; x <= this.radius; x += draw_step) {
             let y = Math.sqrt(square_radius - Math.pow(x, 2))
+            let pixels = [
+                new Pixel(x, y, null, null, this.stroke_intensity).add(this.center),
+                new Pixel(y, x, null, null, this.stroke_intensity).add(this.center),
 
-            this._x_y.push(new Pixel(y, x).add(center))
-            this._y_x.push(new Pixel(x, y).add(center))
+                new Pixel(-y, x, null, null, this.stroke_intensity).add(this.center),
+                new Pixel(-x, y, null, null, this.stroke_intensity).add(this.center),
 
-            this._negx_y.push(new Pixel(-y, x).add(center))
-            this._negy_x.push(new Pixel(-x, y).add(center))
+                new Pixel(-x, -y, null, null, this.stroke_intensity).add(this.center),
+                new Pixel(-y, -x, null, null, this.stroke_intensity).add(this.center),
 
-            this._negx_negy.push(new Pixel(-x, -y).add(center))
-            this._negy_negx.push(new Pixel(-y, -x).add(center))
+                new Pixel(y, -x, null, null, this.stroke_intensity).add(this.center),
+                new Pixel(x, -y, null, null, this.stroke_intensity).add(this.center),
 
-            this._y_negx.push(new Pixel(y, -x).add(center))
-            this._x_negy.push(new Pixel(x, -y).add(center))
-        }
-    }
+            ]
 
-
-    /**
-     * Trata e retorna os vértices
-     * @returns {Array<Pixel>} vértices
-     */
-    this.get_vertices = () => {
-        if (!this._x_y) {
-            this._load_vertices(this.draw_step)
+            this.vertices.push(...pixels)
         }
 
-        return [...this._x_y, ...this._y_x,
-        ...this._negy_x, ...this._negx_y,
-        ...this._negy_negx, ...this._negx_negy,
-        ...this._x_negy, ...this._y_negx,
-        this._x_y[0]]
-
     }
-
+    this._load_vertices(this.draw_step)
 }
