@@ -434,9 +434,7 @@ class ImageCG {
 
       let int_px2 = this.get_pixel_tex(px2, tex)
       this.set_pixel_color(px2, new Color(int_px2[0],int_px2[1],int_px2[2],int_px2[3]));
-      
-
-      
+        
     }
 
     if (clg) {
