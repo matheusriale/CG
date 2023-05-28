@@ -147,6 +147,9 @@ function Pixel(x, y, xtex, ytex, color) {
     this.color = color === undefined ? this.load_color() : color
 }
 
+Pixel.from_object = (object) => {
+    return new Pixel(object.x, object.y, object.xtex, object.ytex, object.color, object.allow_round)
+}
 /**
  * Inverte os pixels: p1 vira p2 e vice-versa
  * @param {Pixel} p1 Pixel 1
