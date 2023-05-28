@@ -39,5 +39,14 @@ function Figure(stroke, vertices) {
     this.scale = (scale) => {
         this.scale = scale
         this.vertices.map(v => v.mult(scale))
+        return this
+    }
+
+    /**
+     * Faz uma cópia da figura atual
+     * @returns {Figure}
+     */
+    this.copy = () => {
+        return new Figure(this.stroke, this.vertices)
     }
 }
