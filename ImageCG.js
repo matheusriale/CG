@@ -1,9 +1,3 @@
-function getArcCoordinate(radius1, radius2, coord) {
-  let r1_2 = Math.pow(radius1, 2)
-  let r2_2 = Math.pow(radius2, 2)
-  return Math.sqrt((r1_2 - (r1_2 / r2_2) * Math.pow(coord, 2)))
-}
-
 /**
  * Manipula o canvas do p5.js
  * @type {{width: Number height: Number background: Number}}
@@ -564,53 +558,6 @@ class ImageCG {
         pi = pf;
       }
     }
-  }
-
-  /**
-     * Desenha uma elipse (pixel a pixel)
-     * @param {Pixel} center Centro da elipse
-     * @param {Number} radiusX raio vertical da elipse
-     * @param {Number} radiusY raio horizontal da elipse
-     * @param {Color} color Cor da borda da elipse
-     * @param {Number} step Passo do desenho (default: 1)
-     * 
-     * @returns {Figure} Pixels calculados da elipse
-     */
-  ellipse(center, radiusX, radiusY, color, step = 1) {
-    var all_pixels = []
-    for (let x1 = 0; x1 < radiusX; x1 += step) {
-
-      let y1 = getArcCoordinate(radiusY, radiusX, x1)
-
-      let px = x1
-      let py = y1
-
-      let pixels = [new Pixel(px, py, null, null, color).add(center),
-      new Pixel(-px, py, null, null, color).add(center),
-      new Pixel(-px, -py, null, null, color).add(center),
-      new Pixel(px, -py, null, null, color).add(center)
-      ]
-
-      pixels.forEach(p => this.set_pixel_color(p))
-      all_pixels.push(...pixels)
-
-    }
-
-    for (let y2 = 0; y2 < radiusY; y2 += step) {
-      let x2 = getArcCoordinate(radiusX, radiusY, y2)
-
-      let px = x2
-      let py = y2
-      let pixels = [new Pixel(px, py, null, null, color).add(center),
-      new Pixel(-px, py, null, null, color).add(center),
-      new Pixel(-px, -py, null, null, color).add(center),
-      new Pixel(px, -py, null, null, color).add(center),]
-
-
-      pixels.forEach(p => this.set_pixel_color(p))
-      all_pixels.push(...pixels)
-    }
-    return new Figure(color, all_pixels)
   }
 
   /**
