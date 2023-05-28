@@ -31,12 +31,22 @@ function Arrow(pos, body_size, head_size, stroke = 255) {
     this.scale = (body_scale, head_scale) => {
         this.body.scale(body_scale)
         this._make_heads()
-        console.log(this.head1, this.head2)
 
         if (head_scale) {
             this.head1.scale(head_scale)
             this.head2.scale(head_scale)
         }
+    }
+    this.get_area = () => {
+        let vertices = this.get_elements().map(e => e.vertices).flat(1)
+        console.log(vertices)
+        let xs = vertices.map(e => e.x)
+        let ys = vertices.map(e => e.y)
+
+        let start = new Pixel(Math.min(...xs), Math.min(...ys))
+        let end = new Pixel(Math.max(...xs), Math.max(...ys))
+
+        return [start, end]
     }
     this._make_heads()
 }
