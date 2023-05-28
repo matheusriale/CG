@@ -39,7 +39,6 @@ function Arrow(pos, body_size, head_size, stroke = 255) {
     }
     this.get_area = () => {
         let vertices = this.get_elements().map(e => e.vertices).flat(1)
-        console.log(vertices)
         let xs = vertices.map(e => e.x)
         let ys = vertices.map(e => e.y)
 

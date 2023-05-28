@@ -31,7 +31,18 @@ class Opening {
             figure: null,
             direction: 1,
             size: 5,
-            start: new Pixel(10, 85),
+            start: new Pixel(1, 85),
+        }
+
+        this.arrow_anim = {
+            start: new Pixel(2, this.button.center.y),
+            body_size: new Pixel(10, 0),
+            head_size: new Pixel(5),
+            figure: new Figure(),
+            grow_rate: new Pixel(1.5, 1),
+            scale: new Pixel(1.5, 1),
+            reduce_rate: new Pixel(0.5, 1),
+            count: 1
         }
 
         this.title = {
@@ -56,7 +67,10 @@ class Opening {
         this._draw_G(this.init_pixel.copy())
         this._draw_start_button()
         this.create_animation()
+
+
     }
+
     is_hover_button() {
         return mouseX <= (this.button.center.x + this.button.radius) &&
             mouseX >= (this.button.center.x - this.button.radius) &&
@@ -64,12 +78,29 @@ class Opening {
             mouseY >= this.button.center.y - this.button.radius
     }
 
+    update_arrow() {
+        let anim = this.arrow_anim
+        if (anim.count > 2) {
+            this.arrow_anim.count = 0
+            this.arrow_anim.scale = anim.scale.x == anim.grow_rate ? anim.reduce_rate : anim.grow_rate
+        }
+        console.log(anim)
+        this.arrow_anim.figure.scale(anim.scale)
+        let [start, end] = anim.figure.get_area()
+
+        this.screen.clear_area(start, end)
+        this.arrow_anim.figure.draw_on_screen(this.screen)
+        this.arrow_anim.count++
+    }
+
     update() {
 
         this.update_animation()
+        // this.update_arrow()
         let is_hover = this.is_hover_button()
 
         if (is_hover && !this._last_hover) {
+            console.log("Hover")
             cursor(HAND)
             this.screen.floodFill(this.button.center.copy(), this.font_color, this._elipse_color)
             this._last_hover = true
@@ -148,5 +179,12 @@ class Opening {
     create_animation() {
         this.init_animation.figure = Polygon.square(this.init_animation.start, this.init_animation.size)
         this.screen.draw_figure(this.init_animation.figure)
+    }
+
+    draw_arrow() {
+        this.arrow_anim.figure = new Arrow(this.arrow_anim.start,
+            this.arrow_anim.body_size,
+            this.arrow_anim.head_size)
+        this.arrow_anim.figure.draw_on_screen(this.screen)
     }
 }
