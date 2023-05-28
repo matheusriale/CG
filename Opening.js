@@ -149,7 +149,8 @@ class Opening {
 
     _draw_start_button() {
         console.log("Botão")
-        this.button.background = this.screen.circumference(this.button.center, this.button.radius, this._border_color)
+        this.button.background = new Circumference(this._border_color, this.button.center, this.button.radius)
+        this.screen.set_pixels(this.button.background)
         this.screen.floodFill(this.button.center, this.button.color)
 
         this.button.arrow = Polygon.triangle(this.button.center, 5, 255)
