@@ -107,10 +107,11 @@ class Opening {
     update_button() {
         let is_hover = this.is_hover_button()
 
-        this.update_button_animation()
+        if (!is_hover) this.update_button_animation()
         if (is_hover && !this._last_hover) {
             console.log("Hover")
             cursor(HAND)
+            this.reset_button()
             this.screen.floodFill(this.button.center.copy(), this.font_color, this._elipse_color)
             this._last_hover = true
         }
