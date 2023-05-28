@@ -71,6 +71,10 @@ class ImageCG {
    * @returns {Number} Índice do pixel no array de pixels do P5.js
    */
   set_pixel_color(p, color, clg = false) {
+
+    if (color.alpha == 0){
+      return
+    }
     loadPixels()
     let idx = p.get_idx(this.width);
 
