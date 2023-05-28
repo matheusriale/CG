@@ -182,6 +182,34 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
         this.x = pt[0];
         this.y = pt[1];
     }
+
+    /**
+     * Mapea o ponto na janela
+     * @param {Viewport} vport Viewport
+     * @param {Window} win Janela
+     * @returns {Pixel} ponto mapeado
+     */
+    this.map_window = (vport, win) => {
+
+        var m = [
+            [
+                vport.width / win.diff_x,
+                0,
+                (1 - win.start.x * vport.width / win.diff_x)
+            ],
+            [
+                0,
+                vport.height / win.diff_y,
+                (1 - win.start.y * vport.height / win.diff_y)
+            ],
+            [0, 0, 1]
+        ];
+
+        p = this.copy()
+        p.apply_transformation(m);
+
+        return p;
+    }
 }
 
 Pixel.from_object = (object) => {
