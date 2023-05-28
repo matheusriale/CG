@@ -30,7 +30,7 @@ function Figure(stroke, vertices) {
      * @param {Pixel} coord 
      */
     this.translate = (coord) => {
-        this.vertices.map(v => v.add(coord))
+        this.vertices = this.vertices.map(v => v.add(coord))
         return this
     }
 
@@ -40,9 +40,10 @@ function Figure(stroke, vertices) {
      */
     this.scale = (scale) => {
         this.scale = scale
-        this.vertices.map(v => {
-            v.mult(scale)
-            v.round_position()
+        this.vertices = this.vertices.map(v => {
+            let n = v.mult(scale)
+            n.round_position()
+            return n
         })
 
         return this
