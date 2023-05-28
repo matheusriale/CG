@@ -75,16 +75,3 @@ function Figure(stroke, vertices) {
     }
 }
 
-Figure.make_translation = (x, y, m) => {
-    let translation = [[1, 0, x], [0, 1, y], [0, 0, 1]]
-    return m ? math.multiply(translation, m) : translation
-}
-
-Figure.make_scale = (x, y, m) => {
-    let scale = [[x, 0, 0], [0, y, 0], [0, 0, 1]]
-    return m ? math.multiply(scale, m) : scale
-}
-
-Figure.make_transformation = () => {
-    return [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
-}
