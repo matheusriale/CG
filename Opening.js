@@ -24,14 +24,23 @@ class Opening {
             radius: 10,
             color: new Color(100, 100, 255),
             arrow: new Polygon(),
-            background: new Figure()
+            background: new Circumference()
+        }
+
+        this.button_anim = {
+            color: new Color(255, 0, 0),
+            figure: new Circumference(),
+            init_scale: 1.2,
+            max_scale: 1.5,
+            cur_scale: 1.2,
+            pace: 0.05
         }
 
         this.init_animation = {
-            figure: null,
+            figure: new Polygon(),
             direction: 1,
             size: 5,
-            start: new Pixel(1, 85),
+            start: new Pixel(1, 90),
         }
 
         this.arrow_anim = {
@@ -66,9 +75,7 @@ class Opening {
         this._draw_C(this.init_pixel.copy())
         this._draw_G(this.init_pixel.copy())
         this._draw_start_button()
-        this.create_animation()
-
-
+        this._draw_button_animation()
     }
 
     is_hover_button() {
@@ -94,11 +101,13 @@ class Opening {
     }
 
     update() {
+        this.update_button()
+    }
 
-        this.update_animation()
-        // this.update_arrow()
+    update_button() {
         let is_hover = this.is_hover_button()
 
+        this.update_button_animation()
         if (is_hover && !this._last_hover) {
             console.log("Hover")
             cursor(HAND)
@@ -108,12 +117,16 @@ class Opening {
 
         if (!is_hover && this._last_hover) {
             cursor(ARROW)
-            this.screen.clear_area(
-                this.button.center.copy().sub(new Pixel(this.button.radius + 1)),
-                this.button.center.copy().add(new Pixel(this.button.radius + 1)))
-            this._draw_start_button()
+            this.reset_button()
             this._last_hover = false
         }
+    }
+
+    reset_button() {
+        this.screen.clear_area(
+            this.button.center.copy().sub(new Pixel(this.button.radius + 6)),
+            this.button.center.copy().add(new Pixel(this.button.radius + 6)))
+        this._draw_start_button()
     }
 
     _draw_C(init_pos) {
@@ -148,8 +161,30 @@ class Opening {
         this.screen.clear()
     }
 
+    _draw_button_animation() {
+        this.button_anim.figure = new Circumference(this.button_anim.color, this.button.center, this.button.radius)
+        this._scale_animation()
+    }
+
+    _scale_animation() {
+        let figure = this.button_anim.figure.copy()
+        figure.scale_keep_center(Pixel.from_object({ x: this.button_anim.cur_scale, allow_round: false }))
+        this.screen.set_pixels(figure)
+    }
+
+    update_button_animation() {
+        this.button_anim.cur_scale += this.button_anim.pace
+        if (this.button_anim.cur_scale <= this.button_anim.init_scale) {
+            this.button_anim.pace *= -1
+        }
+        if (this.button_anim.cur_scale >= this.button_anim.max_scale) {
+            this.button_anim.pace *= -1
+        }
+        this.reset_button()
+        this._scale_animation()
+    }
+
     _draw_start_button() {
-        console.log("Botão")
         this.button.background = new Circumference(this._border_color, this.button.center, this.button.radius)
         this.screen.set_pixels(this.button.background)
         this.screen.floodFill(this.button.center, this.button.color)
@@ -177,16 +212,5 @@ class Opening {
             vertices[3].copy().add(clean_margin))
 
         this.screen.draw_figure(this.init_animation.figure)
-    }
-    create_animation() {
-        this.init_animation.figure = Polygon.square(this.init_animation.start, this.init_animation.size)
-        this.screen.draw_figure(this.init_animation.figure)
-    }
-
-    draw_arrow() {
-        this.arrow_anim.figure = new Arrow(this.arrow_anim.start,
-            this.arrow_anim.body_size,
-            this.arrow_anim.head_size)
-        this.arrow_anim.figure.draw_on_screen(this.screen)
     }
 }
