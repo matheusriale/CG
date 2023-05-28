@@ -566,44 +566,6 @@ class ImageCG {
     }
   }
 
-
-  /**
-   * Desenha uma circunferência (pixel a pixel)
-   * @param {Pixel} center Centro da circunferência
-   * @param {Number} radius raio da circunferência
-   * @param {Color} color Cor da borda da circunferência
-   * @param {Number} step Passo do desenho (default: 1)
-   * 
-   * @returns {Figure} Pixels calculados da circunferência
-   */
-  circumference(center, radius, color, step = 1) {
-    let square_radius = Math.pow(radius, 2)
-    let all_pixels = []
-
-    for (let x = 1; x <= radius; x += step) {
-      let y = Math.sqrt(square_radius - Math.pow(x, 2))
-      let pixels = [
-        new Pixel(x, y, null, null, color).add(center),
-        new Pixel(y, x, null, null, color).add(center),
-
-        new Pixel(-y, x, null, null, color).add(center),
-        new Pixel(-x, y, null, null, color).add(center),
-
-        new Pixel(-x, -y, null, null, color).add(center),
-        new Pixel(-y, -x, null, null, color).add(center),
-
-        new Pixel(y, -x, null, null, color).add(center),
-        new Pixel(x, -y, null, null, color).add(center),
-
-      ]
-      pixels.forEach(p => this.set_pixel_color(p))
-
-      all_pixels.push(...pixels)
-    }
-
-    return new Figure(color, all_pixels)
-  }
-
   /**
      * Desenha uma elipse (pixel a pixel)
      * @param {Pixel} center Centro da elipse
