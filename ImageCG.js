@@ -119,7 +119,7 @@ class ImageCG {
   get_pixel_tex(p, tex) {
     //tex->textura(colunas(width) e linhas(height))
     //p pixel (x,y)
-
+    // p.xtex e ytex estão sendo arredondados para 0 e 1 antes de entrar aqui
     // cod yuri
     if (p.xtex > 1) {
       p.xtex = 1;
@@ -133,12 +133,26 @@ class ImageCG {
     if (p.ytex < 0) {
       p.ytex = 0;
     }
-    let x = Math.round(p.xtex * (tex.width - 1) + 1);
-    let y = Math.round(p.ytex * (tex.height - 1) + 1);
+    let x = Math.round(p.xtex * (tex[0].length - 1) );
+    let y = Math.round(p.ytex * (tex.length - 1) );
+    
+    //console.log("x = ",x,"y = ",y)
+    // console.log(tex[y][x+0])
+    // console.log(tex[y][x+1])
+    // console.log(tex[y][x+2])
+    // console.log(tex[y][x+3])
+    // if (x+2>tex[0].length){
+    //   console.log(x)
+    // }
+    // let intensity = tex[y][x];
+    // return intensity;
 
-    let intensity = tex.get(x, y);
-    console.log(p.xtex)
-    return intensity;
+    let intensityR = tex[y][x];
+    let intensityG = tex[y][x+1];
+    let intensityB = tex[y][x+2];
+    let intensityA = tex[y][x+3];
+    //console.log(intensityR,intensityG,intensityB,intensityA)
+    return [intensityR,intensityG,intensityB,intensityA];
   }
 
 
@@ -347,13 +361,15 @@ class ImageCG {
    * @returns {Array<Pixel|number>}
    */
   intersection_tex(scan, seg) {
-    var pi = seg.pi; //pi = x,y,tx,ty
+    var pi = seg.pi; //pi = x,y,xtex,ytex
+    //console.log(pi.ytex)
 
     var pf = seg.pf;
     var y = scan; // scan line -> percorrer toda a imagem 
 
     // Segmento horizontal -> sem intersecao
     if (pi.y == pf.y) {
+      
       let p = new Pixel(-1, 0, 0, 0); //ptex = [x,y,xtex,ytex]
       return [p];
     }
@@ -364,12 +380,15 @@ class ImageCG {
 
     // Calcula t
     var t = (y - pi.y) / (pf.y - pi.y);
+    
 
     // Calcula x
     if (t > 0 && t <= 1) {
       var x = pi.x + t * (pf.x - pi.x);
       let tx = pi.xtex + t * (pf.xtex - pi.xtex);
-      let ty = pi.ytex + t * (pf.ytex - pf.ytex);
+      let ty = pi.ytex + t * (pf.ytex - pi.ytex);
+      
+      
 
       return [new Pixel(x, y, tx, ty), t]
     }
@@ -382,8 +401,11 @@ class ImageCG {
   reta_tex(pi, pf, tex, clg = false) {
     let [dx, dy] = Pixel.distance(pi, pf)
     let passos = max(Math.abs(dy), Math.abs(dx))
+    //console.log(passos)
+    //console.log(pi.ytex)//ytex sempre da 1
 
     if (passos == 0) {
+      
       let intensity = this.get_pixel_tex(pi, tex)
       this.set_pixel(pi, intensity)
       return
@@ -391,24 +413,38 @@ class ImageCG {
 
     let passo_x = dx / passos;
     let passo_y = dy / passos;
+    //console.log(passo_x)
 
     for (let i = 0; i < passos; i++) {
       let is_one = Math.abs(Math.round(passo_x)) == 1
 
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
+      let pc = (x - pi.x)/(pf.x - pi.x);
+      //let pcy = (y - pi.y)/(pf.y - pi.y);
+      
+      let tx = pi.xtex + pc*(pf.xtex - pi.xtex);
+      let ty = pi.ytex + pc*(pf.ytex - pi.ytex);
+      
+      //let intensidade = this.get_pixel_tex(new Pixel(x,y,tx,ty),tex);
+      
+      //img = setpixel(img, xk, y, intensidade);
 
-      if (is_one) {
-        var px1 = new Pixel(Math.round(x), Math.floor(y))
-        var px2 = new Pixel(Math.round(x), Math.floor(y + 1))
+      if (is_one) {// adicionar texturas
+        var px1 = new Pixel(Math.round(x), Math.floor(y),tx,ty)
+        var px2 = new Pixel(Math.round(x), Math.floor(y + 1),tx,ty)
       }
       else {
-        var px1 = new Pixel(Math.floor(x), Math.round(y))
-        var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
+        var px1 = new Pixel(Math.floor(x), Math.round(y),tx,ty)
+        var px2 = new Pixel(Math.floor(x + 1), Math.round(y),tx,ty)
       }
+      
+      let int_px1 = this.get_pixel_tex(px1, tex)
+      this.set_pixel_color(px1, new Color(int_px1[0],int_px1[1],int_px1[2],int_px1[3]));
 
-      this.set_pixel(px1, this.get_pixel_tex(px1, tex));
-      this.set_pixel(px2, this.get_pixel_tex(px2, tex));
+      let int_px2 = this.get_pixel_tex(px2, tex)
+      this.set_pixel_color(px2, new Color(int_px2[0],int_px2[1],int_px2[2],int_px2[3]));
+        
     }
 
     if (clg) {
@@ -432,11 +468,14 @@ class ImageCG {
         //4vezes
         var pf = pol.vertices[p];
         var pint = this.intersection(y, new Line(pi, pf))[0]; // segmento válido
+        
         if (pint.x >= 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
             var pint2 = this.intersection(y, new Line(pf, pol.vertices[k]))[0];//[0]-> pixel [1]-> t
             if (pint2.x >= 0) {
               this.reta_continua(pint2, pint);
+              
+              
             }
           }
         }
@@ -527,6 +566,7 @@ class ImageCG {
 
       let color1 = Color.gradient(pi.color, pf.color, porc1)
       let color2 = Color.gradient(pi.color, pf.color, porc2)
+      console.log(color1)
 
       this.set_pixel_color(px1, color1);
       this.set_pixel_color(px2, color2);
@@ -549,12 +589,16 @@ class ImageCG {
       for (let p = 0; p < pol.vertices.length; p++) {
         //4vezes
         var pf = pol.vertices[p];
+        
         var pint = this.intersection_tex(y, new Line(pi, pf))[0]; // segmento válido
+        
         if (pint.x >= 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
             var pint2 = this.intersection_tex(y, new Line(pf, pol.vertices[k]))[0];//[0]-> pixel [1]-> t
+            //console.log(pint2.xtex)
             if (pint2.x >= 0) {
               this.reta_tex(pint2, pint, tex);
+              
             }
           }
         }
