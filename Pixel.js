@@ -49,6 +49,7 @@ Color.gradient = (color1, color2, porc) => {
  * @param {?Number} y Coordenada Y do pixel. Se 'null', então será igual ao x
  * @param {?Number} xtex Coordenada X da textura variam de 0 a 1. 
  * @param {?Number} ytex Coordenada Y da textura variam de 0 a 1. 
+ * @param {boolean} allow_round Se deve arredondar os valores das coordenadas para inteiros.
  * @param {?Color} color Cor do pixel
  * @type {{x:Number y:Number xtex:Number ytex:Number color:Color}}
  */
@@ -57,12 +58,11 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
     this.y = y === undefined ? this.x : y
     this.xtex = xtex === undefined ? 0 : xtex
     this.ytex = ytex === undefined ? this.xtex : ytex
+    this._round = allow_round
 
-    if (allow_round) {
+    if (this._round) {
         this.x = round(this.x)
         this.y = round(this.y)
-        this.xtex = round(this.xtex)
-        this.ytex = round(this.ytex)
     }
     /**
      * Retorna as coordenadas x,y como um array
@@ -127,7 +127,7 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @returns {Pixel} Novo pixel
      */
     this.copy = () => {
-        return Pixel.from_object({ ...this })
+        return Pixel.from_object({ ...this, allow_round: this._round })
     }
     /**
      * Gera um novo pixel com valores trocados de X e Y
