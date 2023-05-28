@@ -15,6 +15,7 @@ function Figure(stroke, vertices) {
      */
     this.add_vertex = (vertex) => {
         this.vertices.push(...vertex)
+        return this
     }
     /**
      * Trata e retorna os vértices
@@ -30,15 +31,20 @@ function Figure(stroke, vertices) {
      */
     this.translate = (coord) => {
         this.vertices.map(v => v.add(coord))
+        return this
     }
 
     /**
      * Modifica o tamanho da figura
      * @param {Pixel} scale 
+     * @param {Pixel?} scale_center Para qual direção os pixels devem se mover
      */
-    this.scale = (scale) => {
+    this.scale = (scale, scale_center = null) => {
         this.scale = scale
         this.vertices.map(v => v.mult(scale))
+
+        if (scale_center) this.translate(scale_center)
+
         return this
     }
 
