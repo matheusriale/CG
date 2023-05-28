@@ -2,11 +2,12 @@
  * Cria uma figura
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
  * @param {?Array<Pixel>} vertices 
- * @type {{vertices: Array<Pixel> stroke_intensity: Number}}
+ * @type {{vertices: Array<Pixel> stroke: Number}}
  */
 function Figure(stroke, vertices) {
     this.vertices = vertices || []
-    this.stroke_intensity = stroke || 255
+    this.stroke = stroke || 255
+    this.scale = new Pixel(1)
 
     /**
      * Adiciona vértices ao polígono
@@ -14,6 +15,7 @@ function Figure(stroke, vertices) {
      */
     this.add_vertex = (vertex) => {
         this.vertices.push(...vertex)
+        return this
     }
     /**
      * Trata e retorna os vértices
@@ -29,5 +31,28 @@ function Figure(stroke, vertices) {
      */
     this.translate = (coord) => {
         this.vertices.map(v => v.add(coord))
+        return this
+    }
+
+    /**
+     * Modifica o tamanho da figura
+     * @param {Pixel} scale 
+     */
+    this.scale = (scale) => {
+        this.scale = scale
+        this.vertices.map(v => {
+            v.mult(scale)
+            v.round_position()
+        })
+
+        return this
+    }
+
+    /**
+     * Faz uma cópia da figura atual
+     * @returns {Figure}
+     */
+    this.copy = () => {
+        return new Figure(this.stroke, [...this.vertices])
     }
 }

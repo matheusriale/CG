@@ -1,9 +1,3 @@
-function getArcCoordinate(radius1, radius2, coord) {
-  let r1_2 = Math.pow(radius1, 2)
-  let r2_2 = Math.pow(radius2, 2)
-  return Math.sqrt((r1_2 - (r1_2 / r2_2) * Math.pow(coord, 2)))
-}
-
 /**
  * Manipula o canvas do p5.js
  * @type {{width: Number height: Number background: Number}}
@@ -70,9 +64,9 @@ class ImageCG {
   }
 
   /**
-   * Muda a cor de um pixel
-   * @param {Pixel} p Pixel para ser mudado
-   * @param {?Color} color Cor do pixel
+   * Muda a cor de um pixel. Caso passada a cor pelos parâmetros, irá sobrescrever a cor já definida no pixel.
+   * @param {Pixel} p Pixel para ser mudado (a cor pode ser definida aqui também)
+   * @param {?Color} color Cor do pixel (opcional - sobrescreve a cor do pixel)
    * @param {boolean} clg Exibir no console ou não (default: False)
    * @returns {Number} Índice do pixel no array de pixels do P5.js
    */
@@ -94,6 +88,22 @@ class ImageCG {
     }
     updatePixels()
     return idx
+  }
+
+  /**
+   * Muda a cor de vários pixels ao mesmo tempo
+   * @param {Pixel[] | Figure} pixels Pixels para serem mudados
+   * @param {?Color} color Cor do pixel
+   * @param {boolean} clg Exibir no console ou não (default: False)
+   */
+  set_pixels(pixels, color = null, clg = false) {
+    let is_figure = typeof pixels == typeof new Figure()
+    let all_pixels = is_figure ? pixels.get_vertices() : pixels
+    if (is_figure) color = pixels.stroke || color
+
+    all_pixels.forEach(p => {
+      this.set_pixel_color(p, color, clg)
+    })
   }
 
   /**
@@ -300,7 +310,7 @@ class ImageCG {
   draw_figure(figure, intensity, edge_color = false) {
     let vertices = figure.get_vertices()
     var last_pixel = vertices[0]
-    let iten = intensity || figure.stroke_intensity
+    let iten = intensity || figure.stroke
 
     for (let i = 1; i < vertices.length; i++) {
       let pixel = vertices[i];
@@ -594,70 +604,6 @@ class ImageCG {
         }
         pi = pf;
       }
-    }
-  }
-
-
-  /**
-   * Desenha uma circunferência (pixel a pixel)
-   * @param {Pixel} center Centro da circunferência
-   * @param {Number} radius raio da circunferência
-   * @param {Color} color Cor da borda da circunferência
-   * @param {Number} step Passo do desenho (default: 1)
-   */
-  circumference(center, radius, color, step = 1) {
-    let square_radius = Math.pow(radius, 2)
-
-    for (let x = 1; x <= radius; x += step) {
-      let y = Math.sqrt(square_radius - Math.pow(x, 2))
-
-      this.set_pixel_color(new Pixel(x, y, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(y, x, null, null, color).add(center))
-
-      this.set_pixel_color(new Pixel(-y, x, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-x, y, null, null, color).add(center))
-
-      this.set_pixel_color(new Pixel(-x, -y, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-y, -x, null, null, color).add(center))
-
-      this.set_pixel_color(new Pixel(y, -x, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(x, -y, null, null, color).add(center))
-    }
-
-  }
-
-  /**
-     * Desenha uma elipse (pixel a pixel)
-     * @param {Pixel} center Centro da elipse
-     * @param {Number} radiusX raio vertical da elipse
-     * @param {Number} radiusY raio horizontal da elipse
-     * @param {Color} color Cor da borda da elipse
-     * @param {Number} step Passo do desenho (default: 1)
-     */
-  ellipse(center, radiusX, radiusY, color, step = 1) {
-    for (let x1 = 0; x1 < radiusX; x1 += step) {
-
-      let y1 = getArcCoordinate(radiusY, radiusX, x1)
-
-      let px = x1
-      let py = y1
-      this.set_pixel_color(new Pixel(px, py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-px, py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-px, -py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(px, -py, null, null, color).add(center))
-
-    }
-
-    for (let y2 = 0; y2 < radiusY; y2 += step) {
-      let x2 = getArcCoordinate(radiusX, radiusY, y2)
-
-      let px = x2
-      let py = y2
-      this.set_pixel_color(new Pixel(px, py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-px, py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-px, -py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(px, -py, null, null, color).add(center))
-
     }
   }
 

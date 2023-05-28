@@ -224,6 +224,12 @@ class CharDrawer {
         }
     }
 
+    /**
+     * Obtém os vértices para o dígito `C`
+     * @param {Pixel} pos Posição inicial da letra
+     * @param {number} weight Largura da letra
+     * @returns {Polygon | Figure} Se tiver `weight`, irá retornar um polígono. Caso contrário, será uma figura
+     */
     letter_G(pos, weight) {
         let p1 = new Pixel(pos.x + this.font_size, pos.y)
         let p2 = pos

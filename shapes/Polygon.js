@@ -2,7 +2,7 @@
  * Cria um polígono
  * @param {?Number} stroke Intensidade da borda (0 a 255) (padrão: 255)
  * @param {?Array<Pixel>} vertices 
- * @type {{vertices: Array<Pixel> stroke_intensity: Number}}
+ * @type {{vertices: Array<Pixel> stroke: Number}}
  * @extends Figure
  */
 function Polygon(stroke, vertices) {

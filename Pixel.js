@@ -49,14 +49,25 @@ Color.gradient = (color1, color2, porc) => {
  * @param {?Number} y Coordenada Y do pixel. Se 'null', então será igual ao x
  * @param {?Number} xtex Coordenada X da textura variam de 0 a 1. 
  * @param {?Number} ytex Coordenada Y da textura variam de 0 a 1. 
+ * @param {boolean} allow_round Se deve arredondar os valores das coordenadas para inteiros.
  * @param {?Color} color Cor do pixel
- * @type {{x:Number y:Number xtex:Number ytex:Number color:Color}}
+ * @type {{x:Number y:Number xtex:Number ytex:Number color:Color _round:boolean}}
  */
-function Pixel(x, y, xtex, ytex, color) {
-    this.x = round(x === undefined ? 0 : x)
-    this.y = round(y === undefined ? this.x : y)
+function Pixel(x, y, xtex, ytex, color, allow_round = true) {
+    this.x = x === undefined ? 0 : x
+    this.y = y === undefined ? this.x : y
     this.xtex = xtex === undefined ? 0 : xtex
     this.ytex = ytex === undefined ? this.xtex : ytex
+    this._round = allow_round
+
+
+    this.round_position = () => {
+        this.x = round(this.x)
+        this.y = round(this.y)
+        return this
+    }
+
+    if (this._round) this.round_position()
 
     /**
      * Retorna as coordenadas x,y como um array
@@ -107,18 +118,42 @@ function Pixel(x, y, xtex, ytex, color) {
     }
 
     /**
+     * Multiplica o pixel por uma coordenada
+     * @param {Pixel} p 
+     * @returns 
+     */
+    this.mult = (p) => {
+        this.x *= p.x
+        this.y *= p.y
+        return this
+    }
+    /**
      * Gera uma nova instância idêntica à atual
      * @returns {Pixel} Novo pixel
      */
     this.copy = () => {
-        return new Pixel(this.x, this.y)
+        return Pixel.from_object({ ...this, allow_round: this._round })
     }
     /**
      * Gera um novo pixel com valores trocados de X e Y
      * @returns {Pixel} Novo Pixel
      */
     this.invert = () => {
-        return new Pixel(this.y, this.x)
+        let n = this.copy()
+        n.x = this.y
+        n.y = this.x
+        return n
+    }
+
+    /**
+     * Multiplica os valores de X e Y por -1
+     * @returns {Pixel}
+     */
+    this.negate = () => {
+        let n = this.copy()
+        n.x *= -1
+        n.y *= -1
+        return n
     }
 
     this.load_color = (width) => {
@@ -129,6 +164,9 @@ function Pixel(x, y, xtex, ytex, color) {
     this.color = color === undefined ? this.load_color() : color
 }
 
+Pixel.from_object = (object) => {
+    return new Pixel(object.x, object.y, object.xtex, object.ytex, object.color, object.allow_round)
+}
 /**
  * Inverte os pixels: p1 vira p2 e vice-versa
  * @param {Pixel} p1 Pixel 1
