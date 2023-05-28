@@ -62,9 +62,10 @@ function Figure(stroke, vertices) {
      * @param {Array<Array<Number>} transformation 
      */
     this.apply_transformation = (transformation) => {
-        this.vertices.forEach(v => {
-            v.apply_transformation(transformation)
-        })
+        this.vertices = this.vertices.map(v => {
+            return v.apply_transformation(transformation)
+        }
+        )
     }
 
     /**
