@@ -189,7 +189,7 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
     /**
      * Mapea o ponto na janela
      * @param {Viewport} vport Viewport
-     * @param {Window} win Janela
+     * @param {WindowCG} win Janela
      * @returns {Pixel} ponto mapeado
      */
     this.map_window = (vport, win) => {
