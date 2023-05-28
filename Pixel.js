@@ -207,10 +207,7 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
             ],
             [0, 0, 1]
         ];
-
-        p = this.copy()
-        p.apply_transformation(m);
-
+        let p = this.copy().apply_transformation(m)
         return p;
     }
 }
