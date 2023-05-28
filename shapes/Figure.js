@@ -41,7 +41,10 @@ function Figure(stroke, vertices) {
      */
     this.scale = (scale, scale_center = null) => {
         this.scale = scale
-        this.vertices.map(v => v.mult(scale))
+        this.vertices.map(v => {
+            v.mult(scale)
+            v.round_position()
+        })
 
         if (scale_center) this.vertices.map(v => v.sub(scale_center))
 
