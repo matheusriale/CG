@@ -37,16 +37,13 @@ function Figure(stroke, vertices) {
     /**
      * Modifica o tamanho da figura
      * @param {Pixel} scale 
-     * @param {Pixel?} scale_center Para qual direção os pixels devem se mover
      */
-    this.scale = (scale, scale_center = null) => {
+    this.scale = (scale) => {
         this.scale = scale
         this.vertices.map(v => {
             v.mult(scale)
             v.round_position()
         })
-
-        if (scale_center) this.vertices.map(v => v.sub(scale_center))
 
         return this
     }
