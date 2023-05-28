@@ -56,4 +56,35 @@ function Figure(stroke, vertices) {
     this.copy = () => {
         return new Figure(this.stroke, [...this.vertices])
     }
+
+    /**
+     * Aplica uma transformação a uma figura
+     * @param {Array<Array<Number>} transformation 
+     */
+    this.apply_transformation = (transformation) => {
+        this.vertices.forEach(v => {
+            var pt = [v.x, v.y, 1];
+            pt = math.transpose(pt);
+
+            pt = math.multiply(transformation, pt);
+
+            pt = math.transpose(pt);
+            v.x = pt[0];
+            v.y = pt[1];
+        })
+    }
+}
+
+Figure.make_translation = (x, y, m) => {
+    let translation = [[1, 0, x], [0, 1, y], [0, 0, 1]]
+    return m ? math.multiply(translation, m) : translation
+}
+
+Figure.make_scale = (x, y, m) => {
+    let scale = [[x, 0, 0], [0, y, 0], [0, 0, 1]]
+    return m ? math.multiply(scale, m) : scale
+}
+
+Figure.make_transformation = () => {
+    return [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 }
