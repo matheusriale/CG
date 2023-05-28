@@ -25,13 +25,15 @@ class Opening {
             color: new Color(100, 100, 255)
         }
 
-        this.load = {
+        this.init_animation = {
+            figure: null,
+            direction: 1,
+            size: 5,
             start: new Pixel(10, 85),
-            end: new Pixel(width - 10, 85)
         }
 
+
         this._last_hover = false
-        this.count = 0
     }
 
     start() {
@@ -45,7 +47,7 @@ class Opening {
         this._draw_C()
         this._draw_G()
         this._draw_start_button()
-        this.create_loading()
+        this.create_animation()
     }
     is_hover_button() {
         return mouseX <= (this.button.center.x + this.button.radius) &&
@@ -55,12 +57,8 @@ class Opening {
     }
 
     update() {
-        if (this.count < 5) {
-            this.update_loading()
-            this.count++
-        }
 
-
+        this.update_animation()
         let is_hover = this.is_hover_button()
 
         if (is_hover && !this._last_hover) {
@@ -118,20 +116,27 @@ class Opening {
 
     }
 
-    update_loading() {
-        let clean_margin = new Pixel(7, 4)
+    update_animation() {
+        let vertices = this.init_animation.figure.vertices
 
+        if (vertices[3].x >= width - this.init_animation.size - 10) {
+            this.init_animation.direction = -1
+        } else if (vertices[0].x <= 1) {
+            this.init_animation.direction = 1
+        }
+
+        const pace = new Pixel(this.init_animation.direction, 0)
+        this.init_animation.figure.translate(pace)
+
+        let clean_margin = new Pixel(this.init_animation.size * 2, 4)
         this.screen.clear_area(
-            this.loading_border.vertices[0].copy().sub(clean_margin),
-            this.loading_border.vertices[3].copy().add(clean_margin))
+            vertices[0].copy().sub(clean_margin),
+            vertices[3].copy().add(clean_margin))
 
-        var pace = new Pixel(10, 0)
-        this.loading_border.translate(pace)
-        this.screen.draw_figure(this.loading_border)
+        this.screen.draw_figure(this.init_animation.figure)
     }
-    create_loading() {
-        this.loading_border = Polygon.rect(this.load.start, this.load.start.copy().add(new Pixel(5, 10)))
-        this.loading_bar = Polygon.rect(this.load.start, new Pixel())
-        this.screen.draw_figure(this.loading_border)
+    create_animation() {
+        this.init_animation.figure = Polygon.square(this.init_animation.start, this.init_animation.size)
+        this.screen.draw_figure(this.init_animation.figure)
     }
 }
