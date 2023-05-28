@@ -136,7 +136,8 @@ class Opening {
     _draw_elipse() {
         console.log("Elipse")
         let center = this.init_pixel.copy().add(new Pixel(this.font_size + this.padding / 2, this.font_size / 2))
-        this.title.background = this.screen.ellipse(center, this.font_size * 2, 20, this._border_color)
+        this.title.background = new Ellipse(center, this.font_size * 2, 20, this._border_color)
+        this.screen.set_pixels(this.title.background)
         this.screen.floodFill(center, this._elipse_color)
     }
 
