@@ -560,26 +560,33 @@ class ImageCG {
    * @param {Number} radius raio da circunferência
    * @param {Color} color Cor da borda da circunferência
    * @param {Number} step Passo do desenho (default: 1)
+   * 
+   * @returns {Pixels[]} Pixels calculados da circunferência
    */
   circumference(center, radius, color, step = 1) {
     let square_radius = Math.pow(radius, 2)
+    let all_pixels = []
 
     for (let x = 1; x <= radius; x += step) {
       let y = Math.sqrt(square_radius - Math.pow(x, 2))
+      let pixels = [
+        new Pixel(x, y, null, null, color).add(center),
+        new Pixel(y, x, null, null, color).add(center),
 
-      this.set_pixel_color(new Pixel(x, y, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(y, x, null, null, color).add(center))
+        new Pixel(-y, x, null, null, color).add(center),
+        new Pixel(-x, y, null, null, color).add(center),
 
-      this.set_pixel_color(new Pixel(-y, x, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-x, y, null, null, color).add(center))
+        new Pixel(-x, -y, null, null, color).add(center),
+        new Pixel(-y, -x, null, null, color).add(center),
 
-      this.set_pixel_color(new Pixel(-x, -y, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-y, -x, null, null, color).add(center))
+        new Pixel(y, -x, null, null, color).add(center),
+        new Pixel(x, -y, null, null, color).add(center),
 
-      this.set_pixel_color(new Pixel(y, -x, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(x, -y, null, null, color).add(center))
+      ]
+      pixels.forEach(p => this.set_pixel_color(p))
     }
 
+    return all_pixels
   }
 
   /**
@@ -589,18 +596,26 @@ class ImageCG {
      * @param {Number} radiusY raio horizontal da elipse
      * @param {Color} color Cor da borda da elipse
      * @param {Number} step Passo do desenho (default: 1)
+     * 
+     * @returns {Pixels[]} Pixels calculados da elipse
      */
   ellipse(center, radiusX, radiusY, color, step = 1) {
+    var all_pixels = []
     for (let x1 = 0; x1 < radiusX; x1 += step) {
 
       let y1 = getArcCoordinate(radiusY, radiusX, x1)
 
       let px = x1
       let py = y1
-      this.set_pixel_color(new Pixel(px, py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-px, py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-px, -py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(px, -py, null, null, color).add(center))
+
+      let pixels = [new Pixel(px, py, null, null, color).add(center),
+      new Pixel(-px, py, null, null, color).add(center),
+      new Pixel(-px, -py, null, null, color).add(center),
+      new Pixel(px, -py, null, null, color).add(center)
+      ]
+
+      pixels.forEach(p => this.set_pixel_color(p))
+      all_pixels.push(...pixels)
 
     }
 
@@ -609,12 +624,16 @@ class ImageCG {
 
       let px = x2
       let py = y2
-      this.set_pixel_color(new Pixel(px, py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-px, py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(-px, -py, null, null, color).add(center))
-      this.set_pixel_color(new Pixel(px, -py, null, null, color).add(center))
+      let pixels = [new Pixel(px, py, null, null, color).add(center),
+      new Pixel(-px, py, null, null, color).add(center),
+      new Pixel(-px, -py, null, null, color).add(center),
+      new Pixel(px, -py, null, null, color).add(center),]
 
+
+      pixels.forEach(p => this.set_pixel_color(p))
+      all_pixels.push(...pixels)
     }
+    return all_pixels
   }
 
   /**
