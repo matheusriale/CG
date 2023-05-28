@@ -30,4 +30,12 @@ function Figure(stroke, vertices) {
     this.translate = (coord) => {
         this.vertices.map(v => v.add(coord))
     }
+
+    /**
+     * Modifica o tamanho da figura
+     * @param {Pixel} scale 
+     */
+    this.scale = (scale) => {
+        this.vertices.map(v => v.mult(scale))
+    }
 }
