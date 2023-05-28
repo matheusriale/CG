@@ -131,6 +131,14 @@ function Pixel(x, y, xtex, ytex, color) {
         return new Pixel(this.y, this.x)
     }
 
+    /**
+     * Multiplica os valores de X e Y por -1
+     * @returns {Pixel}
+     */
+    this.negate = () => {
+        return new Pixel(this.x * -1, this.y * -1)
+    }
+
     this.load_color = (width) => {
         let idx = this.get_idx(width)
         return new Color(pixels[idx], pixels[idx + 1], pixels[idx + 2], pixels[idx + 3])
