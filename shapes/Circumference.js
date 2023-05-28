@@ -45,10 +45,14 @@ function Circumference(stroke, center, radius, draw_step = 1) {
 
     /**
      * Modifica o tamanho da figura e mantém a posição do centro
-     * @param {Pixel} scale 
+     * @param {Pixel} scale  
      */
     this.scale_keep_center = (scale) => {
-        return this.scale(scale, this.center)
+        let older_center = this.center.copy()
+        this.scale(scale, this.center)
+        this.radius *= scale
+        this.center = this.center.mult(scale)
+        return this.move_center(older_center)
     }
 
     this.move_center = (new_pos) => {
