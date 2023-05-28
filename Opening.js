@@ -9,51 +9,128 @@ class Opening {
      */
     constructor(screen, char_drawer) {
         this.screen = screen
-        this.is_runing = false
+        this.is_running = false
         this._char_drawer = char_drawer
         this.init_pixel = new Pixel(20)
-        this._elipse_color = 1
+        this._elipse_color = new Color(100, 100, 255)
+        this._border_color = new Color(255, 255, 0)
         this.font_size = this._char_drawer.font_size
         this.padding = 10
+        this.font_weight = 3.5
+        this.font_color = new Color(255)
+
+        this.button = {
+            center: new Pixel(45, 70),
+            radius: 10,
+            color: new Color(100, 100, 255)
+        }
+
+        this.load = {
+            start: new Pixel(10, 85),
+            end: new Pixel(width - 10, 85)
+        }
+
+        this._last_hover = false
+        this.count = 0
     }
 
     start() {
-        this.is_runing = true
+        console.log("Iniciando tela de abertura...")
+        this.is_running = true
+        this.draw_all()
+    }
+
+    draw_all() {
         this._draw_elipse()
         this._draw_C()
         this._draw_G()
         this._draw_start_button()
+        this.create_loading()
+    }
+    is_hover_button() {
+        return mouseX <= (this.button.center.x + this.button.radius) &&
+            mouseX >= (this.button.center.x - this.button.radius) &&
+            mouseY <= this.button.center.y + this.button.radius &&
+            mouseY >= this.button.center.y - this.button.radius
+    }
+
+    update() {
+        if (this.count < 5) {
+            this.update_loading()
+            this.count++
+        }
+
+
+        let is_hover = this.is_hover_button()
+
+        if (is_hover && !this._last_hover) {
+            cursor(HAND)
+            this.screen.floodFill(this.button.center.copy(), this.font_color, this._elipse_color)
+            this._last_hover = true
+        }
+
+        if (!is_hover && this._last_hover) {
+            cursor(ARROW)
+            this.screen.clear_area(
+                this.button.center.copy().sub(new Pixel(this.button.radius + 1)),
+                this.button.center.copy().add(new Pixel(this.button.radius + 1)))
+            this._draw_start_button()
+            this._last_hover = false
+        }
     }
 
     _draw_C() {
+        console.log("C")
         let c_init = this.init_pixel
-        this.screen.draw_figure(this._char_drawer.letter_C(c_init, 3))
-        this.screen.floodFill(c_init.copy().add(new Pixel(2)), this._elipse_color)
+        this.screen.draw_figure(this._char_drawer.letter_C(c_init, this.font_weight))
+        let flood_init = c_init.copy().add(new Pixel(this.font_weight - 1))
+        this.screen.floodFill(flood_init, this.font_color, this._elipse_color, true)
     }
     _draw_G() {
+        console.log("G")
         let g_init = this.init_pixel.copy().add(new Pixel(this.font_size + this.padding, 0))
-        this.screen.draw_figure(this._char_drawer.letter_G(g_init, 3))
-        this.screen.floodFill(g_init.copy().add(new Pixel(2)), this._elipse_color)
+        this.screen.draw_figure(this._char_drawer.letter_G(g_init, this.font_weight))
+        let flood_init = g_init.copy().add(new Pixel(this.font_weight - 1))
+        this.screen.floodFill(flood_init, this.font_color, this._elipse_color)
     }
 
     _draw_elipse() {
+        console.log("Elipse")
         let center = this.init_pixel.copy().add(new Pixel(this.font_size + this.padding / 2, this.font_size / 2))
-        this.screen.ellipse(center, this.font_size * 2, 20, this._elipse_color)
+        this.screen.ellipse(center, this.font_size * 2, 20, this._border_color)
         this.screen.floodFill(center, this._elipse_color)
     }
 
     stop() {
-        this.is_runing = false
+        console.log("Encerrando tela inicial...")
+        this.is_running = false
         this.screen.clear()
     }
 
     _draw_start_button() {
-        let center = new Pixel(45, 70)
-        this.screen.circumference(center, 10, this._elipse_color)
-        this.screen.floodFill(center, this._elipse_color)
+        console.log("Botão")
+        this.screen.circumference(this.button.center, this.button.radius, this._border_color)
+        this.screen.floodFill(this.button.center, this.button.color)
 
-        let triangle = Polygon.triangle(center, 5, 255)
+        let triangle = Polygon.triangle(this.button.center, 5, 255)
         this.screen.draw_figure(triangle)
-        this.screen.floodFill(center.copy().sub(new Pixel(3)), 255, this._elipse_color)
+
+    }
+
+    update_loading() {
+        let clean_margin = new Pixel(7, 4)
+
+        this.screen.clear_area(
+            this.loading_border.vertices[0].copy().sub(clean_margin),
+            this.loading_border.vertices[3].copy().add(clean_margin))
+
+        var pace = new Pixel(10, 0)
+        this.loading_border.translate(pace)
+        this.screen.draw_figure(this.loading_border)
+    }
+    create_loading() {
+        this.loading_border = Polygon.rect(this.load.start, this.load.start.copy().add(new Pixel(5, 10)))
+        this.loading_bar = Polygon.rect(this.load.start, new Pixel())
+        this.screen.draw_figure(this.loading_border)
     }
 }

@@ -40,15 +40,24 @@ class ImageCG {
    * @param {Number} intensity Intensidade (0 a 255)
    */
   clear(intensity = null) {
+    this.clear_area(new Pixel(0), new Pixel(this.width, this.height), intensity)
+  }
+
+  /**
+   * Preenche uma área do canvas
+   * @param {Pixel} start
+   * @param {Pixel} end
+   * @param {Number} intensity Intensidade (0 a 255)
+   */
+  clear_area(start, end, intensity = null) {
     intensity = intensity == null ? this.background : intensity
 
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
+    for (let x = start.x; x < end.x; x++) {
+      for (let y = start.y; y < end.y; y++) {
         this.set_pixel(new Pixel(x, y), intensity)
       }
     }
   }
-
   /**
    * Muda a intensidade de um pixel
    * @param {Pixel} p Pixel para ser mudado
@@ -100,7 +109,7 @@ class ImageCG {
   get_pixel_tex(p, tex) {
     //tex->textura(colunas(width) e linhas(height))
     //p pixel (x,y)
-
+    // p.xtex e ytex estão sendo arredondados para 0 e 1 antes de entrar aqui
     // cod yuri
     if (p.xtex > 1) {
       p.xtex = 1;
@@ -114,12 +123,26 @@ class ImageCG {
     if (p.ytex < 0) {
       p.ytex = 0;
     }
-    let x = Math.round(p.xtex * (tex.width - 1) + 1);
-    let y = Math.round(p.ytex * (tex.height - 1) + 1);
+    let x = Math.round(p.xtex * (tex[0].length - 1) );
+    let y = Math.round(p.ytex * (tex.length - 1) );
     
-    //let intensity = tex.get(x, y);
-    
-    //return intensity;
+    //console.log("x = ",x,"y = ",y)
+    // console.log(tex[y][x+0])
+    // console.log(tex[y][x+1])
+    // console.log(tex[y][x+2])
+    // console.log(tex[y][x+3])
+    // if (x+2>tex[0].length){
+    //   console.log(x)
+    // }
+    // let intensity = tex[y][x];
+    // return intensity;
+
+    let intensityR = tex[y][x];
+    let intensityG = tex[y][x+1];
+    let intensityB = tex[y][x+2];
+    let intensityA = tex[y][x+3];
+    //console.log(intensityR,intensityG,intensityB,intensityA)
+    return [intensityR,intensityG,intensityB,intensityA];
   }
 
 
@@ -328,7 +351,8 @@ class ImageCG {
    * @returns {Array<Pixel|number>}
    */
   intersection_tex(scan, seg) {
-    var pi = seg.pi; //pi = x,y,tx,ty
+    var pi = seg.pi; //pi = x,y,xtex,ytex
+    //console.log(pi.ytex)
 
     var pf = seg.pf;
     var y = scan; // scan line -> percorrer toda a imagem 
@@ -354,7 +378,7 @@ class ImageCG {
       let tx = pi.xtex + t * (pf.xtex - pi.xtex);
       let ty = pi.ytex + t * (pf.ytex - pi.ytex);
       
-      //console.log(tx)
+      
 
       return [new Pixel(x, y, tx, ty), t]
     }
@@ -368,6 +392,7 @@ class ImageCG {
     let [dx, dy] = Pixel.distance(pi, pf)
     let passos = max(Math.abs(dy), Math.abs(dx))
     //console.log(passos)
+    //console.log(pi.ytex)//ytex sempre da 1
 
     if (passos == 0) {
       
@@ -386,11 +411,12 @@ class ImageCG {
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
       let pc = (x - pi.x)/(pf.x - pi.x);
+      //let pcy = (y - pi.y)/(pf.y - pi.y);
       
       let tx = pi.xtex + pc*(pf.xtex - pi.xtex);
       let ty = pi.ytex + pc*(pf.ytex - pi.ytex);
       
-      let intensidade = this.get_pixel_tex(tex, tx, ty);
+      //let intensidade = this.get_pixel_tex(new Pixel(x,y,tx,ty),tex);
       
       //img = setpixel(img, xk, y, intensidade);
 
@@ -402,9 +428,14 @@ class ImageCG {
         var px1 = new Pixel(Math.floor(x), Math.round(y),tx,ty)
         var px2 = new Pixel(Math.floor(x + 1), Math.round(y),tx,ty)
       }
-      //console.log(px1)
-      this.set_pixel(px1, this.get_pixel_tex(px1, tex));
-      this.set_pixel(px2, this.get_pixel_tex(px2, tex));
+      
+      let int_px1 = this.get_pixel_tex(px1, tex)
+      this.set_pixel_color(px1, new Color(int_px1[0],int_px1[1],int_px1[2],int_px1[3]));
+
+      let int_px2 = this.get_pixel_tex(px2, tex)
+      this.set_pixel_color(px2, new Color(int_px2[0],int_px2[1],int_px2[2],int_px2[3]));
+      
+
       
     }
 
@@ -527,6 +558,7 @@ class ImageCG {
 
       let color1 = Color.gradient(pi.color, pf.color, porc1)
       let color2 = Color.gradient(pi.color, pf.color, porc2)
+      console.log(color1)
 
       this.set_pixel_color(px1, color1);
       this.set_pixel_color(px2, color2);
@@ -549,15 +581,15 @@ class ImageCG {
       for (let p = 0; p < pol.vertices.length; p++) {
         //4vezes
         var pf = pol.vertices[p];
+        
         var pint = this.intersection_tex(y, new Line(pi, pf))[0]; // segmento válido
-        //console.log(pint)
+        
         if (pint.x >= 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
             var pint2 = this.intersection_tex(y, new Line(pf, pol.vertices[k]))[0];//[0]-> pixel [1]-> t
             //console.log(pint2.xtex)
             if (pint2.x >= 0) {
               this.reta_tex(pint2, pint, tex);
-              
               
             }
           }
@@ -572,25 +604,26 @@ class ImageCG {
    * Desenha uma circunferência (pixel a pixel)
    * @param {Pixel} center Centro da circunferência
    * @param {Number} radius raio da circunferência
+   * @param {Color} color Cor da borda da circunferência
    * @param {Number} step Passo do desenho (default: 1)
    */
-  circumference(center, radius, intensity, step = 1) {
+  circumference(center, radius, color, step = 1) {
     let square_radius = Math.pow(radius, 2)
 
     for (let x = 1; x <= radius; x += step) {
       let y = Math.sqrt(square_radius - Math.pow(x, 2))
 
-      this.set_pixel(new Pixel(x, y).add(center), intensity)
-      this.set_pixel(new Pixel(y, x).add(center), intensity)
+      this.set_pixel_color(new Pixel(x, y, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(y, x, null, null, color).add(center))
 
-      this.set_pixel(new Pixel(-y, x).add(center), intensity)
-      this.set_pixel(new Pixel(-x, y).add(center), intensity)
+      this.set_pixel_color(new Pixel(-y, x, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(-x, y, null, null, color).add(center))
 
-      this.set_pixel(new Pixel(-x, -y).add(center), intensity)
-      this.set_pixel(new Pixel(-y, -x).add(center), intensity)
+      this.set_pixel_color(new Pixel(-x, -y, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(-y, -x, null, null, color).add(center))
 
-      this.set_pixel(new Pixel(y, -x).add(center), intensity)
-      this.set_pixel(new Pixel(x, -y).add(center), intensity)
+      this.set_pixel_color(new Pixel(y, -x, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(x, -y, null, null, color).add(center))
     }
 
   }
@@ -600,19 +633,20 @@ class ImageCG {
      * @param {Pixel} center Centro da elipse
      * @param {Number} radiusX raio vertical da elipse
      * @param {Number} radiusY raio horizontal da elipse
+     * @param {Color} color Cor da borda da elipse
      * @param {Number} step Passo do desenho (default: 1)
      */
-  ellipse(center, radiusX, radiusY, intensity, step = 1) {
+  ellipse(center, radiusX, radiusY, color, step = 1) {
     for (let x1 = 0; x1 < radiusX; x1 += step) {
 
       let y1 = getArcCoordinate(radiusY, radiusX, x1)
 
       let px = x1
       let py = y1
-      this.set_pixel(new Pixel(px, py).add(center), intensity)
-      this.set_pixel(new Pixel(-px, py).add(center), intensity)
-      this.set_pixel(new Pixel(-px, -py).add(center), intensity)
-      this.set_pixel(new Pixel(px, -py).add(center), intensity)
+      this.set_pixel_color(new Pixel(px, py, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(-px, py, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(-px, -py, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(px, -py, null, null, color).add(center))
 
     }
 
@@ -621,10 +655,10 @@ class ImageCG {
 
       let px = x2
       let py = y2
-      this.set_pixel(new Pixel(px, py).add(center), intensity)
-      this.set_pixel(new Pixel(-px, py).add(center), intensity)
-      this.set_pixel(new Pixel(-px, -py).add(center), intensity)
-      this.set_pixel(new Pixel(px, -py).add(center), intensity)
+      this.set_pixel_color(new Pixel(px, py, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(-px, py, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(-px, -py, null, null, color).add(center))
+      this.set_pixel_color(new Pixel(px, -py, null, null, color).add(center))
 
     }
   }
@@ -632,35 +666,38 @@ class ImageCG {
   /**
    * Preenche uma área
    * @param {Pixel} p - Pixel que será pintado de início
-   * @param {Number} color - Cor para pintar o pixel
-   * @param {Number} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
+   * @param {Color} color - Cor para pintar o pixel
+   * @param {Color} init_color - cor inicial do pixel (se não especificada, será considerada a cor do background)
    */
   floodFill(p, color, init_color = null) {
-    init_color = init_color === null ? this.background : init_color
+    init_color = init_color === null ? new Color(this.background) : init_color
+    init_color = JSON.stringify(init_color.to_array())
     let stack_not_verified = [p];
 
-    loadPixels()
-    if (pixels[p.get_idx(width)] != init_color) {
-      return;
+    var pixel_color = (pixel) => {
+      return JSON.stringify(pixel.load_color(this.width).to_array())
     }
+
+    if (pixel_color(p) != init_color) return
 
     while (stack_not_verified.length > 0) {
       let pix = stack_not_verified.pop();
-      this.set_pixel(pix, color)
-      if (pixels[new Pixel(pix.x, pix.y + 1).get_idx(width)] == init_color) {
-        stack_not_verified.push(new Pixel(pix.x, pix.y + 1))
+      this.set_pixel_color(pix, color)
+
+      let pixels = [
+        new Pixel(pix.x, pix.y + 1),
+        new Pixel(pix.x, pix.y - 1),
+        new Pixel(pix.x + 1, pix.y),
+        new Pixel(pix.x - 1, pix.y)]
+
+      for (const px of pixels) {
+        if (pixel_color(px) == init_color) stack_not_verified.push(px)
       }
-      if (pixels[new Pixel(pix.x, pix.y - 1).get_idx(width)] == init_color) {
-        stack_not_verified.push(new Pixel(pix.x, pix.y - 1))
-      }
-      if (pixels[new Pixel(pix.x + 1, pix.y).get_idx(width)] == init_color) {
-        stack_not_verified.push(new Pixel(pix.x + 1, pix.y))
-      }
-      if (pixels[new Pixel(pix.x - 1, pix.y).get_idx(width)] == init_color) {
-        stack_not_verified.push(new Pixel(pix.x - 1, pix.y))
-      }
+
     }
   }
+
+
 }
 
 

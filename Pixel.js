@@ -55,8 +55,8 @@ Color.gradient = (color1, color2, porc) => {
 function Pixel(x, y, xtex, ytex, color) {
     this.x = round(x === undefined ? 0 : x)
     this.y = round(y === undefined ? this.x : y)
-    this.xtex = round(xtex === undefined ? 0 : xtex)
-    this.ytex = round(ytex === undefined ? this.xtex : ytex)
+    this.xtex = xtex === undefined ? 0 : xtex
+    this.ytex = ytex === undefined ? this.xtex : ytex
 
     /**
      * Retorna as coordenadas x,y como um array

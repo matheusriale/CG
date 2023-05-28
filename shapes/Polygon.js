@@ -16,9 +16,7 @@ function Polygon(stroke, vertices) {
         if (this.vertices.length < 3) {
             throw RangeError("A polygon must have at least 3 vertices")
         }
-        let v = this.vertices
-        v.push(this.vertices[0])
-        return v
+        return [...this.vertices, this.vertices[0]]
     }
 
 }
