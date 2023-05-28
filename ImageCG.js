@@ -98,12 +98,13 @@ class ImageCG {
 
   /**
    * Muda a cor de vários pixels ao mesmo tempo
-   * @param {Pixel[]} pixels Pixel para ser mudado
+   * @param {Pixel[] | Figure} pixels Pixels para serem mudados
    * @param {?Color} color Cor do pixel
    * @param {boolean} clg Exibir no console ou não (default: False)
    */
   set_pixels(pixels, color = null, clg = false) {
-    pixels.forEach(p => {
+    let all_pixels = typeof pixels == typeof new Figure() ? pixels.get_vertices() : pixels
+    all_pixels.forEach(p => {
       this.set_pixel_color(p, color, clg)
     })
   }
