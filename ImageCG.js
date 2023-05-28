@@ -561,7 +561,7 @@ class ImageCG {
    * @param {Color} color Cor da borda da circunferência
    * @param {Number} step Passo do desenho (default: 1)
    * 
-   * @returns {Pixels[]} Pixels calculados da circunferência
+   * @returns {Figure} Pixels calculados da circunferência
    */
   circumference(center, radius, color, step = 1) {
     let square_radius = Math.pow(radius, 2)
@@ -584,9 +584,11 @@ class ImageCG {
 
       ]
       pixels.forEach(p => this.set_pixel_color(p))
+
+      all_pixels.push(...pixels)
     }
 
-    return all_pixels
+    return new Figure(color, all_pixels)
   }
 
   /**
@@ -597,7 +599,7 @@ class ImageCG {
      * @param {Color} color Cor da borda da elipse
      * @param {Number} step Passo do desenho (default: 1)
      * 
-     * @returns {Pixels[]} Pixels calculados da elipse
+     * @returns {Figure} Pixels calculados da elipse
      */
   ellipse(center, radiusX, radiusY, color, step = 1) {
     var all_pixels = []
@@ -633,7 +635,7 @@ class ImageCG {
       pixels.forEach(p => this.set_pixel_color(p))
       all_pixels.push(...pixels)
     }
-    return all_pixels
+    return new Figure(color, all_pixels)
   }
 
   /**
