@@ -64,9 +64,9 @@ class ImageCG {
   }
 
   /**
-   * Muda a cor de um pixel
-   * @param {Pixel} p Pixel para ser mudado
-   * @param {?Color} color Cor do pixel
+   * Muda a cor de um pixel. Caso passada a cor pelos parâmetros, irá sobrescrever a cor já definida no pixel.
+   * @param {Pixel} p Pixel para ser mudado (a cor pode ser definida aqui também)
+   * @param {?Color} color Cor do pixel (opcional - sobrescreve a cor do pixel)
    * @param {boolean} clg Exibir no console ou não (default: False)
    * @returns {Number} Índice do pixel no array de pixels do P5.js
    */
