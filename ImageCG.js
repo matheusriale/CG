@@ -97,6 +97,18 @@ class ImageCG {
   }
 
   /**
+   * Muda a cor de vários pixels ao mesmo tempo
+   * @param {Pixel[]} pixels Pixel para ser mudado
+   * @param {?Color} color Cor do pixel
+   * @param {boolean} clg Exibir no console ou não (default: False)
+   */
+  set_pixels(pixels, color = null, clg = false) {
+    pixels.forEach(p => {
+      this.set_pixel_color(p, color, clg)
+    })
+  }
+
+  /**
    * Retorna a intensidade do pixel
    * @param {Pixel} p Pixel para ser mudado
    * @returns {Number} Intensidade do pixel
