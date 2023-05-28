@@ -134,7 +134,10 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @returns {Pixel} Novo Pixel
      */
     this.invert = () => {
-        return new Pixel(this.y, this.x)
+        let n = this.copy()
+        n.x = this.y
+        n.y = this.x
+        return n
     }
 
     /**
@@ -142,7 +145,10 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @returns {Pixel}
      */
     this.negate = () => {
-        return new Pixel(this.x * -1, this.y * -1)
+        let n = this.copy()
+        n.x *= -1
+        n.y *= -1
+        return n
     }
 
     this.load_color = (width) => {
