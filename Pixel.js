@@ -167,6 +167,21 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
     }
 
     this.color = color === undefined ? this.load_color() : color
+
+    /**
+     * Aplica uma transformação a um pixel
+     * @param {Array<Array<Number>} transformation 
+     */
+    this.apply_transformation = (transformation) => {
+        var pt = [this.x, this.y, 1];
+        pt = math.transpose(pt);
+
+        pt = math.multiply(transformation, pt);
+
+        pt = math.transpose(pt);
+        this.x = pt[0];
+        this.y = pt[1];
+    }
 }
 
 Pixel.from_object = (object) => {

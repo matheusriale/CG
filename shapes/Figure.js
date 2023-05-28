@@ -63,14 +63,7 @@ function Figure(stroke, vertices) {
      */
     this.apply_transformation = (transformation) => {
         this.vertices.forEach(v => {
-            var pt = [v.x, v.y, 1];
-            pt = math.transpose(pt);
-
-            pt = math.multiply(transformation, pt);
-
-            pt = math.transpose(pt);
-            v.x = pt[0];
-            v.y = pt[1];
+            v.apply_transformation(transformation)
         })
     }
 }
