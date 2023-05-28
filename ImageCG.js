@@ -137,25 +137,21 @@ class ImageCG {
     if (p.ytex < 0) {
       p.ytex = 0;
     }
-    let x = Math.round(p.xtex * (tex[0].length - 1) );
-    let y = Math.round(p.ytex * (tex.length - 1) );
-    
-    //console.log("x = ",x,"y = ",y)
-    // console.log(tex[y][x+0])
-    // console.log(tex[y][x+1])
-    // console.log(tex[y][x+2])
-    // console.log(tex[y][x+3])
-    // if (x+2>tex[0].length){
-    //   console.log(x)
-    // }
-    // let intensity = tex[y][x];
-    // return intensity;
+    let x = Math.round(p.xtex * (tex[0].length));
+    let y = Math.round(p.ytex * (tex.length));
 
     let intensityR = tex[y][x];
     let intensityG = tex[y][x+1];
     let intensityB = tex[y][x+2];
     let intensityA = tex[y][x+3];
-    //console.log(intensityR,intensityG,intensityB,intensityA)
+    
+    // console.log(intensityR)
+    // if (x+1 > tex[0].length){
+    //   let intensityG = tex[y][x];
+    //   let intensityB = tex[y][x];
+    //   let intensityA = tex[y][x];
+    // }
+    
     return [intensityR,intensityG,intensityB,intensityA];
   }
 
@@ -409,9 +405,8 @@ class ImageCG {
     //console.log(pi.ytex)//ytex sempre da 1
 
     if (passos == 0) {
-      
-      let intensity = this.get_pixel_tex(pi, tex)
-      this.set_pixel(pi, intensity)
+      // let intensity = this.get_pixel_tex(pi, tex)
+      // this.set_pixel_color(pi,new Color(intensity[0],intensity[1],intensity[2],intensity[3]))
       return
     }
 
