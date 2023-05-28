@@ -50,4 +50,14 @@ function Circumference(stroke, center, radius, draw_step = 1) {
     this.scale_keep_center = (scale) => {
         return this.scale(scale, this.center)
     }
+
+
+
+    /**
+    * Faz uma cópia da figura atual
+    * @returns {Circumference}
+    */
+    this.copy = () => {
+        return new Circumference(this.stroke, this.center.copy(), this.radius, this.draw_step)
+    }
 }
