@@ -49,7 +49,7 @@ function Circumference(stroke, center, radius, draw_step = 1) {
      */
     this.scale_keep_center = (scale) => {
         let older_center = this.center.copy()
-        this.scale(scale, this.center)
+        this.scale(scale)
         this.radius *= scale
         this.center = this.center.mult(scale)
         return this.move_center(older_center)
@@ -58,6 +58,7 @@ function Circumference(stroke, center, radius, draw_step = 1) {
     this.move_center = (new_pos) => {
         let [dx, dy] = Pixel.distance(this.center, new_pos)
         this.translate(new Pixel(dx, dy))
+        this.center = new_pos
         return this
     }
 
