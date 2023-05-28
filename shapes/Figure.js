@@ -7,6 +7,7 @@
 function Figure(stroke, vertices) {
     this.vertices = vertices || []
     this.stroke_intensity = stroke || 255
+    this.scale = new Pixel(1)
 
     /**
      * Adiciona vértices ao polígono
@@ -36,6 +37,7 @@ function Figure(stroke, vertices) {
      * @param {Pixel} scale 
      */
     this.scale = (scale) => {
+        this.scale = scale
         this.vertices.map(v => v.mult(scale))
     }
 }
