@@ -127,7 +127,7 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @returns {Pixel} Novo pixel
      */
     this.copy = () => {
-        return new Pixel(this.x, this.y)
+        return Pixel.from_object({ ...this })
     }
     /**
      * Gera um novo pixel com valores trocados de X e Y
