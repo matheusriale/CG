@@ -32,6 +32,12 @@ class Opening {
             start: new Pixel(10, 85),
         }
 
+        this.title = {
+            C: null,
+            G: null,
+            background: null
+        }
+
 
         this._last_hover = false
     }
@@ -44,8 +50,8 @@ class Opening {
 
     draw_all() {
         this._draw_elipse()
-        this._draw_C()
-        this._draw_G()
+        this._draw_C(this.init_pixel.copy())
+        this._draw_G(this.init_pixel.copy())
         this._draw_start_button()
         this.create_animation()
     }
@@ -77,25 +83,27 @@ class Opening {
         }
     }
 
-    _draw_C() {
-        console.log("C")
-        let c_init = this.init_pixel
-        this.screen.draw_figure(this._char_drawer.letter_C(c_init, this.font_weight))
-        let flood_init = c_init.copy().add(new Pixel(this.font_weight - 1))
+    _draw_C(init_pos) {
+        this.title.C = this._char_drawer.letter_C(init_pos, this.font_weight)
+        this.screen.draw_figure(this.title.C)
+
+        let flood_init = init_pos.add(new Pixel(this.font_weight - 1))
         this.screen.floodFill(flood_init, this.font_color, this._elipse_color, true)
     }
-    _draw_G() {
-        console.log("G")
-        let g_init = this.init_pixel.copy().add(new Pixel(this.font_size + this.padding, 0))
-        this.screen.draw_figure(this._char_drawer.letter_G(g_init, this.font_weight))
-        let flood_init = g_init.copy().add(new Pixel(this.font_weight - 1))
+
+    _draw_G(init_pos) {
+        let g_init = init_pos.add(new Pixel(this.font_size + this.padding, 0))
+        this.title.G = this._char_drawer.letter_G(g_init, this.font_weight)
+        this.screen.draw_figure(this.title.G)
+
+        let flood_init = g_init.add(new Pixel(this.font_weight - 1))
         this.screen.floodFill(flood_init, this.font_color, this._elipse_color)
     }
 
     _draw_elipse() {
         console.log("Elipse")
         let center = this.init_pixel.copy().add(new Pixel(this.font_size + this.padding / 2, this.font_size / 2))
-        this.screen.ellipse(center, this.font_size * 2, 20, this._border_color)
+        this.title.background = this.screen.ellipse(center, this.font_size * 2, 20, this._border_color)
         this.screen.floodFill(center, this._elipse_color)
     }
 
