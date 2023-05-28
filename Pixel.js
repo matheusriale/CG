@@ -52,12 +52,18 @@ Color.gradient = (color1, color2, porc) => {
  * @param {?Color} color Cor do pixel
  * @type {{x:Number y:Number xtex:Number ytex:Number color:Color}}
  */
-function Pixel(x, y, xtex, ytex, color) {
-    this.x = round(x === undefined ? 0 : x)
-    this.y = round(y === undefined ? this.x : y)
-    this.xtex = round(xtex === undefined ? 0 : xtex)
-    this.ytex = round(ytex === undefined ? this.xtex : ytex)
+function Pixel(x, y, xtex, ytex, color, allow_round = true) {
+    this.x = x === undefined ? 0 : x
+    this.y = y === undefined ? this.x : y
+    this.xtex = xtex === undefined ? 0 : xtex
+    this.ytex = ytex === undefined ? this.xtex : ytex
 
+    if (allow_round) {
+        this.x = round(this.x)
+        this.y = round(this.y)
+        this.xtex = round(this.xtex)
+        this.ytex = round(this.ytex)
+    }
     /**
      * Retorna as coordenadas x,y como um array
      * @returns {Array<Number>} [x,y]
