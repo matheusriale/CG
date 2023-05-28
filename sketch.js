@@ -15,7 +15,7 @@ function setup() {
 }
 
 function mousePressed() {
-  if (opening.is_running) {
+  if (opening.is_running && opening.is_hover_button()) {
     opening.stop()
   }
 }
