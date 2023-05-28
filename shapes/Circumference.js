@@ -42,4 +42,12 @@ function Circumference(stroke, center, radius, draw_step = 1) {
 
     }
     this._load_vertices(this.draw_step)
+
+    /**
+     * Modifica o tamanho da figura e mantém a posição do centro
+     * @param {Pixel} scale 
+     */
+    this.scale_keep_center = (scale) => {
+        return this.scale(scale, this.center)
+    }
 }
