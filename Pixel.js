@@ -179,8 +179,11 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
         pt = math.multiply(transformation, pt);
 
         pt = math.transpose(pt);
-        this.x = pt[0];
-        this.y = pt[1];
+        let p = this.copy()
+        p.x = pt[0];
+        p.y = pt[1];
+
+        return p
     }
 
     /**
