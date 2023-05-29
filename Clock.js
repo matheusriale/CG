@@ -94,6 +94,38 @@ class Clock {
 
     }
 
+    map_elements(viewport, win) {
+        console.log(this.center)
+        console.log({ bottom: this.bottom, top: this.top })
+        this.center = this.center.map_window(viewport, win)
+
+        this.second_hand = this.second_hand.map_window(viewport, win)
+        this.minute_hand = this.minute_hand.map_window(viewport, win)
+        this.hour_hand = this.hour_hand.map_window(viewport, win)
+
+        this.border = this.border.map_window(viewport, win)
+
+        this.top = this.top.map_window(viewport, win)
+        this.bottom = this.bottom.map_window(viewport, win)
+        console.log(this.center)
+        console.log({ bottom: this.bottom, top: this.top })
+
+    }
+
+    get_all_elements() {
+        return [
+            this.second_hand,
+            this.minute_hand,
+            this.hour_hand,
+
+            this.border,
+            this.center,
+
+            this.top,
+            this.bottom
+        ]
+    }
+
     get_hour_numbers() { //TODO: gambiarra
         let nums = []
         let mid_height = this.center.y - this.num_drawer.font_size / 2
