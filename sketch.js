@@ -13,12 +13,12 @@ function preload() {
   clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(80, 20), 15, img)
   clocks = [clk1, clk2, clk3]
   clocks_draw = [...clocks]
-  viewport = new Viewport(width, height)
-  window_cg = new WindowCG(new Pixel(0), new Pixel(99))
 }
 
 function setup() {
   img.init();
+  viewport = new Viewport(width, height)
+  window_cg = new WindowCG(new Pixel(10), new Pixel(99))
   p = new Polygon(0, [pix1 = new Pixel(10, 10, 0, 0), pix2 = new Pixel(10, 60, 0, 1), pix3 = new Pixel(60, 60, 1, 1), pix4 = new Pixel(60, 10, 1, 0)])
   image_matrix = image_pixels(p, imgteste);
   img.init()
@@ -52,7 +52,7 @@ function mousePressed() {
   }
   img.clear()
 }
-}
+
 
 function draw() {
   if (opening.is_running) {
