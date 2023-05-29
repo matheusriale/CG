@@ -98,8 +98,6 @@ class Clock {
     }
 
     map_elements(viewport, win) {
-        console.log(this.center)
-        console.log({ bottom: this.bottom, top: this.top })
         this.center = this.center.map_window(viewport, win)
 
         this.second_hand = this.second_hand.map_window(viewport, win)
@@ -110,8 +108,6 @@ class Clock {
 
         this.top = this.top.map_window(viewport, win)
         this.bottom = this.bottom.map_window(viewport, win)
-        console.log(this.center)
-        console.log({ bottom: this.bottom, top: this.top })
 
     }
 

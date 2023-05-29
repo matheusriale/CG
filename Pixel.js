@@ -193,7 +193,6 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @returns {Pixel} ponto mapeado
      */
     this.map_window = (vport, win) => {
-
         var m = [
             [
                 vport.width / win.diff_x,
