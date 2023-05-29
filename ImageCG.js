@@ -418,12 +418,12 @@ class ImageCG {
       //img = setpixel(img, xk, y, intensidade);
 
       if (is_one) {// adicionar texturas
-        var px1 = new Pixel(Math.round(x), Math.floor(y), tx, ty)
-        var px2 = new Pixel(Math.round(x), Math.floor(y + 1), tx, ty)
+        var px1 = new Pixel(x, Math.floor(y), tx, ty)
+        var px2 = new Pixel(x, Math.floor(y + 1), tx, ty)
       }
       else {
-        var px1 = new Pixel(Math.floor(x), Math.round(y), tx, ty)
-        var px2 = new Pixel(Math.floor(x + 1), Math.round(y), tx, ty)
+        var px1 = new Pixel(Math.floor(x), y, tx, ty)
+        var px2 = new Pixel(Math.floor(x + 1), y, tx, ty)
       }
 
       let int_px1 = this.get_pixel_tex(px1, tex)
