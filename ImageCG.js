@@ -426,12 +426,11 @@ class ImageCG {
         var px2 = new Pixel(Math.floor(x + 1), y, tx, ty)
       }
 
-      let int_px1 = this.get_pixel_tex(px1, tex)
+      let int_px1 = this.get_pixel_tex(px1, [...tex])
       this.set_pixel_color(px1, Color.from_array(int_px1));
 
-      let int_px2 = this.get_pixel_tex(px2, tex)
+      let int_px2 = this.get_pixel_tex(px2, [...tex])
       this.set_pixel_color(px2, Color.from_array(int_px2));
-
     }
 
     if (clg) {
@@ -571,30 +570,27 @@ class ImageCG {
     let pi = pol.vertices[0]; //ponto inicial
 
     for (let y = ymin; y < ymax; y++) { //scanline
-      
-      pol.get_vertices().forEach(p=>{
+
+      for (let i = 0; i < pol.vertices.length; i++) {
         //4vezes
-        var pf = p.copy();
-        
+        var pf = pol.vertices[i].copy();
+
         var pint = this.intersection_tex(y, new Line(pi, pf))[0]; // segmento válido
-        
+
         if (pint.x > 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
-            var pint2 = this.intersection_tex(y, new Line(pf, pol.vertices[k]))[0];//[0]-> pixel [1]-> t
-            
+            var pint2 = this.intersection_tex(y, new Line(pf, pol.vertices[k].copy()))[0];//[0]-> pixel [1]-> t
+
             if (pint2.x > 0) {
-              this.reta_tex(pint2, pint, tex);
-              
-              
+              this.reta_tex(pint2, pint, [...tex]);
             }
           }
         }
         pi = pf;
-      
-
-      });
+      }
+    }
   }
-}
+
 
   /**
    * Preenche uma área
