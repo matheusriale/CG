@@ -1,11 +1,16 @@
-var img, opening
-var clk
+var img, opening, viewport, window
+var clk1, clk2, clk3, clocks
 
 
 function preload() {
   img = new ImageCG(100, 100, 200)
   opening = new Opening(img, new CharDrawer())
-  clk = new Clock(new CharDrawer(155, 10, 10), new Pixel(50), 50)
+  clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(20), 15, img)
+  clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 70), 15, img)
+  clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(80, 20), 15, img)
+  clocks = [clk1, clk2, clk3]
+  viewport = new Viewport(width, height)
+  win = new WindowCG(new Pixel(0), new Pixel(99))
 }
 
 function setup() {
@@ -24,9 +29,7 @@ function draw() {
     opening.update()
     return
   }
-  // Relogio
-  clk.update()
-
-  setTimeout(() => { img.clear(); }, 1000); //esperar para limpar a tela
-
+  for (const clock of clocks) {
+    clock.update()
+  }
 }
