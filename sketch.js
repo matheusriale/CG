@@ -6,35 +6,36 @@ var clocks_draw = []
 function preload() {
   img = new ImageCG(100, 100, 200)
   imgteste = loadImage('images/relogio.png')
-
   opening = new Opening(img, new CharDrawer())
-  clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(20), 15, img)
-  clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 70), 15, img)
-  clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(80, 20), 15, img)
-  clocks = [clk1, clk2, clk3]
-  clocks_draw = [...clocks]
+  
 }
 
 function setup() {
   img.init();
   viewport = new Viewport(width, height)
-  window_cg = new WindowCG(new Pixel(10), new Pixel(99))
-  p = new Polygon(0, [pix1 = new Pixel(10, 10, 0, 0), pix2 = new Pixel(10, 60, 0, 1), pix3 = new Pixel(60, 60, 1, 1), pix4 = new Pixel(60, 10, 1, 0)])
-  image_matrix = image_pixels(p, imgteste);
-  opening.start()
+  window_cg = new WindowCG(new Pixel(0), new Pixel(50))
+  image_matrix = image_pixels(imgteste);
+  clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(25), 25, img,0,image_matrix)
+  clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 75), 25, img,0,image_matrix)
+  clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(75, 25), 25, img,0,image_matrix)
+  clocks = [clk1, clk2, clk3]
+  clocks_draw = [...clocks]
+  
+  //opening.start()
 }
 
 function mousePressed() {
   if (opening.is_running && opening.is_hover_button()) {
     opening.stop()
+    return 
   }
 
-  if (zoomed_out) {
+  if (zoomed_out && !opening.is_running) {
     for (const clock of clocks) {
       if (clock.is_hover()) {
         zoomed_out = false
         clock.zoomed_in = true
-        window_cg = new WindowCG(clock.top, clock.bottom)
+        window_cg = new WindowCG(clock.top.sub(new Pixel(10)), clock.bottom.add(new Pixel(10)))
         clocks_draw = [clock]
         break
       }
@@ -59,7 +60,7 @@ function draw() {
 }
 
 //Funcao para pegar a matriz de pixeis da imagem:
-function image_pixels(p, imgteste) {
+function image_pixels(imgteste) {
   image(imgteste, 0, 0);
   loadPixels()
   image_matrix = []
@@ -76,6 +77,6 @@ function image_pixels(p, imgteste) {
     matrix_line = []
   }
   img.clear();
-  img.scanline_tex(p, image_matrix);
+  //img.scanline_tex(p, image_matrix);
   return image_matrix;
 }

@@ -11,7 +11,7 @@ class Clock {
      * @param {Number} radius Tamanho do raio
      * @param {ImageCG} screen
      */
-    constructor(num_drawer, center, radius, screen, border = 0) {
+    constructor(num_drawer, center, radius, screen, border = 0,image) {
         this.num_drawer = num_drawer
         this.center = center
         this.radius = radius
@@ -19,12 +19,16 @@ class Clock {
         this.screen = screen
         this._last_hover = false
         this.zoomed_in = false
+        this.image = image
 
         this.reset_hands()
-
+        
         this.border = new Circumference(border, this.center.copy(), this.radius)
         this.top = this.center.sub(new Pixel(this.radius))
         this.bottom = this.center.add(new Pixel(this.radius))
+        this.p = Polygon.rect(this.top.copy(),this.bottom.copy())
+        this.screen.draw_figure(this.p)
+        
     }
 
     /**
@@ -75,10 +79,16 @@ class Clock {
         this._update_second_hand()
         this._update_minute_hand()
         this._update_hour_hand()
+        
 
         for (const hand of this.get_hands()) {
             this.screen.draw_figure(hand)
         }
+        
+        this.screen.scanline_tex(this.p,this.image)
+        
+        
+
 
     }
 
@@ -106,7 +116,8 @@ class Clock {
 
         this.top = this.top.map_window(viewport, win)
         this.bottom = this.bottom.map_window(viewport, win)
-
+        this.p = this.p.map_window(viewport,win)
+       
     }
 
     get_all_elements() {
