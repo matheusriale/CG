@@ -18,6 +18,7 @@ class Clock {
         this.date = new Date()
         this.screen = screen
         this._last_hover = false
+        this.zoomed_in = false
 
         this.reset_hands()
 
@@ -65,9 +66,9 @@ class Clock {
      */
     update() {
         this.screen.clear_area(this.top, this.bottom)
-        let is_hover = this.update_hovering()
+        if (!this.zoomed_in) var is_hover = this.update_hovering()
 
-        if (is_hover) this.screen.set_pixels(this.border)
+        if (is_hover || this.zoomed_in) this.screen.set_pixels(this.border)
 
         this.date = new Date()
         this.reset_hands()
