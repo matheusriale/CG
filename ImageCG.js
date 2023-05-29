@@ -137,20 +137,17 @@ class ImageCG {
     if (p.ytex < 0) {
       p.ytex = 0;
     }
-    let x = Math.round(p.xtex * (tex[0].length));
-    let y = Math.round(p.ytex * (tex.length));
+    let x = Math.round(p.xtex * (tex[0].length)) == tex[0].length ? Math.round(p.xtex * (tex[0].length)-1) : Math.round(p.xtex * (tex[0].length));//cond ? op v : op f
+    let y = Math.round(p.ytex * (tex.length)) == tex.length ? Math.round(p.ytex * (tex.length)-1) : Math.round(p.ytex * (tex.length));
+    //console.log(y)
 
-    let intensityR = tex[y][x];
-    let intensityG = tex[y][x+1];
-    let intensityB = tex[y][x+2];
-    let intensityA = tex[y][x+3];
-    
-    // console.log(intensityR)
-    // if (x+1 > tex[0].length){
-    //   let intensityG = tex[y][x];
-    //   let intensityB = tex[y][x];
-    //   let intensityA = tex[y][x];
-    // }
+    let intensityR = tex[y][x] === undefined ? tex[y][x-1] : tex[y][x];
+    let intensityG = tex[y][x+1]=== undefined ? tex[y][x] : tex[y][x+1];
+    let intensityB = tex[y][x+2]=== undefined ? tex[y][x] : tex[y][x+2];
+    let intensityA = tex[y][x+3]=== undefined ? tex[y][x] : tex[y][x+3];
+    console.log(intensityR,intensityG,intensityB,intensityA)
+    // p.xtex = x
+    // p.ytex = y
     
     return [intensityR,intensityG,intensityB,intensityA];
   }
@@ -573,7 +570,7 @@ class ImageCG {
   }
 
 
-  scanline_tex(pol, tex) {//TODO: add tex posteriormente
+  scanline_tex(pol, tex) {
     let ys = pol.vertices.map((p) => {
       return p.y;
     });
@@ -582,29 +579,31 @@ class ImageCG {
 
     let pi = pol.vertices[0]; //ponto inicial
 
-    for (let y = ymin + 1; y < ymax - 1; y++) { //scanline
-      //console.log(tuple[0])
-
-      for (let p = 0; p < pol.vertices.length; p++) {
+    for (let y = ymin; y < ymax; y++) { //scanline
+      
+      pol.get_vertices().forEach(p=>{
         //4vezes
-        var pf = pol.vertices[p];
+        var pf = p.copy();
         
         var pint = this.intersection_tex(y, new Line(pi, pf))[0]; // segmento válido
         
-        if (pint.x >= 0) {
+        if (pint.x > 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
             var pint2 = this.intersection_tex(y, new Line(pf, pol.vertices[k]))[0];//[0]-> pixel [1]-> t
-            //console.log(pint2.xtex)
-            if (pint2.x >= 0) {
+            
+            if (pint2.x > 0) {
               this.reta_tex(pint2, pint, tex);
+              
               
             }
           }
         }
         pi = pf;
-      }
-    }
+      
+
+      });
   }
+}
 
   /**
    * Preenche uma área
