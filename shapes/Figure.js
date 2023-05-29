@@ -72,10 +72,10 @@ function Figure(stroke, vertices) {
      * Mapea a figura na janela
      * @param {Viewport} vport Viewport
      * @param {Window} win Janela
-     * @returns {Pixel} figura mapeada
      */
     this.map_window = (vport, win) => {
         this.vertices = this.vertices.map(v => v.map_window(vport, win))
+        return this
     }
 }
 
