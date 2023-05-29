@@ -1,7 +1,7 @@
 /**
  * @type {{
  * num_drawer: CharDrawer center: Pixel radius: Number date:Date 
- * second_hand:Line minute_hand:Line hour_hand:Line}}
+ * second_hand:Line minute_hand:Line hour_hand:Line screen:ImageCG}}
  */
 class Clock {
     /**
@@ -9,14 +9,18 @@ class Clock {
      * @param {CharDrawer} num_drawer 
      * @param {Pixel} center Coordenadas do centro do relógio
      * @param {Number} radius Tamanho do raio
+     * @param {ImageCG} screen
      */
-    constructor(num_drawer, center, radius) {
+    constructor(num_drawer, center, radius, screen, border = 0) {
         this.num_drawer = num_drawer
         this.center = center
         this.radius = radius
         this.date = new Date()
+        this.screen = screen
 
         this.reset_hands()
+
+        this.border = new Circumference(border, this.center.copy(), this.radius + 2)
     }
 
     /**
@@ -39,11 +43,16 @@ class Clock {
      * Atualiza a hora e, consequentemente, todos os ponteiros.
      */
     update() {
+        this.clear_area()
         this.date = new Date()
         this.reset_hands()
         this._update_second_hand()
         this._update_minute_hand()
         this._update_hour_hand()
+
+        this.get_hands().forEach(h => {
+            this.screen.draw_figure(h)
+        })
 
     }
 

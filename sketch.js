@@ -26,12 +26,6 @@ function draw() {
   }
   // Relogio
   clk.update()
-  clk.get_hour_numbers().forEach(n => {
-    img.draw_figure(n)
-  })
-  clk.get_hands().forEach(h => {
-    img.draw_figure(h)
-  })
 
   setTimeout(() => { img.clear(); }, 1000); //esperar para limpar a tela
 
