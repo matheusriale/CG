@@ -1,6 +1,6 @@
 var img, opening, viewport, window
 var clk1, clk2, clk3, clocks
-
+var zoomed_out = true
 
 function preload() {
   img = new ImageCG(100, 100, 200)
@@ -19,6 +19,19 @@ function setup() {
   img.init();
   p = new Polygon(0,[pix1 = new Pixel(10,10,0,0),pix2 = new Pixel(10,60,0,1),pix3 = new Pixel(60,60,1,1),pix4 = new Pixel(60,10,1,0)])
   image_matrix = image_pixels(p,imgteste);
+  img.init()
+  opening.start()
+}
+
+function mousePressed() {
+  if (opening.is_running && opening.is_hover_button()) {
+    opening.stop()
+  }
+  if (zoomed_out) {
+    for (const clock of clocks) {
+      zoomed_out = false
+    }
+  }
 }
 
 function draw() {
