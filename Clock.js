@@ -30,6 +30,11 @@ class Clock {
         this.hour_hand = new Line(this.center, new Pixel(this.center.x, size1), 100)
     }
 
+    clear_area() {
+        let top = this.center.sub(new Pixel(this.radius + 5))
+        let bottom = this.center.add(new Pixel(this.radius))
+        this.screen.clear_area(top, bottom)
+    }
     /**
      * Atualiza a hora e, consequentemente, todos os ponteiros.
      */
