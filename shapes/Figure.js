@@ -72,10 +72,16 @@ function Figure(stroke, vertices) {
      * Mapea a figura na janela
      * @param {Viewport} vport Viewport
      * @param {Window} win Janela
+     * @param {boolean} round Se deve ou não arredondar os pixels (default: true)
      */
-    this.map_window = (vport, win) => {
+    this.map_window = (vport, win, round = true) => {
         this.vertices = this.vertices.map(v => v.map_window(vport, win))
+        if (round) this.round_pixels()
         return this
+    }
+
+    this.round_pixels = () => {
+        this.vertices.map(v => v.round_position())
     }
 }
 
