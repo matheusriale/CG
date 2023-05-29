@@ -1,6 +1,6 @@
 var img, opening, viewport, window
 var clk1, clk2, clk3, clocks
-
+var zoomed_out = true
 
 function preload() {
   img = new ImageCG(100, 100, 200)
@@ -21,6 +21,11 @@ function setup() {
 function mousePressed() {
   if (opening.is_running && opening.is_hover_button()) {
     opening.stop()
+  }
+  if (zoomed_out) {
+    for (const clock of clocks) {
+      zoomed_out = false
+    }
   }
 }
 
