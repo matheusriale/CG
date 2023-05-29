@@ -50,9 +50,9 @@ Polygon.rect = (top_left, bottom_right, stroke = 255) => {
  */
 Polygon.square = (top_left, size, stroke = 255) => {
     let v = [top_left,
-        new Pixel(top_left.x + size, top_left.y),
-        new Pixel(top_left.x + size, top_left.y + size),
-        new Pixel(top_left.x, top_left.y + size)]
+        new Pixel(top_left.x + size, top_left.y, 1, 0),
+        new Pixel(top_left.x + size, top_left.y + size, 1, 1),
+        new Pixel(top_left.x, top_left.y + size, 0, 1)]
 
     return new Polygon(stroke, v)
 }
