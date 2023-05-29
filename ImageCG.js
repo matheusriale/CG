@@ -72,7 +72,7 @@ class ImageCG {
    */
   set_pixel_color(p, color, clg = false) {
 
-    if (color.alpha == 0){
+    if (color.alpha == 0) {
       return
     }
     loadPixels()
@@ -125,31 +125,22 @@ class ImageCG {
     //p pixel (x,y)
     // p.xtex e ytex estão sendo arredondados para 0 e 1 antes de entrar aqui
     // cod yuri
-    if (p.xtex > 1) {
-      p.xtex = 1;
-    }
-    if (p.xtex < 0) {
-      p.xtex = 0;
-    }
-    if (p.ytex > 1) {
-      p.ytex = 1;
-    }
-    if (p.ytex < 0) {
-      p.ytex = 0;
-    }
-    let x = Math.round(p.xtex * (tex[0].length)) == tex[0].length ? Math.round(p.xtex * (tex[0].length)-1) : Math.round(p.xtex * (tex[0].length));//cond ? op v : op f
-    let y = Math.round(p.ytex * (tex.length)) == tex.length ? Math.round(p.ytex * (tex.length)-1) : Math.round(p.ytex * (tex.length));
+    p.xtex = Math.max(0, Math.min(1, p.xtex))
+    p.ytex = Math.max(0, Math.min(1, p.ytex))
+
+    let x = Math.round(p.xtex * (tex[0].length)) == tex[0].length ? Math.round(p.xtex * (tex[0].length) - 1) : Math.round(p.xtex * (tex[0].length));//cond ? op v : op f
+    let y = Math.round(p.ytex * (tex.length)) == tex.length ? Math.round(p.ytex * (tex.length) - 1) : Math.round(p.ytex * (tex.length));
     //console.log(y)
 
-    let intensityR = tex[y][x] === undefined ? tex[y][x-1] : tex[y][x];
-    let intensityG = tex[y][x+1]=== undefined ? tex[y][x] : tex[y][x+1];
-    let intensityB = tex[y][x+2]=== undefined ? tex[y][x] : tex[y][x+2];
-    let intensityA = tex[y][x+3]=== undefined ? tex[y][x] : tex[y][x+3];
-    console.log(intensityR,intensityG,intensityB,intensityA)
+    let intensityR = tex[y][x] === undefined ? tex[y][x - 1] : tex[y][x];
+    let intensityG = tex[y][x + 1] === undefined ? tex[y][x] : tex[y][x + 1];
+    let intensityB = tex[y][x + 2] === undefined ? tex[y][x] : tex[y][x + 2];
+    let intensityA = tex[y][x + 3] === undefined ? tex[y][x] : tex[y][x + 3];
+
     // p.xtex = x
     // p.ytex = y
     
-    return [intensityR,intensityG,intensityB,intensityA];
+    return [intensityR, intensityG, intensityB, intensityA];
   }
 
 
