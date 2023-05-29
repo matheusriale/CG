@@ -68,7 +68,7 @@ class Clock {
         this.screen.clear_area(this.top, this.bottom)
         if (!this.zoomed_in) var is_hover = this.update_hovering()
 
-        if (is_hover || this.zoomed_in) this.screen.set_pixels(this.border)
+        if (is_hover && !this.zoomed_in) this.screen.set_pixels(this.border)
 
         this.date = new Date()
         this.reset_hands()
@@ -103,8 +103,6 @@ class Clock {
         this.second_hand = this.second_hand.map_window(viewport, win)
         this.minute_hand = this.minute_hand.map_window(viewport, win)
         this.hour_hand = this.hour_hand.map_window(viewport, win)
-
-        this.border = this.border.map_window(viewport, win)
 
         this.top = this.top.map_window(viewport, win)
         this.bottom = this.bottom.map_window(viewport, win)
