@@ -17,10 +17,13 @@ class Clock {
         this.radius = radius
         this.date = new Date()
         this.screen = screen
+        this._last_hover = false
 
         this.reset_hands()
 
-        this.border = new Circumference(border, this.center.copy(), this.radius + 2)
+        this.border = new Circumference(border, this.center.copy(), this.radius)
+        this.top = this.center.sub(new Pixel(this.radius))
+        this.bottom = this.center.add(new Pixel(this.radius))
     }
 
     /**
@@ -34,16 +37,38 @@ class Clock {
         this.hour_hand = new Line(this.center, new Pixel(this.center.x, size1), 100)
     }
 
-    clear_area() {
-        let top = this.center.sub(new Pixel(this.radius + 5))
-        let bottom = this.center.add(new Pixel(this.radius))
-        this.screen.clear_area(top, bottom)
+    is_hover() {
+        return mouseX <= (this.center.x + this.radius) &&
+            mouseX >= (this.center.x - this.radius) &&
+            mouseY <= this.center.y + this.radius &&
+            mouseY >= this.center.y - this.radius
     }
+
+    update_hovering() {
+        let is_hover = this.is_hover()
+
+        if (is_hover) {
+            cursor(HAND)
+            this._last_hover = true
+        }
+
+        if (!is_hover && this._last_hover) {
+            cursor(ARROW)
+            this.screen.clear_area(this.top.add(new Pixel(5)), this.bottom.add(new Pixel(5)))
+            this._last_hover = false
+        }
+        return is_hover
+    }
+
     /**
      * Atualiza a hora e, consequentemente, todos os ponteiros.
      */
     update() {
-        this.clear_area()
+        this.screen.clear_area(this.top, this.bottom)
+        let is_hover = this.update_hovering()
+
+        if (is_hover) this.screen.set_pixels(this.border)
+
         this.date = new Date()
         this.reset_hands()
         this._update_second_hand()
