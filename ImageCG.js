@@ -406,7 +406,7 @@ class ImageCG {
 
     if (passos == 0) {
       // let intensity = this.get_pixel_tex(pi, tex)
-      // this.set_pixel_color(pi,new Color(intensity[0],intensity[1],intensity[2],intensity[3]))
+      // this.set_pixel_color(pi, Color.from_array(intensity))
       return
     }
 
@@ -419,31 +419,31 @@ class ImageCG {
 
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
-      let pc = (x - pi.x)/(pf.x - pi.x);
+      let pc = (x - pi.x) / (pf.x - pi.x);
       //let pcy = (y - pi.y)/(pf.y - pi.y);
-      
-      let tx = pi.xtex + pc*(pf.xtex - pi.xtex);
-      let ty = pi.ytex + pc*(pf.ytex - pi.ytex);
-      
+
+      let tx = pi.xtex + pc * (pf.xtex - pi.xtex);
+      let ty = pi.ytex + pc * (pf.ytex - pi.ytex);
+
       //let intensidade = this.get_pixel_tex(new Pixel(x,y,tx,ty),tex);
-      
+
       //img = setpixel(img, xk, y, intensidade);
 
       if (is_one) {// adicionar texturas
-        var px1 = new Pixel(Math.round(x), Math.floor(y),tx,ty)
-        var px2 = new Pixel(Math.round(x), Math.floor(y + 1),tx,ty)
+        var px1 = new Pixel(Math.round(x), Math.floor(y), tx, ty)
+        var px2 = new Pixel(Math.round(x), Math.floor(y + 1), tx, ty)
       }
       else {
-        var px1 = new Pixel(Math.floor(x), Math.round(y),tx,ty)
-        var px2 = new Pixel(Math.floor(x + 1), Math.round(y),tx,ty)
+        var px1 = new Pixel(Math.floor(x), Math.round(y), tx, ty)
+        var px2 = new Pixel(Math.floor(x + 1), Math.round(y), tx, ty)
       }
-      
+
       let int_px1 = this.get_pixel_tex(px1, tex)
-      this.set_pixel_color(px1, new Color(int_px1[0],int_px1[1],int_px1[2],int_px1[3]));
+      this.set_pixel_color(px1, Color.from_array(int_px1));
 
       let int_px2 = this.get_pixel_tex(px2, tex)
-      this.set_pixel_color(px2, new Color(int_px2[0],int_px2[1],int_px2[2],int_px2[3]));
-        
+      this.set_pixel_color(px2, Color.from_array(int_px2));
+
     }
 
     if (clg) {
