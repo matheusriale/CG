@@ -120,28 +120,7 @@ class ImageCG {
     return pixels[p.get_idx(this.width)]
   }
 
-  get_pixel_tex(p, tex) {
-    //tex->textura(colunas(width) e linhas(height))
-    //p pixel (x,y)
-    // p.xtex e ytex estão sendo arredondados para 0 e 1 antes de entrar aqui
-    // cod yuri
-    p.xtex = Math.max(0, Math.min(1, p.xtex))
-    p.ytex = Math.max(0, Math.min(1, p.ytex))
 
-    let x = Math.round(p.xtex * (tex[0].length)) == tex[0].length ? Math.round(p.xtex * (tex[0].length) - 1) : Math.round(p.xtex * (tex[0].length));//cond ? op v : op f
-    let y = Math.round(p.ytex * (tex.length)) == tex.length ? Math.round(p.ytex * (tex.length) - 1) : Math.round(p.ytex * (tex.length));
-    //console.log(y)
-
-    let intensityR = tex[y][x] === undefined ? tex[y][x - 1] : tex[y][x];
-    let intensityG = tex[y][x + 1] === undefined ? tex[y][x] : tex[y][x + 1];
-    let intensityB = tex[y][x + 2] === undefined ? tex[y][x] : tex[y][x + 2];
-    let intensityA = tex[y][x + 3] === undefined ? tex[y][x] : tex[y][x + 3];
-
-    // p.xtex = x
-    // p.ytex = y
-
-    return [intensityR, intensityG, intensityB, intensityA];
-  }
 
 
   /**
@@ -384,57 +363,7 @@ class ImageCG {
   }
 
 
-  reta_tex(pi, pf, tex, clg = false) {
-    let [dx, dy] = Pixel.distance(pi, pf)
-    let passos = max(Math.abs(dy), Math.abs(dx))
-    //console.log(passos)
-    //console.log(pi.ytex)//ytex sempre da 1
 
-    if (passos == 0) {
-      // let intensity = this.get_pixel_tex(pi, tex)
-      // this.set_pixel_color(pi, Color.from_array(intensity))
-      return
-    }
-
-    let passo_x = dx / passos;
-    let passo_y = dy / passos;
-    //console.log(passo_x)
-
-    for (let i = 0; i < passos; i++) {
-      let is_one = Math.abs(Math.round(passo_x)) == 1
-
-      let x = pi.x + i * passo_x;
-      let y = pi.y + i * passo_y;
-      let pc = (x - pi.x) / (pf.x - pi.x);
-      //let pcy = (y - pi.y)/(pf.y - pi.y);
-
-      let tx = pi.xtex + pc * (pf.xtex - pi.xtex);
-      let ty = pi.ytex + pc * (pf.ytex - pi.ytex);
-
-      //let intensidade = this.get_pixel_tex(new Pixel(x,y,tx,ty),tex);
-
-      //img = setpixel(img, xk, y, intensidade);
-
-      if (is_one) {// adicionar texturas
-        var px1 = new Pixel(x, Math.floor(y), tx, ty)
-        var px2 = new Pixel(x, Math.floor(y + 1), tx, ty)
-      }
-      else {
-        var px1 = new Pixel(Math.floor(x), y, tx, ty)
-        var px2 = new Pixel(Math.floor(x + 1), y, tx, ty)
-      }
-
-      let int_px1 = this.get_pixel_tex(px1, [...tex])
-      this.set_pixel_color(px1, Color.from_array(int_px1));
-
-      let int_px2 = this.get_pixel_tex(px2, [...tex])
-      this.set_pixel_color(px2, Color.from_array(int_px2));
-    }
-
-    if (clg) {
-      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
-    }
-  }
 
   scanline_no_texture(pol) {
     let ys = pol.vertices.map((p) => {
@@ -555,7 +484,80 @@ class ImageCG {
     }
   }
 
+  get_pixel_tex(p, tex) {
+    //tex->textura(colunas(width) e linhas(height))
+    //p pixel (x,y)
+    // p.xtex e ytex estão sendo arredondados para 0 e 1 antes de entrar aqui
+    // cod yuri
+    p.xtex = Math.max(0, Math.min(1, p.xtex))
+    p.ytex = Math.max(0, Math.min(1, p.ytex))
 
+    let x = Math.round(p.xtex * (tex[0].length)) == tex[0].length ? Math.round(p.xtex * (tex[0].length) - 1) : Math.round(p.xtex * (tex[0].length));//cond ? op v : op f
+    let y = Math.round(p.ytex * (tex.length)) == tex.length ? Math.round(p.ytex * (tex.length) - 1) : Math.round(p.ytex * (tex.length));
+    //console.log(y)
+
+    let intensityR = tex[y][x] === undefined ? tex[y][x - 1] : tex[y][x];
+    let intensityG = tex[y][x + 1] === undefined ? tex[y][x] : tex[y][x + 1];
+    let intensityB = tex[y][x + 2] === undefined ? tex[y][x] : tex[y][x + 2];
+    let intensityA = tex[y][x + 3] === undefined ? tex[y][x] : tex[y][x + 3];
+
+    // p.xtex = x
+    // p.ytex = y
+
+    return [intensityR, intensityG, intensityB, intensityA];
+  }
+
+  reta_tex(pi, pf, tex, clg = false) {
+    let [dx, dy] = Pixel.distance(pi, pf)
+    let passos = max(Math.abs(dy), Math.abs(dx))
+    //console.log(passos)
+    //console.log(pi.ytex)//ytex sempre da 1
+
+    if (passos == 0) {
+      // let intensity = this.get_pixel_tex(pi, tex)
+      // this.set_pixel_color(pi, Color.from_array(intensity))
+      return
+    }
+
+    let passo_x = dx / passos;
+    let passo_y = dy / passos;
+    //console.log(passo_x)
+
+    for (let i = 0; i < passos; i++) {
+      let is_one = Math.abs(Math.round(passo_x)) == 1
+
+      let x = pi.x + i * passo_x;
+      let y = pi.y + i * passo_y;
+      let pc = (x - pi.x) / (pf.x - pi.x);
+      //let pcy = (y - pi.y)/(pf.y - pi.y);
+
+      let tx = pi.xtex + pc * (pf.xtex - pi.xtex);
+      let ty = pi.ytex + pc * (pf.ytex - pi.ytex);
+
+      //let intensidade = this.get_pixel_tex(new Pixel(x,y,tx,ty),tex);
+
+      //img = setpixel(img, xk, y, intensidade);
+
+      if (is_one) {// adicionar texturas
+        var px1 = new Pixel(x, Math.floor(y), tx, ty)
+        var px2 = new Pixel(x, Math.floor(y + 1), tx, ty)
+      }
+      else {
+        var px1 = new Pixel(Math.floor(x), y, tx, ty)
+        var px2 = new Pixel(Math.floor(x + 1), y, tx, ty)
+      }
+
+      let int_px1 = this.get_pixel_tex(px1, [...tex])
+      this.set_pixel_color(px1, Color.from_array(int_px1));
+
+      let int_px2 = this.get_pixel_tex(px2, [...tex])
+      this.set_pixel_color(px2, Color.from_array(int_px2));
+    }
+
+    if (clg) {
+      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
+    }
+  }
   scanline_tex(pol, tex) {
     let ys = pol.vertices.map((p) => {
       return p.y;
