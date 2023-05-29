@@ -76,6 +76,21 @@ function image_pixels(imgteste, w, h) {
     matrix_line = []
   }
   img.clear();
-  //img.scanline_tex(p, image_matrix);
   return image_matrix;
+}
+
+function load_image_pixels(path, h, w) {
+  var img = new Image();
+  img.src = path;
+  var canvas = document.createElement('canvas');
+  var context = canvas.getContext('2d');
+  context.drawImage(img, 0, 0);
+  image_matrix = []
+  for (var y = 0; y < w; y++) {
+    for (var x = 0; x < h; x++) {
+      image_matrix.push(context.getImageData(x, y, 1, 1).data)
+    }
+  }
+  return image_matrix
+
 }
