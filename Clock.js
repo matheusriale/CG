@@ -75,9 +75,21 @@ class Clock {
         this._update_minute_hand()
         this._update_hour_hand()
 
-        this.get_hands().forEach(h => {
-            this.screen.draw_figure(h)
-        })
+        for (const hand of this.get_hands()) {
+            this.screen.draw_figure(hand)
+        }
+
+    }
+
+    scale(scale) {
+        this.second_hand = this.second_hand.scale(scale)
+        this.minute_hand = this.minute_hand.scale(scale)
+        this.hour_hand = this.hour_hand.scale(scale)
+        this.border = this.border.scale(scale)
+        this.center = this.center.mult(scale)
+
+        this.top = this.top.mult(scale)
+        this.bottom = this.bottom.mult(scale)
 
     }
 
