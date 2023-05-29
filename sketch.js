@@ -7,27 +7,26 @@ function preload() {
   img = new ImageCG(100, 100, 200)
   imgteste = loadImage('images/relogio.png')
   opening = new Opening(img, new CharDrawer())
-  
 }
 
 function setup() {
   img.init();
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(50))
-  image_matrix = image_pixels(imgteste);
-  clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(25), 25, img,0,image_matrix)
-  clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 75), 25, img,0,image_matrix)
-  clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(75, 25), 25, img,0,image_matrix)
+  image_matrix = image_pixels(imgteste, 50, 50);
+  clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(25), 25, img, 0, image_matrix)
+  clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 75), 25, img, 0, image_matrix)
+  clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(75, 25), 25, img, 0, image_matrix)
   clocks = [clk1, clk2, clk3]
   clocks_draw = [...clocks]
-  
+
   //opening.start()
 }
 
 function mousePressed() {
   if (opening.is_running && opening.is_hover_button()) {
     opening.stop()
-    return 
+    return
   }
 
   if (zoomed_out && !opening.is_running) {
@@ -60,13 +59,13 @@ function draw() {
 }
 
 //Funcao para pegar a matriz de pixeis da imagem:
-function image_pixels(imgteste) {
+function image_pixels(imgteste, w, h) {
   image(imgteste, 0, 0);
   loadPixels()
   image_matrix = []
   matrix_line = []
-  for (var y = 0; y < 50; y++) {//imagem 50x50
-    for (var x = 0; x < 50; x++) {
+  for (var y = 0; y < w; y++) {
+    for (var x = 0; x < h; x++) {
       var index = (x + y * width) * 4;
       if (pixels[index] == 255 && pixels[index + 1] == 255 && pixels[index + 2] == 255) {
         pixels[index + 3] = 0;
