@@ -30,10 +30,14 @@ function Polygon(stroke, vertices) {
  */
 
 Polygon.rect = (top_left, bottom_right, stroke = 255) => {
+    bottom_right.xtex = 1
+    bottom_right.ytex = 0
+
     let v = [top_left,
-        new Pixel(bottom_right.x, top_left.y),
-        bottom_right,
-        new Pixel(top_left.x, bottom_right.y)]
+        new Pixel(bottom_right.x, top_left.y, 0, 1),
+        new Pixel(top_left.x, bottom_right.y, 1, 1),
+        bottom_right
+    ]
     return new Polygon(stroke, v)
 }
 
