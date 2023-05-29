@@ -21,7 +21,6 @@ function setup() {
   window_cg = new WindowCG(new Pixel(10), new Pixel(99))
   p = new Polygon(0, [pix1 = new Pixel(10, 10, 0, 0), pix2 = new Pixel(10, 60, 0, 1), pix3 = new Pixel(60, 60, 1, 1), pix4 = new Pixel(60, 10, 1, 0)])
   image_matrix = image_pixels(p, imgteste);
-  img.init()
   opening.start()
 }
 
@@ -46,11 +45,6 @@ function mousePressed() {
     }
     img.clear()
   }
-
-  for (const clock of clocks) {
-    clock.map_elements(viewport, window_cg)
-  }
-  img.clear()
 }
 
 
