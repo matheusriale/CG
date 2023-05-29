@@ -32,9 +32,9 @@ class Clock {
     reset_hands() {
         let size1 = this.center.y - this.radius * 0.9
         let size2 = this.center.y - this.radius * 0.7
-        this.second_hand = new Line(this.center, new Pixel(this.center.x, size2), 255)
-        this.minute_hand = new Line(this.center, new Pixel(this.center.x, size2), 50)
-        this.hour_hand = new Line(this.center, new Pixel(this.center.x, size1), 100)
+        this.second_hand = new Line(this.center.copy(), new Pixel(this.center.x, size2), 255)
+        this.minute_hand = new Line(this.center.copy(), new Pixel(this.center.x, size2), 50)
+        this.hour_hand = new Line(this.center.copy(), new Pixel(this.center.x, size1), 100)
     }
 
     is_hover() {
