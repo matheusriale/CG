@@ -83,9 +83,12 @@ class Clock {
     }
 
     scale(scale) {
+        cursor(ARROW)
+        this.zoomed_in = !this.zoomed_in
         this.second_hand = this.second_hand.scale(scale)
         this.minute_hand = this.minute_hand.scale(scale)
         this.hour_hand = this.hour_hand.scale(scale)
+
         this.border = this.border.scale(scale)
         this.center = this.center.mult(scale)
 
