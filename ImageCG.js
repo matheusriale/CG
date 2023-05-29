@@ -139,7 +139,7 @@ class ImageCG {
 
     // p.xtex = x
     // p.ytex = y
-    
+
     return [intensityR, intensityG, intensityB, intensityA];
   }
 
@@ -357,7 +357,6 @@ class ImageCG {
 
     // Segmento horizontal -> sem intersecao
     if (pi.y == pf.y) {
-      
       let p = new Pixel(-1, 0, 0, 0); //ptex = [x,y,xtex,ytex]
       return [p];
     }
@@ -368,15 +367,14 @@ class ImageCG {
 
     // Calcula t
     var t = (y - pi.y) / (pf.y - pi.y);
-    
 
     // Calcula x
     if (t > 0 && t <= 1) {
       var x = pi.x + t * (pf.x - pi.x);
       let tx = pi.xtex + t * (pf.xtex - pi.xtex);
       let ty = pi.ytex + t * (pf.ytex - pi.ytex);
-      
-      
+
+
 
       return [new Pixel(x, y, tx, ty), t]
     }
@@ -454,14 +452,12 @@ class ImageCG {
         //4vezes
         var pf = pol.vertices[p];
         var pint = this.intersection(y, new Line(pi, pf))[0]; // segmento válido
-        
+
         if (pint.x >= 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
             var pint2 = this.intersection(y, new Line(pf, pol.vertices[k]))[0];//[0]-> pixel [1]-> t
             if (pint2.x >= 0) {
               this.reta_continua(pint2, pint);
-              
-              
             }
           }
         }
@@ -497,7 +493,7 @@ class ImageCG {
 
             if (pint2.x >= 0) {
               pint2.color = pint2.load_color(this.width);
-              console.log(pint.color.to_array(), pint2.color.to_array())
+              // console.log(pint.color.to_array(), pint2.color.to_array())
               this.reta_continua_gradient(pint2, pint, t2, t1);
             }
 
@@ -552,7 +548,7 @@ class ImageCG {
 
       let color1 = Color.gradient(pi.color, pf.color, porc1)
       let color2 = Color.gradient(pi.color, pf.color, porc2)
-      console.log(color1)
+      // console.log(color1)
 
       this.set_pixel_color(px1, color1);
       this.set_pixel_color(px2, color2);

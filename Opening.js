@@ -91,7 +91,6 @@ class Opening {
             this.arrow_anim.count = 0
             this.arrow_anim.scale = anim.scale.x == anim.grow_rate ? anim.reduce_rate : anim.grow_rate
         }
-        console.log(anim)
         this.arrow_anim.figure.scale(anim.scale)
         let [start, end] = anim.figure.get_area()
 
@@ -109,7 +108,6 @@ class Opening {
 
         if (!is_hover) this.update_button_animation()
         if (is_hover && !this._last_hover) {
-            console.log("Hover")
             cursor(HAND)
             this.reset_button()
             this.screen.floodFill(this.button.center.copy(), this.font_color, this._elipse_color)
