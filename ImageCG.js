@@ -479,21 +479,22 @@ class ImageCG {
     }
   }
 
-  get_pixel_tex(p, tex) {
+  get_pixel_tex(pixel, tex) {
     //tex->textura(colunas(width) e linhas(height))
     //p pixel (x,y)
     // p.xtex e ytex estão sendo arredondados para 0 e 1 antes de entrar aqui
     // cod yuri
+    let p = pixel.copy()
     p.xtex = Math.max(0, Math.min(1, p.xtex))
     p.ytex = Math.max(0, Math.min(1, p.ytex))
 
     var w = tex[0].length / 4
     var h = tex.length
 
-    let x = Math.round(p.xtex * w) == w ? Math.round(p.xtex * w - 1) : Math.round(p.xtex * w);//cond ? op v : op f
-    let y = Math.round(p.ytex * h) == h ? Math.round(p.ytex * h - 1) : Math.round(p.ytex * h);
-
-    return tex[y].slice(x, x + 4);
+    let x = Math.round(p.xtex * (w - 1) + 1)
+    let y = Math.round(p.ytex * (h - 1) + 1)
+    let idx = Pixel.get_idx(x, y, this.width)
+    return Color.from_array(tex.slice(idx, idx + 4));
   }
 
   reta_tex(pi, pf, tex, clg = false) {
@@ -532,10 +533,10 @@ class ImageCG {
       }
 
       let int_px1 = this.get_pixel_tex(px1, [...tex])
-      this.set_pixel_color(px1, Color.from_array(int_px1));
+      this.set_pixel_color(px1, int_px1);
 
       let int_px2 = this.get_pixel_tex(px2, [...tex])
-      this.set_pixel_color(px2, Color.from_array(int_px2));
+      this.set_pixel_color(px2, int_px2);
     }
 
     if (clg) {
