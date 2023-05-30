@@ -83,8 +83,7 @@ class Opening {
     draw_all() {
         this._draw_rect()
         this._draw_elipse()
-        this._draw_C(this.init_pixel.copy())
-        this._draw_G(this.init_pixel.copy())
+        this._draw_CG(this.init_pixel.copy())
         this._draw_start_button()
         this._draw_button_animation()
     }
@@ -139,21 +138,13 @@ class Opening {
         this._draw_start_button()
     }
 
-    _draw_C(init_pos) {
+    _draw_CG(init_pos) {
         this.title.C = this._char_drawer.letter_C(init_pos, this.font_weight)
         this.screen.draw_figure(this.title.C)
 
-        let flood_init = init_pos.add(new Pixel(this.font_weight - 1))
-        this.screen.floodFill(flood_init, this.font_color, this._elipse_color, true)
-    }
-
-    _draw_G(init_pos) {
         let g_init = init_pos.add(new Pixel(this.font_size + this.padding, 0))
         this.title.G = this._char_drawer.letter_G(g_init, this.font_weight)
         this.screen.draw_figure(this.title.G)
-
-        let flood_init = g_init.add(new Pixel(this.font_weight - 1))
-        this.screen.floodFill(flood_init, this.font_color, this._elipse_color)
     }
 
     _draw_elipse() {
