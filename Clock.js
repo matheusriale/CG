@@ -10,7 +10,7 @@ class Clock {
      * @param {Number} radius Tamanho do raio
      * @param {ImageCG} screen
      */
-    constructor(center, radius, screen, border = 0, image, timezone = 0) {
+    constructor(center, radius, screen, border = 0, image, timezone = 0, image2) {
         this.center = center
         this.radius = radius
         this.timezone = timezone
@@ -21,6 +21,7 @@ class Clock {
         this._last_hover = false
         this.zoomed_in = false
         this.image = image
+        this.image2 = image2
 
         this.reset_hands()
 
@@ -28,7 +29,8 @@ class Clock {
         this.top = this.center.sub(new Pixel(this.radius))
         this.bottom = this.center.add(new Pixel(this.radius))
         this.p = Polygon.rect(this.top.copy(), this.bottom.copy())
-    }
+        this.p2 = Polygon.rect(this.center.copy().add(new Pixel(-this.radius*0.9,-this.radius*1.8)),this.center.copy().add(new Pixel(this.radius*0.8,-this.radius)))
+        console.log(this.p2)}   
 
     /**
      * Volta os ponteiros para o início
@@ -84,6 +86,7 @@ class Clock {
         }
 
         this.screen.scanline_tex(this.p, this.image)
+        this.screen.scanline_tex(this.p2,this.image2)
     }
 
     scale(scale) {
@@ -111,6 +114,7 @@ class Clock {
         this.top = this.top.map_window(viewport, win)
         this.bottom = this.bottom.map_window(viewport, win)
         this.p = this.p.map_window(viewport, win)
+        this.p2 = this.p2.map_window(viewport, win)
     }
 
     get_all_elements() {
