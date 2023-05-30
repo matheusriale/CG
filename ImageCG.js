@@ -72,9 +72,8 @@ class ImageCG {
    */
   set_pixel_color(p, color, clg = false) {
 
-    if (color.alpha == 0) {
-      return
-    }
+    if (color.alpha == 0) return
+
     loadPixels()
     let idx = p.get_idx(this.width);
 
@@ -488,13 +487,13 @@ class ImageCG {
     p.xtex = Math.max(0, Math.min(1, p.xtex))
     p.ytex = Math.max(0, Math.min(1, p.ytex))
 
-    var w = tex[0].length / 4
-    var h = tex.length
+    var w = tex.width
+    var h = tex.height
 
     let x = Math.round(p.xtex * (w - 1) + 1)
     let y = Math.round(p.ytex * (h - 1) + 1)
     let idx = Pixel.get_idx(x, y, this.width)
-    return Color.from_array(tex.slice(idx, idx + 4));
+    return Color.from_array(tex.pixels.slice(idx, idx + 4));
   }
 
   reta_tex(pi, pf, tex, clg = false) {
@@ -532,10 +531,10 @@ class ImageCG {
         var px2 = new Pixel(Math.floor(x + 1), y, tx, ty)
       }
 
-      let int_px1 = this.get_pixel_tex(px1, [...tex])
+      let int_px1 = this.get_pixel_tex(px1, tex)
       this.set_pixel_color(px1, int_px1);
 
-      let int_px2 = this.get_pixel_tex(px2, [...tex])
+      let int_px2 = this.get_pixel_tex(px2, tex)
       this.set_pixel_color(px2, int_px2);
     }
 
@@ -563,7 +562,7 @@ class ImageCG {
             var pint2 = this.intersection_tex(y, new Line(pf, pol.vertices[k].copy()))[0];//[0]-> pixel [1]-> t
 
             if (pint2.x > 0) {
-              this.reta_tex(pint2, pint, [...tex]);
+              this.reta_tex(pint2, pint, tex);
 
             }
           }
