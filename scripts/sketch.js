@@ -71,13 +71,12 @@ function mousePressed() {
     for (let c = 0; c < clocks.length; c++) {
       if (clocks[c].is_hover()) {
         zoom_in(c)
+        screen.clear()
+        back_button.draw()
+        update_elements.push(back_button)
         break
       }
     }
-
-    screen.clear()
-    back_button.draw()
-    update_elements.push(back_button)
   }
 
   else if (!zoomed_out && back_button.is_hover()) { zoom_out() } //checa se clicou no botão de voltar e tira o zoom
