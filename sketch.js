@@ -17,9 +17,9 @@ function setup() {
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(50))
 
-  clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(20, 30), 15, img, 0, imgteste)
-  clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(80, 30), 15, img, 0, imgteste)
-  clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 70), 15, img, 0, imgteste)
+  clk1 = new Clock(new Pixel(20, 30), 15, img, 0, imgteste)
+  clk2 = new Clock(new Pixel(80, 30), 15, img, 0, imgteste)
+  clk3 = new Clock(new Pixel(50, 70), 15, img, 0, imgteste)
   clocks = [clk1, clk2, clk3]
   clocks_draw = [...clocks]
 
@@ -35,6 +35,7 @@ function mousePressed() {
   if (zoomed_out && !opening.is_running) {
     for (const clock of clocks) {
       if (clock.is_hover()) {
+        cursor(ARROW)
         zoomed_out = false
         clock.zoomed_in = true
         window_cg = new WindowCG(clock.top.sub(new Pixel(10)), clock.bottom.add(new Pixel(10)))

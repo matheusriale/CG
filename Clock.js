@@ -1,21 +1,20 @@
 /**
  * @type {{
- * num_drawer: CharDrawer center: Pixel radius: Number date:Date 
+ * center: Pixel radius: Number date:Date 
  * second_hand:Line minute_hand:Line hour_hand:Line screen:ImageCG}}
  */
 class Clock {
     /**
      * Constrói um relógio
-     * @param {CharDrawer} num_drawer 
      * @param {Pixel} center Coordenadas do centro do relógio
      * @param {Number} radius Tamanho do raio
      * @param {ImageCG} screen
      */
-    constructor(num_drawer, center, radius, screen, border = 0, image) {
-        this.num_drawer = num_drawer
+    constructor(center, radius, screen, border = 0, image) {
         this.center = center
         this.radius = radius
         this.date = new Date()
+
         this.screen = screen
         this._last_hover = false
         this.zoomed_in = false
