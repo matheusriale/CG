@@ -20,7 +20,7 @@ class Opening {
         this.font_color = new Color(255)
 
         this.button = {
-            center: new Pixel(45, 70),
+            center: new Pixel(45, 80),
             radius: 10,
             color: new Color(100, 100, 255),
             arrow: new Polygon(),
@@ -57,7 +57,17 @@ class Opening {
         this.title = {
             C: null,
             G: null,
-            background: null
+            background: null,
+            radiusX: this.font_size * 2,
+            radiusY: 20
+        }
+
+        let start_gradient = this.init_pixel.sub(new Pixel(18, 15))
+        this.gradient = {
+            start: start_gradient,
+            end: start_gradient.add(new Pixel(this.title.radiusX * 2 + 7, this.title.radiusY * 2 + 15)),
+            colors: [new Color(255, 0, 0), new Color(0, 255, 0), new Color(0, 0, 255), new Color(255, 0, 255)],
+            figure: new Polygon(),
         }
 
 
@@ -71,6 +81,7 @@ class Opening {
     }
 
     draw_all() {
+        this._draw_rect()
         this._draw_elipse()
         this._draw_C(this.init_pixel.copy())
         this._draw_G(this.init_pixel.copy())
@@ -146,11 +157,21 @@ class Opening {
     }
 
     _draw_elipse() {
-        console.log("Elipse")
-        let center = this.init_pixel.copy().add(new Pixel(this.font_size + this.padding / 2, this.font_size / 2))
-        this.title.background = new Ellipse(center, this.font_size * 2, 20, this._border_color)
+        let center = this.init_pixel.add(new Pixel(this.font_size + this.padding / 2, this.font_size / 2))
+        this.title.background = new Ellipse(center, this.title.radiusX, this.title.radiusY, this._border_color)
         this.screen.set_pixels(this.title.background)
-        this.screen.floodFill(center, this._elipse_color)
+    }
+
+    _draw_rect() {
+        this.gradient.figure = Polygon.rect(this.gradient.start, this.gradient.end)
+
+        for (let i = 0; i < this.gradient.figure.vertices.length; i++) {
+            const vertex = this.gradient.figure.vertices[i];
+            this.screen.set_pixel_color(vertex, this.gradient.colors[i])
+        }
+
+        this.screen.draw_figure(this.gradient.figure, 0, true)
+        this.screen.scanline_gradient(this.gradient.figure)
     }
 
     stop() {
