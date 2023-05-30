@@ -1,7 +1,8 @@
 var img, opening, viewport, window_cg
 var clk1, clk2, clk3, clocks
 var zoomed_out = true
-var clocks_draw = []
+var update_elements = []
+var back_button
 
 function preload() {
   img = new ImageCG(100, 100, 200)
@@ -9,6 +10,7 @@ function preload() {
   img.add_image('images/brasil.png',"brasil")
   img.add_image('images/taiwan.png',"taiwan")
   img.add_image('images/ukraine.png',"ukraine")
+  img.add_image('images/back.png', "back")
 
   opening = new Opening(img, new CharDrawer())
 }
@@ -17,6 +19,7 @@ function setup() {
   img.init();
   img.load_all_images()
 
+  back_button = new Button(new Pixel(1, 80), new Pixel(20), "back", img)
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(50))
 
@@ -24,10 +27,9 @@ function setup() {
   clk2 = new Clock(new Pixel(80, 30), 15, img, 0, img.images.clock, 8,img.images.taiwan)
   clk3 = new Clock(new Pixel(50, 70), 15, img, 0, img.images.clock, +3,img.images.ukraine)
   clocks = [clk1, clk2, clk3]
-  clocks_draw = [...clocks]
+  update_elements = [...clocks]
 
-
-  opening.start()
+  // opening.start()
 }
 
 function mousePressed() {
@@ -43,7 +45,7 @@ function mousePressed() {
         zoomed_out = false
         clock.zoomed_in = true
         window_cg = new WindowCG(clock.top.sub(new Pixel(10)), clock.bottom.add(new Pixel(10)))
-        clocks_draw = [clock]
+        update_elements = [clock]
         break
       }
     }
@@ -52,6 +54,8 @@ function mousePressed() {
       clock.map_elements(viewport, window_cg)
     }
     img.clear()
+    back_button.draw()
+    update_elements.push(back_button)
   }
 }
 
@@ -61,7 +65,7 @@ function draw() {
     opening.update()
     return
   }
-  for (const clock of clocks_draw) {
+  for (const clock of update_elements) {
     clock.update()
   }
 }

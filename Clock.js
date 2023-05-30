@@ -15,7 +15,6 @@ class Clock {
         this.radius = radius
         this.timezone = timezone
         this.date = change_timezone(new Date(), this.timezone)
-        console.log(this.date, this.timezone)
 
         this.screen = screen
         this._last_hover = false
