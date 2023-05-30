@@ -20,6 +20,12 @@ function Color(r, g, b, a) {
         this.alpha]
     }
 
+    this.ignore = (color) => {
+        if (this.red == color.red && this.green == color.green && this.blue == color.blue) {
+            this.alpha = 0
+        }
+    }
+
 
 }
 
@@ -83,7 +89,7 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
      * @returns {Number} índice do pixel no array de pixels do P5.js
      */
     this.get_idx = (width) => {
-        return 4 * (this.y * width + this.x)
+        return Pixel.get_idx(this.x, this.y, width)
     }
 
     /**
@@ -211,7 +217,9 @@ function Pixel(x, y, xtex, ytex, color, allow_round = true) {
         return p;
     }
 }
-
+Pixel.get_idx = (x, y, width) => {
+    return 4 * (y * width + x)
+}
 Pixel.from_object = (object) => {
     return new Pixel(object.x, object.y, object.xtex, object.ytex, object.color, object.allow_round)
 }

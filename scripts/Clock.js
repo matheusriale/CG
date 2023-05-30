@@ -1,34 +1,38 @@
 /**
  * @type {{
- * num_drawer: CharDrawer center: Pixel radius: Number date:Date 
- * second_hand:Line minute_hand:Line hour_hand:Line screen:ImageCG}}
+ * center: Pixel radius: Number date:Date 
+ * second_hand:Line minute_hand:Line hour_hand:Line screen:Screen}}
  */
 class Clock {
     /**
      * Constrói um relógio
-     * @param {CharDrawer} num_drawer 
      * @param {Pixel} center Coordenadas do centro do relógio
      * @param {Number} radius Tamanho do raio
-     * @param {ImageCG} screen
+     * @param {Screen} screen
      */
-    constructor(num_drawer, center, radius, screen, border = 0, image) {
-        this.num_drawer = num_drawer
+    constructor(center, radius, screen, border_color = 0, image, timezone = 0, image2) {
         this.center = center
         this.radius = radius
-        this.date = new Date()
+        this.timezone = timezone
+        this.date = change_timezone(new Date(), this.timezone)
+
         this.screen = screen
         this._last_hover = false
         this.zoomed_in = false
         this.image = image
+        this.image2 = image2
 
         this.reset_hands()
-
-        this.border = new Circumference(border, this.center.copy(), this.radius)
+        this.border_color = border_color
+        this.border = new Circumference(this.border_color, this.center.copy(), this.radius)
         this.top = this.center.sub(new Pixel(this.radius))
         this.bottom = this.center.add(new Pixel(this.radius))
         this.p = Polygon.rect(this.top.copy(), this.bottom.copy())
+        this.p2 = Polygon.rect(this.center.copy().add(new Pixel(-this.radius * 0.9, -this.radius * 1.8)), this.center.copy().add(new Pixel(this.radius * 0.8, -this.radius)))
     }
-
+    copy() {
+        return new Clock(this.center, this.radius, this.screen, this.border, this.image, this.timezone, this.image2)
+    }
     /**
      * Volta os ponteiros para o início
      */
@@ -72,7 +76,7 @@ class Clock {
 
         if (is_hover && !this.zoomed_in) this.screen.set_pixels(this.border)
 
-        this.date = new Date()
+        this.date = change_timezone(new Date(), this.timezone)
         this.reset_hands()
         this._update_second_hand()
         this._update_minute_hand()
@@ -83,6 +87,7 @@ class Clock {
         }
 
         this.screen.scanline_tex(this.p, this.image)
+        this.screen.scanline_tex(this.p2, this.image2)
     }
 
     scale(scale) {
@@ -110,6 +115,7 @@ class Clock {
         this.top = this.top.map_window(viewport, win)
         this.bottom = this.bottom.map_window(viewport, win)
         this.p = this.p.map_window(viewport, win)
+        this.p2 = this.p2.map_window(viewport, win)
     }
 
     get_all_elements() {
@@ -164,4 +170,20 @@ class Clock {
         let min_ang = (hour_ang / 60)
         this.hour_hand = this.hour_hand.rotate(hour_ang * hour + min_ang * mins)
     }
+}
+
+Clock.map_clock = (clock, viewport, win) => {
+    new_clock = clock.copy()
+    new_clock.center = new_clock.center.map_window(viewport, win)
+
+    new_clock.second_hand = new_clock.second_hand.map_window(viewport, win)
+    new_clock.minute_hand = new_clock.minute_hand.map_window(viewport, win)
+    new_clock.hour_hand = new_clock.hour_hand.map_window(viewport, win)
+
+    new_clock.top = new_clock.top.map_window(viewport, win)
+    new_clock.bottom = new_clock.bottom.map_window(viewport, win)
+    new_clock.p = new_clock.p.map_window(viewport, win)
+    new_clock.p2 = new_clock.p2.map_window(viewport, win)
+
+    return new_clock
 }

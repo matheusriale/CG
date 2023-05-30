@@ -75,9 +75,10 @@ function Figure(stroke, vertices) {
      * @param {boolean} round Se deve ou não arredondar os pixels (default: true)
      */
     this.map_window = (vport, win, round = true) => {
-        this.vertices = this.vertices.map(v => v.map_window(vport, win))
-        if (round) this.round_pixels()
-        return this
+        let f = this.copy()
+        f.vertices = [...this.vertices].map(v => v.map_window(vport, win))
+        if (round) f.round_pixels()
+        return f
     }
 
     this.round_pixels = () => {
