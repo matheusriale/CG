@@ -19,6 +19,16 @@ class Screen {
     this.images[name] = loadImage(path)
   }
 
+  /**
+   * 
+   * @param {Array<Array<string>>} images [path, name] 
+   */
+  add_images(images) {
+    images.forEach(i => {
+      this.add_image(i[0], i[1])
+    })
+  }
+
   draw_image(name, pos, size) {
     let image = this.images[name]
     size = size ? size : new Pixel(image.width, image.height)

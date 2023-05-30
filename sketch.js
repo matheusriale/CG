@@ -1,8 +1,7 @@
-var screen, opening, viewport, window_cg
-var clocks
+var screen, opening, viewport, window_cg, back_button, clocks
 var zoomed_out = true
 var update_elements = []
-var back_button
+var transformed_clocks = []
 
 function map_clocks(clocks) {
   let new_clocks = []
@@ -42,11 +41,10 @@ function zoom_out() {
 
 function preload() {
   screen = new Screen(100, 100, 200)
-  screen.add_image('images/relogio2.png', "clock")
-  screen.add_image('images/brasil.png', "brasil")
-  screen.add_image('images/taiwan.png', "taiwan")
-  screen.add_image('images/ukraine.png', "ukraine")
-  screen.add_image('images/back.png', "back")
+
+  // carregar imagens para os relógios
+  let images = ["clock", "brasil", "taiwan", "ukraine", "back"]
+  screen.add_images(images.map(i => [`images/${i}.png`, i]))
 
   opening = new Opening(screen, new CharDrawer())
 }
@@ -63,13 +61,13 @@ function setup() {
   transformed_clocks = map_clocks(clocks)
   update_elements = [...transformed_clocks]
 
-  // opening.start()
+  opening.start()
 }
 
 function mousePressed() {
-  if (opening.is_running && opening.is_hover_button()) { opening.stop() }
+  if (opening.is_running && opening.is_hover_button()) { opening.stop() } //checa se clicou no botão "play" e prossegue no programa
 
-  else if (zoomed_out && !opening.is_running) {
+  else if (zoomed_out && !opening.is_running) { // checa se clicou em um relógio e dá zoom
     for (let c = 0; c < clocks.length; c++) {
       if (clocks[c].is_hover()) {
         zoom_in(c)
@@ -82,7 +80,7 @@ function mousePressed() {
     update_elements.push(back_button)
   }
 
-  else if (!zoomed_out && back_button.is_hover()) { zoom_out() }
+  else if (!zoomed_out && back_button.is_hover()) { zoom_out() } //checa se clicou no botão de voltar e tira o zoom
 }
 
 
