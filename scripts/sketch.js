@@ -12,9 +12,9 @@ function map_clocks(clocks) {
 }
 
 function create_clocks(screen) {
-  const clk1 = new Clock(new Pixel(20, 30), 15, screen, 0, screen.images.clock, -3, screen.images.brasil)
-  const clk2 = new Clock(new Pixel(80, 30), 15, screen, 0, screen.images.clock, 8, screen.images.taiwan)
-  const clk3 = new Clock(new Pixel(50, 70), 15, screen, 0, screen.images.clock, +3, screen.images.ukraine)
+  const clk1 = new Clock(new Pixel(20, 30), 15, screen, 0, screen.images.clock, 0, screen.images.brasil)
+  const clk2 = new Clock(new Pixel(80, 30), 15, screen, 0, screen.images.clock, 13, screen.images.taiwan)
+  const clk3 = new Clock(new Pixel(50, 70), 15, screen, 0, screen.images.clock, 6, screen.images.ukraine)
   return [clk1, clk2, clk3]
 }
 
