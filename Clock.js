@@ -1,14 +1,14 @@
 /**
  * @type {{
  * center: Pixel radius: Number date:Date 
- * second_hand:Line minute_hand:Line hour_hand:Line screen:ImageCG}}
+ * second_hand:Line minute_hand:Line hour_hand:Line screen:Screen}}
  */
 class Clock {
     /**
      * Constrói um relógio
      * @param {Pixel} center Coordenadas do centro do relógio
      * @param {Number} radius Tamanho do raio
-     * @param {ImageCG} screen
+     * @param {Screen} screen
      */
     constructor(center, radius, screen, border_color = 0, image, timezone = 0, image2) {
         this.center = center

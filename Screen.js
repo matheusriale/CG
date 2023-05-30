@@ -2,7 +2,7 @@
  * Manipula o canvas do p5.js
  * @type {{width: Number height: Number background: Number}}
  */
-class ImageCG {
+class Screen {
   /**
    * Cria uma nova imagem
    * @param {Number} width Largura

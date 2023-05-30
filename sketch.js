@@ -1,4 +1,4 @@
-var img, opening, viewport, window_cg
+var screen, opening, viewport, window_cg
 var clk1, clk2, clk3, clocks
 var zoomed_out = true
 var update_elements = []
@@ -13,27 +13,27 @@ function map_clocks(clocks) {
 }
 
 function preload() {
-  img = new ImageCG(100, 100, 200)
-  img.add_image('images/relogio2.png', "clock")
-  img.add_image('images/brasil.png', "brasil")
-  img.add_image('images/taiwan.png', "taiwan")
-  img.add_image('images/ukraine.png', "ukraine")
-  img.add_image('images/back.png', "back")
+  screen = new Screen(100, 100, 200)
+  screen.add_image('images/relogio2.png', "clock")
+  screen.add_image('images/brasil.png', "brasil")
+  screen.add_image('images/taiwan.png', "taiwan")
+  screen.add_image('images/ukraine.png', "ukraine")
+  screen.add_image('images/back.png', "back")
 
-  opening = new Opening(img, new CharDrawer())
+  opening = new Opening(screen, new CharDrawer())
 }
 
 function setup() {
-  img.init();
-  img.load_all_images()
+  screen.init();
+  screen.load_all_images()
 
-  back_button = new Button(new Pixel(1, 80), new Pixel(20), "back", img)
+  back_button = new Button(new Pixel(1, 80), new Pixel(20), "back", screen)
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(width, height))
 
-  clk1 = new Clock(new Pixel(20, 30), 15, img, 0, img.images.clock, -3, img.images.brasil)
-  clk2 = new Clock(new Pixel(80, 30), 15, img, 0, img.images.clock, 8, img.images.taiwan)
-  clk3 = new Clock(new Pixel(50, 70), 15, img, 0, img.images.clock, +3, img.images.ukraine)
+  clk1 = new Clock(new Pixel(20, 30), 15, screen, 0, screen.images.clock, -3, screen.images.brasil)
+  clk2 = new Clock(new Pixel(80, 30), 15, screen, 0, screen.images.clock, 8, screen.images.taiwan)
+  clk3 = new Clock(new Pixel(50, 70), 15, screen, 0, screen.images.clock, +3, screen.images.ukraine)
   clocks = [clk1, clk2, clk3]
   transformed_clocks = map_clocks(clocks)
   update_elements = [...transformed_clocks]
@@ -62,19 +62,19 @@ function mousePressed() {
       }
     }
 
-    img.clear()
+    screen.clear()
     back_button.draw()
     update_elements.push(back_button)
     return
   }
 
   if (!zoomed_out && back_button.is_hover()) {
-    window_cg = new WindowCG(new Pixel(0), new Pixel(img.width, img.height))
+    window_cg = new WindowCG(new Pixel(0), new Pixel(screen.width, screen.height))
     zoomed_out = true
     update_elements[0].zoomed_in = false
     transformed_clocks = map_clocks(clocks)
     update_elements = [...transformed_clocks]
-    img.clear()
+    screen.clear()
     return
 
   }
