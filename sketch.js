@@ -6,6 +6,9 @@ var clocks_draw = []
 function preload() {
   img = new ImageCG(100, 100, 200)
   img.add_image('images/relogio2.png', "clock")
+  img.add_image('images/brasil.png',"brasil")
+  img.add_image('images/japao.png',"japao")
+  img.add_image('images/france.png',"france")
 
   opening = new Opening(img, new CharDrawer())
 }
@@ -22,6 +25,8 @@ function setup() {
   clk3 = new Clock(new Pixel(50, 70), 15, img, 0, img.images.clock)
   clocks = [clk1, clk2, clk3]
   clocks_draw = [...clocks]
+  // p = Polygon.square(new Pixel(40,15),10)
+  // img.scanline_tex(p,img.images.brasil)
 
   opening.start()
 }
