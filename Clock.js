@@ -10,10 +10,12 @@ class Clock {
      * @param {Number} radius Tamanho do raio
      * @param {ImageCG} screen
      */
-    constructor(center, radius, screen, border = 0, image) {
+    constructor(center, radius, screen, border = 0, image, timezone = 0) {
         this.center = center
         this.radius = radius
-        this.date = new Date()
+        this.timezone = timezone
+        this.date = change_timezone(new Date(), this.timezone)
+        console.log(this.date, this.timezone)
 
         this.screen = screen
         this._last_hover = false
@@ -71,7 +73,7 @@ class Clock {
 
         if (is_hover && !this.zoomed_in) this.screen.set_pixels(this.border)
 
-        this.date = new Date()
+        this.date = change_timezone(new Date(), this.timezone)
         this.reset_hands()
         this._update_second_hand()
         this._update_minute_hand()

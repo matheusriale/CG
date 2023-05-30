@@ -27,3 +27,14 @@ function make_scale(x, y, m) {
 function make_transformation() {
     return [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 }
+
+function change_timezone(date, new_timezone) {
+    var offset = date.getTimezoneOffset();
+    var new_offset = -((new_timezone - 3) * 60);
+    var timestamp = date.getTime();
+
+    var new_timestamp = timestamp - (offset - new_offset) * 60 * 1000;
+
+
+    return new Date(new_timestamp);
+}

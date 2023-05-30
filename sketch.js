@@ -20,9 +20,9 @@ function setup() {
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(50))
 
-  clk1 = new Clock(new Pixel(20, 30), 15, img, 0, img.images.clock)
-  clk2 = new Clock(new Pixel(80, 30), 15, img, 0, img.images.clock)
-  clk3 = new Clock(new Pixel(50, 70), 15, img, 0, img.images.clock)
+  clk1 = new Clock(new Pixel(20, 30), 15, img, 0, img.images.clock, -3)
+  clk2 = new Clock(new Pixel(80, 30), 15, img, 0, img.images.clock, -2)
+  clk3 = new Clock(new Pixel(50, 70), 15, img, 0, img.images.clock, 0)
   clocks = [clk1, clk2, clk3]
   clocks_draw = [...clocks]
   // p = Polygon.square(new Pixel(40,15),10)
