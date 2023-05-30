@@ -14,11 +14,15 @@ function setup() {
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(50))
   image_matrix = image_pixels(imgteste, 50, 50);
-  clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(25), 25, img, 0, image_matrix)
-  clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 75), 25, img, 0, image_matrix)
-  clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(75, 25), 25, img, 0, image_matrix)
-  clocks = [clk1, clk2, clk3]
-  clocks_draw = [...clocks]
+  // clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(25), 25, img, 0, image_matrix)
+  // clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 75), 25, img, 0, image_matrix)
+  // clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(75, 25), 25, img, 0, image_matrix)
+  // clocks = [clk1, clk2, clk3]
+  // clocks_draw = [...clocks]
+  p = new Polygon(0,[pix1 = new Pixel(1,1,0,0),pix2 = new Pixel(1,40,0,1),pix3 = new Pixel(40,40,1,1),pix4 = new Pixel(40,1,1,0)])
+  img.draw_figure(p,0);
+  //img.scanline_tex(p,imgteste);
+  img.scanline_tex(p,image_matrix);
 
   //opening.start()
 }

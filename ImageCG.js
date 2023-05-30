@@ -333,6 +333,7 @@ class ImageCG {
 
     var pf = seg.pf;
     var y = scan; // scan line -> percorrer toda a imagem 
+    console.log(pi,pf)
 
     // Segmento horizontal -> sem intersecao
     if (pi.y == pf.y) {
@@ -353,17 +354,12 @@ class ImageCG {
       let tx = pi.xtex + t * (pf.xtex - pi.xtex);
       let ty = pi.ytex + t * (pf.ytex - pi.ytex);
 
-
-
       return [new Pixel(x, y, tx, ty), t]
     }
     // No intersections
     let p = new Pixel(-1, 0, 0, 0);
     return [p, t];
   }
-
-
-
 
   scanline_no_texture(pol) {
     let ys = pol.vertices.map((p) => {
@@ -491,10 +487,11 @@ class ImageCG {
     // cod yuri
     p.xtex = Math.max(0, Math.min(1, p.xtex))
     p.ytex = Math.max(0, Math.min(1, p.ytex))
+    var h = tex[0].length/4
 
-    let x = Math.round(p.xtex * (tex[0].length)) == tex[0].length ? Math.round(p.xtex * (tex[0].length) - 1) : Math.round(p.xtex * (tex[0].length));//cond ? op v : op f
+    let x = Math.round(p.xtex * (h)) == h ? Math.round(p.xtex * (h) - 1) : Math.round(p.xtex * (h));//cond ? op v : op f
     let y = Math.round(p.ytex * (tex.length)) == tex.length ? Math.round(p.ytex * (tex.length) - 1) : Math.round(p.ytex * (tex.length));
-    //console.log(y)
+    //console.log(x,y)
 
     let intensityR = tex[y][x] === undefined ? tex[y][x - 1] : tex[y][x];
     let intensityG = tex[y][x + 1] === undefined ? tex[y][x] : tex[y][x + 1];
@@ -510,8 +507,6 @@ class ImageCG {
   reta_tex(pi, pf, tex, clg = false) {
     let [dx, dy] = Pixel.distance(pi, pf)
     let passos = max(Math.abs(dy), Math.abs(dx))
-    //console.log(passos)
-    //console.log(pi.ytex)//ytex sempre da 1
 
     if (passos == 0) {
       // let intensity = this.get_pixel_tex(pi, tex)
@@ -528,15 +523,12 @@ class ImageCG {
 
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
+      
       let pc = (x - pi.x) / (pf.x - pi.x);
       //let pcy = (y - pi.y)/(pf.y - pi.y);
 
       let tx = pi.xtex + pc * (pf.xtex - pi.xtex);
       let ty = pi.ytex + pc * (pf.ytex - pi.ytex);
-
-      //let intensidade = this.get_pixel_tex(new Pixel(x,y,tx,ty),tex);
-
-      //img = setpixel(img, xk, y, intensidade);
 
       if (is_one) {// adicionar texturas
         var px1 = new Pixel(x, Math.floor(y), tx, ty)
@@ -564,9 +556,7 @@ class ImageCG {
     });
     let ymin = Math.min(...ys); //menor y
     let ymax = Math.max(...ys); //maior y
-
     let pi = pol.vertices[0]; //ponto inicial
-
     for (let y = ymin; y < ymax; y++) { //scanline
 
       for (let i = 0; i < pol.vertices.length; i++) {
@@ -574,13 +564,14 @@ class ImageCG {
         var pf = pol.vertices[i].copy();
 
         var pint = this.intersection_tex(y, new Line(pi, pf))[0]; // segmento válido
-
+        //console.log(pint)
         if (pint.x > 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
             var pint2 = this.intersection_tex(y, new Line(pf, pol.vertices[k].copy()))[0];//[0]-> pixel [1]-> t
 
             if (pint2.x > 0) {
               this.reta_tex(pint2, pint, [...tex]);
+          
             }
           }
         }
