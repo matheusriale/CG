@@ -10,7 +10,7 @@ class Clock {
      * @param {Number} radius Tamanho do raio
      * @param {ImageCG} screen
      */
-    constructor(center, radius, screen, border = 0, image, timezone = 0, image2) {
+    constructor(center, radius, screen, border_color = 0, image, timezone = 0, image2) {
         this.center = center
         this.radius = radius
         this.timezone = timezone
@@ -23,14 +23,16 @@ class Clock {
         this.image2 = image2
 
         this.reset_hands()
-
-        this.border = new Circumference(border, this.center.copy(), this.radius)
+        this.border_color = border_color
+        this.border = new Circumference(this.border_color, this.center.copy(), this.radius)
         this.top = this.center.sub(new Pixel(this.radius))
         this.bottom = this.center.add(new Pixel(this.radius))
         this.p = Polygon.rect(this.top.copy(), this.bottom.copy())
-        this.p2 = Polygon.rect(this.center.copy().add(new Pixel(-this.radius*0.9,-this.radius*1.8)),this.center.copy().add(new Pixel(this.radius*0.8,-this.radius)))
-        console.log(this.p2)}   
-
+        this.p2 = Polygon.rect(this.center.copy().add(new Pixel(-this.radius * 0.9, -this.radius * 1.8)), this.center.copy().add(new Pixel(this.radius * 0.8, -this.radius)))
+    }
+    copy() {
+        return new Clock(this.center, this.radius, this.screen, this.border, this.image, this.timezone, this.image2)
+    }
     /**
      * Volta os ponteiros para o início
      */
@@ -85,7 +87,7 @@ class Clock {
         }
 
         this.screen.scanline_tex(this.p, this.image)
-        this.screen.scanline_tex(this.p2,this.image2)
+        this.screen.scanline_tex(this.p2, this.image2)
     }
 
     scale(scale) {
@@ -168,4 +170,20 @@ class Clock {
         let min_ang = (hour_ang / 60)
         this.hour_hand = this.hour_hand.rotate(hour_ang * hour + min_ang * mins)
     }
+}
+
+Clock.map_clock = (clock, viewport, win) => {
+    new_clock = clock.copy()
+    new_clock.center = new_clock.center.map_window(viewport, win)
+
+    new_clock.second_hand = new_clock.second_hand.map_window(viewport, win)
+    new_clock.minute_hand = new_clock.minute_hand.map_window(viewport, win)
+    new_clock.hour_hand = new_clock.hour_hand.map_window(viewport, win)
+
+    new_clock.top = new_clock.top.map_window(viewport, win)
+    new_clock.bottom = new_clock.bottom.map_window(viewport, win)
+    new_clock.p = new_clock.p.map_window(viewport, win)
+    new_clock.p2 = new_clock.p2.map_window(viewport, win)
+
+    return new_clock
 }
