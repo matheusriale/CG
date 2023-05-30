@@ -20,6 +20,12 @@ function Color(r, g, b, a) {
         this.alpha]
     }
 
+    this.ignore = (color) => {
+        if (this.red == color.red && this.green == color.green && this.blue == color.blue) {
+            this.alpha = 0
+        }
+    }
+
 
 }
 
