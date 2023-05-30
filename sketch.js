@@ -4,25 +4,29 @@ var zoomed_out = true
 var clocks_draw = []
 
 function preload() {
-  img = new ImageCG(100, 100, 200)
-  imgteste = loadImage('images/relogio.png')
+  img = new ImageCG(120, 120, 200)
+  imgteste = loadImage('images/relogio2.png')
+
   opening = new Opening(img, new CharDrawer())
 }
 
 function setup() {
   img.init();
-  viewport = new Viewport(width, height)
-  window_cg = new WindowCG(new Pixel(0), new Pixel(50))
-  image_matrix = image_pixels(imgteste, 50, 50);
-  // clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(25), 25, img, 0, image_matrix)
+  imgteste.loadPixels()
+  let p = Polygon.square(new Pixel(50), 48)
+  console.log(imgteste.pixels)
+  img.scanline_tex(p, imgteste.pixels)
+  img.draw_figure(p, 50)
+
+  // viewport = new Viewport(width, height)
+  // window_cg = new WindowCG(new Pixel(0), new Pixel(50))
+
+  // clk1 = new Clock(new CharDrawer(155, 3, 10), new Pixel(40, 30), 25, img, 0, image_matrix)
   // clk2 = new Clock(new CharDrawer(155, 3, 10), new Pixel(50, 75), 25, img, 0, image_matrix)
   // clk3 = new Clock(new CharDrawer(155, 3, 10), new Pixel(75, 25), 25, img, 0, image_matrix)
-  // clocks = [clk1, clk2, clk3]
+  // clk1.update()
+  // clocks = [clk1]
   // clocks_draw = [...clocks]
-  p = new Polygon(0,[pix1 = new Pixel(1,1,0,0),pix2 = new Pixel(1,40,0,1),pix3 = new Pixel(40,40,1,1),pix4 = new Pixel(40,1,1,0)])
-  img.draw_figure(p,0);
-  //img.scanline_tex(p,imgteste);
-  img.scanline_tex(p,image_matrix);
 
   //opening.start()
 }
@@ -53,6 +57,7 @@ function mousePressed() {
 
 
 function draw() {
+  return
   if (opening.is_running) {
     opening.update()
     return
@@ -68,33 +73,19 @@ function image_pixels(imgteste, w, h) {
   loadPixels()
   image_matrix = []
   matrix_line = []
+
   for (var y = 0; y < w; y++) {
     for (var x = 0; x < h; x++) {
       var index = (x + y * width) * 4;
       if (pixels[index] == 255 && pixels[index + 1] == 255 && pixels[index + 2] == 255) {
         pixels[index + 3] = 0;
       }
-      matrix_line.push(pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3])
+      matrix_line.push(...pixels.slice(index, index + 4))
     }
     image_matrix.push(matrix_line)
     matrix_line = []
   }
   img.clear();
+  console.log(image_matrix)
   return image_matrix;
-}
-
-function load_image_pixels(path, h, w) {
-  var img = new Image();
-  img.src = path;
-  var canvas = document.createElement('canvas');
-  var context = canvas.getContext('2d');
-  context.drawImage(img, 0, 0);
-  image_matrix = []
-  for (var y = 0; y < w; y++) {
-    for (var x = 0; x < h; x++) {
-      image_matrix.push(context.getImageData(x, y, 1, 1).data)
-    }
-  }
-  return image_matrix
-
 }
