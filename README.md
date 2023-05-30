@@ -11,5 +11,7 @@ Para que as horas sejam exibidas corretamente, é necessário que a máquina est
 O trabalho foi desenvolvido em **JavaScript** utilizando a biblioteca **P5.js**.
 Para executá-lo, é necessário servir o diretório atual em um servidor local e abrir o arquivo `index.html`.
 
+Como o canva possui uma dimensão pequena (100 x 100), sugerimos que aumente o zoom da página.
+
 ### Alternativa
 Como alternativa para o servidor local, recomendamos o [Simple Server do Python](https://www.digitalocean.com/community/tutorials/python-simplehttpserver-http-server).
