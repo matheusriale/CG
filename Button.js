@@ -20,7 +20,6 @@ function Button(pos, size, image_name, screen) {
 
     this.update = () => {
         if (this.is_hover() && !this._last_hover) {
-            console.log(this.pos, this.size)
             cursor(HAND)
             this._last_hover = true
             this.screen.draw_figure(this.polygon)
