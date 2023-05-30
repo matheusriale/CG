@@ -6,9 +6,10 @@ var clocks_draw = []
 function preload() {
   img = new ImageCG(100, 100, 200)
   img.add_image('images/relogio2.png', "clock")
-  img.add_image('images/brasil.png',"brasil")
-  img.add_image('images/japao.png',"japao")
-  img.add_image('images/france.png',"france")
+  img.add_image('images/brasil.png', "brasil")
+  img.add_image('images/japao.png', "japao")
+  img.add_image('images/france.png', "france")
+  img.add_image('images/back.png', "back")
 
   opening = new Opening(img, new CharDrawer())
 }
@@ -28,7 +29,7 @@ function setup() {
   // p = Polygon.square(new Pixel(40,15),10)
   // img.scanline_tex(p,img.images.brasil)
 
-  opening.start()
+  // opening.start()
 }
 
 function mousePressed() {
@@ -53,6 +54,7 @@ function mousePressed() {
       clock.map_elements(viewport, window_cg)
     }
     img.clear()
+    img.draw_image("back", new Pixel(1, 80), new Pixel(20))
   }
 }
 
