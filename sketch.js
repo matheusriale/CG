@@ -7,9 +7,9 @@ var back_button
 function preload() {
   img = new ImageCG(100, 100, 200)
   img.add_image('images/relogio2.png', "clock")
-  img.add_image('images/brasil.png', "brasil")
-  img.add_image('images/japao.png', "japao")
-  img.add_image('images/france.png', "france")
+  img.add_image('images/brasil.png',"brasil")
+  img.add_image('images/taiwan.png',"taiwan")
+  img.add_image('images/ukraine.png',"ukraine")
   img.add_image('images/back.png', "back")
 
   opening = new Opening(img, new CharDrawer())
@@ -23,9 +23,9 @@ function setup() {
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(50))
 
-  clk1 = new Clock(new Pixel(20, 30), 15, img, 0, img.images.clock, -3)
-  clk2 = new Clock(new Pixel(80, 30), 15, img, 0, img.images.clock, -2)
-  clk3 = new Clock(new Pixel(50, 70), 15, img, 0, img.images.clock, 0)
+  clk1 = new Clock(new Pixel(20, 30), 15, img, 0, img.images.clock, -3,img.images.brasil)
+  clk2 = new Clock(new Pixel(80, 30), 15, img, 0, img.images.clock, 8,img.images.taiwan)
+  clk3 = new Clock(new Pixel(50, 70), 15, img, 0, img.images.clock, +3,img.images.ukraine)
   clocks = [clk1, clk2, clk3]
   update_elements = [...clocks]
 
