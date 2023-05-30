@@ -13,9 +13,9 @@ function preload() {
 function setup() {
   img.init();
   imgteste.loadPixels()
-  let p = Polygon.square(new Pixel(50), 48)
+  let p = Polygon.square(new Pixel(50), imgteste.width)
   console.log(imgteste.pixels)
-  img.scanline_tex(p, imgteste.pixels)
+  img.scanline_tex(p, imgteste)
   img.draw_figure(p, 50)
 
   // viewport = new Viewport(width, height)
