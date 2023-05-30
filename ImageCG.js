@@ -492,8 +492,11 @@ class ImageCG {
 
     let x = Math.round(p.xtex * (w - 1) + 1)
     let y = Math.round(p.ytex * (h - 1) + 1)
-    let idx = Pixel.get_idx(x, y, this.width)
-    return Color.from_array(tex.pixels.slice(idx, idx + 4));
+    let idx = Pixel.get_idx(x, y, w)
+
+    let color = Color.from_array(tex.pixels.slice(idx, idx + 4))
+    color.ignore(new Color(255))
+    return color;
   }
 
   reta_tex(pi, pf, tex, clg = false) {
