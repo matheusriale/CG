@@ -15,12 +15,18 @@ class Screen {
     this.background = background
     this.images = {}
   }
+
+  /**
+   * Adiciona uma imagem
+   * @param {string} path Caminho ao arquivo de imagem
+   * @param {string} name nome da imagem
+   */
   add_image(path, name) {
     this.images[name] = loadImage(path)
   }
 
   /**
-   * 
+   * Adiciona imagens
    * @param {Array<Array<string>>} images [path, name] 
    */
   add_images(images) {
@@ -29,6 +35,13 @@ class Screen {
     })
   }
 
+  /**
+   * Desenha uma imagem na tela
+   * @param {string} name nome da imagem a ser desenhada (deve ter sido adiciona previamento com `add_image`)
+   * @param {Pixel} pos posição da imagem
+   * @param {Pixel} size tamanho da imagem
+   * @returns 
+   */
   draw_image(name, pos, size) {
     let image = this.images[name]
     size = size ? size : new Pixel(image.width, image.height)
@@ -147,9 +160,6 @@ class Screen {
     return pixels[p.get_idx(this.width)]
   }
 
-
-
-
   /**
    * Desenha uma reta entre o pixel inicial e o final
    * @param {Pixel} pi Pixel inicial
@@ -245,10 +255,8 @@ class Screen {
         p += dy2;
       }
     }
-    if (clg) {
-      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
-    }
 
+    if (clg) console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
   }
 
   /**
@@ -276,14 +284,8 @@ class Screen {
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
 
-      if (is_one) {
-        var px1 = new Pixel(Math.round(x), Math.floor(y))
-        var px2 = new Pixel(Math.round(x), Math.floor(y + 1))
-      }
-      else {
-        var px1 = new Pixel(Math.floor(x), Math.round(y))
-        var px2 = new Pixel(Math.floor(x + 1), Math.round(y))
-      }
+      var px1 = is_one ? new Pixel(x, Math.floor(y)) : new Pixel(Math.floor(x), y)
+      var px2 = is_one ? new Pixel(x, Math.floor(y + 1)) : new Pixel(Math.floor(x + 1), y)
 
       this.set_pixel(px1, intensity);
       this.set_pixel(px2, intensity);
@@ -308,11 +310,10 @@ class Screen {
 
     for (let i = 1; i < vertices.length; i++) {
       let pixel = vertices[i];
-      if (!edge_color) {
-        this.reta_continua(last_pixel, pixel, iten) //monocromatico
-      } else {
-        this.reta_continua_gradient(last_pixel, pixel, 0, 1) //gradiente
-      }
+
+      if (!edge_color) this.reta_continua(last_pixel, pixel, iten) //monocromatico
+      else this.reta_continua_gradient(last_pixel, pixel, 0, 1) //gradiente
+
       last_pixel = pixel
     }
     return last_pixel;
@@ -531,15 +532,10 @@ class Screen {
     let [dx, dy] = Pixel.distance(pi, pf)
     let passos = max(Math.abs(dy), Math.abs(dx))
 
-    if (passos == 0) {
-      // let intensity = this.get_pixel_tex(pi, tex)
-      // this.set_pixel_color(pi, Color.from_array(intensity))
-      return
-    }
+    if (passos == 0) return
 
     let passo_x = dx / passos;
     let passo_y = dy / passos;
-    //console.log(passo_x)
 
     for (let i = 0; i < passos; i++) {
       let is_one = Math.abs(Math.round(passo_x)) == 1
@@ -548,54 +544,40 @@ class Screen {
       let y = pi.y + i * passo_y;
 
       let pc = (x - pi.x) / (pf.x - pi.x);
-      //let pcy = (y - pi.y)/(pf.y - pi.y);
 
       let tx = pi.xtex + pc * (pf.xtex - pi.xtex);
       let ty = pi.ytex + pc * (pf.ytex - pi.ytex);
 
-      if (is_one) {// adicionar texturas
-        var px1 = new Pixel(x, Math.floor(y), tx, ty)
-        var px2 = new Pixel(x, Math.floor(y + 1), tx, ty)
-      }
-      else {
-        var px1 = new Pixel(Math.floor(x), y, tx, ty)
-        var px2 = new Pixel(Math.floor(x + 1), y, tx, ty)
-      }
+      // adicionar texturas
+      var px1 = is_one ? new Pixel(x, Math.floor(y), tx, ty) : new Pixel(Math.floor(x), y, tx, ty)
+      var px2 = is_one ? new Pixel(x, Math.floor(y + 1), tx, ty) : new Pixel(Math.floor(x + 1), y, tx, ty)
 
-      let int_px1 = this.get_pixel_tex(px1, tex)
-      this.set_pixel_color(px1, int_px1);
 
-      let int_px2 = this.get_pixel_tex(px2, tex)
-      this.set_pixel_color(px2, int_px2);
+      this.set_pixel_color(px1, this.get_pixel_tex(px1, tex));
+      this.set_pixel_color(px2, this.get_pixel_tex(px2, tex));
     }
 
-    if (clg) {
-      console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
-    }
+    if (clg) console.log(`Stroke (${pi.to_array()}) -> (${pf.to_array()})`)
   }
+
   scanline_tex(pol, tex) {
-    let ys = pol.vertices.map((p) => {
-      return p.y;
-    });
-    let ymin = Math.min(...ys); //menor y
-    let ymax = Math.max(...ys); //maior y
+    let ys = pol.vertices.map((p) => { return p.y; });
+    let ymin = Math.min(...ys);
+    let ymax = Math.max(...ys);
     let pi = pol.vertices[0]; //ponto inicial
+
     for (let y = ymin; y < ymax; y++) { //scanline
 
       for (let i = 0; i < pol.vertices.length; i++) {
         //4vezes
         var pf = pol.vertices[i].copy();
-
         var pint = this.intersection_tex(y, new Line(pi, pf))[0]; // segmento válido
-        //console.log(pint)
+
         if (pint.x > 0) {
           for (let k = 0; k < pol.vertices.length; k++) {
             var pint2 = this.intersection_tex(y, new Line(pf, pol.vertices[k].copy()))[0];//[0]-> pixel [1]-> t
 
-            if (pint2.x > 0) {
-              this.reta_tex(pint2, pint, tex);
-
-            }
+            if (pint2.x > 0) this.reta_tex(pint2, pint, tex);
           }
         }
         pi = pf;
@@ -615,9 +597,7 @@ class Screen {
     init_color = JSON.stringify(init_color.to_array())
     let stack_not_verified = [p];
 
-    var pixel_color = (pixel) => {
-      return JSON.stringify(pixel.load_color(this.width).to_array())
-    }
+    var pixel_color = (pixel) => { return JSON.stringify(pixel.load_color(this.width).to_array()) }
 
     if (pixel_color(p) != init_color) return
 
@@ -631,13 +611,9 @@ class Screen {
         new Pixel(pix.x + 1, pix.y),
         new Pixel(pix.x - 1, pix.y)]
 
-      for (const px of pixels) {
-        if (pixel_color(px) == init_color) stack_not_verified.push(px)
-      }
-
+      for (const px of pixels) if (pixel_color(px) == init_color) stack_not_verified.push(px)
     }
   }
-
 
 }
 
