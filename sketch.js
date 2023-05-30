@@ -1,5 +1,5 @@
 var screen, opening, viewport, window_cg
-var clk1, clk2, clk3, clocks
+var clocks
 var zoomed_out = true
 var update_elements = []
 var back_button
@@ -11,6 +11,34 @@ function map_clocks(clocks) {
   }
   return new_clocks
 }
+
+function create_clocks(screen) {
+  const clk1 = new Clock(new Pixel(20, 30), 15, screen, 0, screen.images.clock, -3, screen.images.brasil)
+  const clk2 = new Clock(new Pixel(80, 30), 15, screen, 0, screen.images.clock, 8, screen.images.taiwan)
+  const clk3 = new Clock(new Pixel(50, 70), 15, screen, 0, screen.images.clock, +3, screen.images.ukraine)
+  return [clk1, clk2, clk3]
+}
+
+function zoom_in(idx) {
+  window_cg = new WindowCG(clocks[idx].top.sub(new Pixel(10)), clocks[idx].bottom.add(new Pixel(10)))
+  transformed_clocks = map_clocks(clocks)
+  const clock = transformed_clocks[idx]
+  cursor(ARROW)
+  zoomed_out = false
+  clock.zoomed_in = true
+  update_elements = [clock]
+}
+
+function zoom_out() {
+  window_cg = new WindowCG(new Pixel(0), new Pixel(screen.width, screen.height))
+  zoomed_out = true
+  update_elements[0].zoomed_in = false
+  transformed_clocks = map_clocks(clocks)
+  update_elements = [...transformed_clocks]
+  screen.clear()
+}
+
+// ------- P5 -- --------
 
 function preload() {
   screen = new Screen(100, 100, 200)
@@ -31,10 +59,7 @@ function setup() {
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(width, height))
 
-  clk1 = new Clock(new Pixel(20, 30), 15, screen, 0, screen.images.clock, -3, screen.images.brasil)
-  clk2 = new Clock(new Pixel(80, 30), 15, screen, 0, screen.images.clock, 8, screen.images.taiwan)
-  clk3 = new Clock(new Pixel(50, 70), 15, screen, 0, screen.images.clock, +3, screen.images.ukraine)
-  clocks = [clk1, clk2, clk3]
+  clocks = create_clocks(screen)
   transformed_clocks = map_clocks(clocks)
   update_elements = [...transformed_clocks]
 
@@ -42,22 +67,12 @@ function setup() {
 }
 
 function mousePressed() {
-  if (opening.is_running && opening.is_hover_button()) {
-    opening.stop()
-    return
-  }
+  if (opening.is_running && opening.is_hover_button()) { opening.stop() }
 
-  if (zoomed_out && !opening.is_running) {
-
+  else if (zoomed_out && !opening.is_running) {
     for (let c = 0; c < clocks.length; c++) {
       if (clocks[c].is_hover()) {
-        window_cg = new WindowCG(clocks[c].top.sub(new Pixel(10)), clocks[c].bottom.add(new Pixel(10)))
-        transformed_clocks = map_clocks(clocks)
-        const clock = transformed_clocks[c]
-        cursor(ARROW)
-        zoomed_out = false
-        clock.zoomed_in = true
-        update_elements = [clock]
+        zoom_in(c)
         break
       }
     }
@@ -65,19 +80,9 @@ function mousePressed() {
     screen.clear()
     back_button.draw()
     update_elements.push(back_button)
-    return
   }
 
-  if (!zoomed_out && back_button.is_hover()) {
-    window_cg = new WindowCG(new Pixel(0), new Pixel(screen.width, screen.height))
-    zoomed_out = true
-    update_elements[0].zoomed_in = false
-    transformed_clocks = map_clocks(clocks)
-    update_elements = [...transformed_clocks]
-    screen.clear()
-    return
-
-  }
+  else if (!zoomed_out && back_button.is_hover()) { zoom_out() }
 }
 
 
