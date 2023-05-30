@@ -19,6 +19,14 @@ class ImageCG {
     this.images[name] = loadImage(path)
   }
 
+  draw_image(name, pos, size) {
+    let image = this.images[name]
+    size = size ? size : new Pixel(image.width, image.height)
+    let pol = Polygon.rect(pos, pos.add(size))
+    this.scanline_tex(pol, image)
+    return pol
+  }
+
   load_all_images() {
     Object.values(this.images).forEach(i => {
       i.loadPixels()
