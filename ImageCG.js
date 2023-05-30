@@ -13,6 +13,16 @@ class ImageCG {
     this.width = width
     this.height = height
     this.background = background
+    this.images = {}
+  }
+  add_image(path, name) {
+    this.images[name] = loadImage(path)
+  }
+
+  load_all_images() {
+    Object.values(this.images).forEach(i => {
+      i.loadPixels()
+    })
   }
 
   /**

@@ -5,21 +5,21 @@ var clocks_draw = []
 
 function preload() {
   img = new ImageCG(100, 100, 200)
-  imgteste = loadImage('images/relogio2.png')
+  img.add_image('images/relogio2.png', "clock")
 
   opening = new Opening(img, new CharDrawer())
 }
 
 function setup() {
   img.init();
-  imgteste.loadPixels()
+  img.load_all_images()
 
   viewport = new Viewport(width, height)
   window_cg = new WindowCG(new Pixel(0), new Pixel(50))
 
-  clk1 = new Clock(new Pixel(20, 30), 15, img, 0, imgteste)
-  clk2 = new Clock(new Pixel(80, 30), 15, img, 0, imgteste)
-  clk3 = new Clock(new Pixel(50, 70), 15, img, 0, imgteste)
+  clk1 = new Clock(new Pixel(20, 30), 15, img, 0, img.images.clock)
+  clk2 = new Clock(new Pixel(80, 30), 15, img, 0, img.images.clock)
+  clk3 = new Clock(new Pixel(50, 70), 15, img, 0, img.images.clock)
   clocks = [clk1, clk2, clk3]
   clocks_draw = [...clocks]
 
