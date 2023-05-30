@@ -333,7 +333,6 @@ class ImageCG {
 
     var pf = seg.pf;
     var y = scan; // scan line -> percorrer toda a imagem 
-    console.log(pi,pf)
 
     // Segmento horizontal -> sem intersecao
     if (pi.y == pf.y) {
@@ -487,21 +486,14 @@ class ImageCG {
     // cod yuri
     p.xtex = Math.max(0, Math.min(1, p.xtex))
     p.ytex = Math.max(0, Math.min(1, p.ytex))
-    var h = tex[0].length/4
 
-    let x = Math.round(p.xtex * (h)) == h ? Math.round(p.xtex * (h) - 1) : Math.round(p.xtex * (h));//cond ? op v : op f
-    let y = Math.round(p.ytex * (tex.length)) == tex.length ? Math.round(p.ytex * (tex.length) - 1) : Math.round(p.ytex * (tex.length));
-    //console.log(x,y)
+    var w = tex[0].length / 4
+    var h = tex.length
 
-    let intensityR = tex[y][x] === undefined ? tex[y][x - 1] : tex[y][x];
-    let intensityG = tex[y][x + 1] === undefined ? tex[y][x] : tex[y][x + 1];
-    let intensityB = tex[y][x + 2] === undefined ? tex[y][x] : tex[y][x + 2];
-    let intensityA = tex[y][x + 3] === undefined ? tex[y][x] : tex[y][x + 3];
+    let x = Math.round(p.xtex * w) == w ? Math.round(p.xtex * w - 1) : Math.round(p.xtex * w);//cond ? op v : op f
+    let y = Math.round(p.ytex * h) == h ? Math.round(p.ytex * h - 1) : Math.round(p.ytex * h);
 
-    // p.xtex = x
-    // p.ytex = y
-
-    return [intensityR, intensityG, intensityB, intensityA];
+    return tex[y].slice(x, x + 4);
   }
 
   reta_tex(pi, pf, tex, clg = false) {
@@ -523,7 +515,7 @@ class ImageCG {
 
       let x = pi.x + i * passo_x;
       let y = pi.y + i * passo_y;
-      
+
       let pc = (x - pi.x) / (pf.x - pi.x);
       //let pcy = (y - pi.y)/(pf.y - pi.y);
 
@@ -571,7 +563,7 @@ class ImageCG {
 
             if (pint2.x > 0) {
               this.reta_tex(pint2, pint, [...tex]);
-          
+
             }
           }
         }
